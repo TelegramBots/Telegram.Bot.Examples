@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telegram.Bot.Examples.Echo"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telegram.Bot.Examples.WebHook", "Telegram.Bot.Examples.WebHook\Telegram.Bot.Examples.WebHook.csproj", "{97C91678-4323-4C99-81AD-AFF3C862CE8D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telegram.Bot.Examples.DotNetCoreWebHook", "Telegram.Bot.Examples.DotNetCoreWebHook\Telegram.Bot.Examples.DotNetCoreWebHook.csproj", "{F7A7710D-D157-4ED9-81F1-8C8F48819521}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,22 @@ Global
 		{97C91678-4323-4C99-81AD-AFF3C862CE8D}.Release|x64.Build.0 = Release|Any CPU
 		{97C91678-4323-4C99-81AD-AFF3C862CE8D}.Release|x86.ActiveCfg = Release|Any CPU
 		{97C91678-4323-4C99-81AD-AFF3C862CE8D}.Release|x86.Build.0 = Release|Any CPU
+		{F7A7710D-D157-4ED9-81F1-8C8F48819521}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7A7710D-D157-4ED9-81F1-8C8F48819521}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7A7710D-D157-4ED9-81F1-8C8F48819521}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{F7A7710D-D157-4ED9-81F1-8C8F48819521}.Debug|ARM.Build.0 = Debug|Any CPU
+		{F7A7710D-D157-4ED9-81F1-8C8F48819521}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F7A7710D-D157-4ED9-81F1-8C8F48819521}.Debug|x64.Build.0 = Debug|Any CPU
+		{F7A7710D-D157-4ED9-81F1-8C8F48819521}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F7A7710D-D157-4ED9-81F1-8C8F48819521}.Debug|x86.Build.0 = Debug|Any CPU
+		{F7A7710D-D157-4ED9-81F1-8C8F48819521}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7A7710D-D157-4ED9-81F1-8C8F48819521}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7A7710D-D157-4ED9-81F1-8C8F48819521}.Release|ARM.ActiveCfg = Release|Any CPU
+		{F7A7710D-D157-4ED9-81F1-8C8F48819521}.Release|ARM.Build.0 = Release|Any CPU
+		{F7A7710D-D157-4ED9-81F1-8C8F48819521}.Release|x64.ActiveCfg = Release|Any CPU
+		{F7A7710D-D157-4ED9-81F1-8C8F48819521}.Release|x64.Build.0 = Release|Any CPU
+		{F7A7710D-D157-4ED9-81F1-8C8F48819521}.Release|x86.ActiveCfg = Release|Any CPU
+		{F7A7710D-D157-4ED9-81F1-8C8F48819521}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
