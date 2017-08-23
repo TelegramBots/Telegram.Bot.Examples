@@ -13,7 +13,5 @@ namespace Telegram.Bot.Examples.DotNetCoreWebHook.Services
         }
 
         public TelegramBotClient Client { get; }
-
-        public List<int> MailReceiver => new List<int>() { 69818703 };
     }
 }
