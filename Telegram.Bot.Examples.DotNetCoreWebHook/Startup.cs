@@ -11,7 +11,7 @@ namespace Telegram.Bot.Examples.DotNetCoreWebHook
     {
         public Startup(IHostingEnvironment env)
         {
-			var builder = new ConfigurationBuilder()
+            var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
@@ -27,9 +27,9 @@ namespace Telegram.Bot.Examples.DotNetCoreWebHook
             services.AddMvc();
 
             services.AddScoped<IUpdateService, UpdateService>();
-			services.AddSingleton<IBotService, BotService>();
+            services.AddSingleton<IBotService, BotService>();
 
-			services.AddSingleton(Configuration.GetSection("BotConfiguration").Get<BotConfiguration>());
+            services.AddSingleton(Configuration.GetSection("BotConfiguration").Get<BotConfiguration>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
