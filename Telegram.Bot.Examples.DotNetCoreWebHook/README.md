@@ -1,9 +1,9 @@
 
 # .NET Core Web Hook Example
 ## About
-This example provides an telegram bot, based on the .net core framework. Feel free to use it as scaffold for your own bot projects.
+This example provides an telegram bot, based on the .NET Core framework. Feel free to use it as scaffold for your own bot projects.
 ## Setup
-This is an short description how you can test your bot locally. The description presume that you already have a bot and it’s token. If not, pleas create on. You’ll finde several explanations in the internet how to do this.
+This is an short description how you can test your bot locally. The description presumes that you already have a bot and it’s token. If not, please create one. You’ll find several explanations on the internet how to do this.
 
 ### Replace token
 At first you have to set your own token in the **appsettings.json**. For this, replace **<BotToken>** in the **appsettings.json** with the token that belongs to your bot.
