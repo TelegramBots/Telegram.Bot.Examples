@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using Windows.ApplicationModel.Background;
 using Windows.Devices.Gpio;
 
@@ -16,20 +16,19 @@ namespace Telegram.Bot.Examples.IoT
             RunBot().Wait();
 
             _deferral.Complete();
-
         }
 
         private static async Task RunBot()
         {
             InitGPIO(47);
 
-            var Bot = new Api("Your API Key");
+            var Bot = new TelegramBotClient("Your API Key");
 
             var offset = 0;
 
             while (true)
             {
-                var updates = await Bot.GetUpdates(offset);
+                var updates = await Bot.GetUpdatesAsync(offset);
 
                 foreach (var update in updates)
                 {
@@ -48,7 +47,9 @@ namespace Telegram.Bot.Examples.IoT
                                         break;
                                     }
 
-                                    await Bot.SendTextMessage(message.Chat.Id, message.Text,
+                                    await Bot.SendTextMessageAsync(
+                                        message.Chat.Id,
+                                        message.Text,
                                         replyToMessageId: message.MessageId);
 
                                     break;
