@@ -3,17 +3,17 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.InlineKeyboardButtons;
 using Telegram.Bot.Types.InlineQueryResults;
 using Telegram.Bot.Types.InputMessageContents;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Telegram.Bot.Examples.Echo
 {
-    class Program
+    static class Program
     {
         private static readonly TelegramBotClient Bot = new TelegramBotClient("Your API key");
 
@@ -42,7 +42,7 @@ namespace Telegram.Bot.Examples.Echo
 
         private static void BotOnChosenInlineResultReceived(object sender, ChosenInlineResultEventArgs chosenInlineResultEventArgs)
         {
-            Console.WriteLine($"Received choosen inline result: {chosenInlineResultEventArgs.ChosenInlineResult.ResultId}");
+            Console.WriteLine($"Received inline result: {chosenInlineResultEventArgs.ChosenInlineResult.ResultId}");
         }
 
         private static async void BotOnInlineQueryReceived(object sender, InlineQueryEventArgs inlineQueryEventArgs)
@@ -84,7 +84,7 @@ namespace Telegram.Bot.Examples.Echo
 
             if (message == null || message.Type != MessageType.TextMessage) return;
 
-            if (message.Text.StartsWith("/inline")) // send inline keyboard
+            if (message.Text.StartsWith("/inline", StringComparison.InvariantCultureIgnoreCase)) // send inline keyboard
             {
                 await Bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
 
@@ -92,13 +92,13 @@ namespace Telegram.Bot.Examples.Echo
                 {
                     new[] // first row
                     {
-                        new InlineKeyboardButton("1.1"),
-                        new InlineKeyboardButton("1.2"),
+                        new InlineKeyboardCallbackButton("1.1", "1.1"),
+                        new InlineKeyboardCallbackButton("1.2", "1.2"),
                     },
                     new[] // second row
                     {
-                        new InlineKeyboardButton("2.1"),
-                        new InlineKeyboardButton("2.2"),
+                        new InlineKeyboardCallbackButton("2.1", "2.1"),
+                        new InlineKeyboardCallbackButton("2.2", "2.2"),
                     }
                 });
 
@@ -107,30 +107,30 @@ namespace Telegram.Bot.Examples.Echo
                 await Bot.SendTextMessageAsync(message.Chat.Id, "Choose",
                     replyMarkup: keyboard);
             }
-            else if (message.Text.StartsWith("/keyboard")) // send custom keyboard
+            else if (message.Text.StartsWith("/keyboard", StringComparison.InvariantCultureIgnoreCase)) // send custom keyboard
             {
                 var keyboard = new ReplyKeyboardMarkup(new[]
                 {
                     new [] // first row
                     {
                         new KeyboardButton("1.1"),
-                        new KeyboardButton("1.2"),  
+                        new KeyboardButton("1.2"),
                     },
                     new [] // last row
                     {
                         new KeyboardButton("2.1"),
-                        new KeyboardButton("2.2"),  
+                        new KeyboardButton("2.2"),
                     }
                 });
 
                 await Bot.SendTextMessageAsync(message.Chat.Id, "Choose",
                     replyMarkup: keyboard);
             }
-            else if (message.Text.StartsWith("/photo")) // send a photo
+            else if (message.Text.StartsWith("/photo", StringComparison.InvariantCultureIgnoreCase)) // send a photo
             {
                 await Bot.SendChatActionAsync(message.Chat.Id, ChatAction.UploadPhoto);
 
-                const string file = @"<FilePath>";
+                const string file = @"Files/tux.png";
 
                 var fileName = file.Split('\\').Last();
 
@@ -141,9 +141,9 @@ namespace Telegram.Bot.Examples.Echo
                     await Bot.SendPhotoAsync(message.Chat.Id, fts, "Nice Picture");
                 }
             }
-            else if (message.Text.StartsWith("/request")) // request location or contact
+            else if (message.Text.StartsWith("/request", StringComparison.InvariantCultureIgnoreCase)) // request location or contact
             {
-                var keyboard = new ReplyKeyboardMarkup(new []
+                var keyboard = new ReplyKeyboardMarkup(new[]
                 {
                     new KeyboardButton("Location")
                     {
@@ -152,22 +152,24 @@ namespace Telegram.Bot.Examples.Echo
                     new KeyboardButton("Contact")
                     {
                         RequestContact = true
-                    }, 
+                    },
                 });
 
                 await Bot.SendTextMessageAsync(message.Chat.Id, "Who or Where are you?", replyMarkup: keyboard);
             }
             else
             {
-                var usage = @"Usage:
+                const string usage = @"Usage:
 /inline   - send inline keyboard
 /keyboard - send custom keyboard
 /photo    - send a photo
 /request  - request location or contact
 ";
 
-                await Bot.SendTextMessageAsync(message.Chat.Id, usage,
-                    replyMarkup: new ReplyKeyboardHide());
+                await Bot.SendTextMessageAsync(
+                    message.Chat.Id,
+                    usage,
+                    replyMarkup: new ReplyKeyboardRemove());
             }
         }
 
