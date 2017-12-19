@@ -1,6 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
@@ -8,37 +9,45 @@ namespace Telegram.Bot.Examples.DotNetCoreWebHook.Services
 {
     public class UpdateService : IUpdateService
     {
-        readonly IBotService _botService;
+        private readonly IBotService _botService;
+        private readonly ILogger<UpdateService> _logger;
 
-        public UpdateService(IBotService botService)
+        public UpdateService(IBotService botService, ILogger<UpdateService> logger)
         {
             _botService = botService;
+            _logger = logger;
         }
 
-        public void Echo(Update update)
+        public async Task EchoAsync(Update update)
         {
+            if (update.Type != UpdateType.MessageUpdate)
+            {
+                return;
+            }
+
             var message = update.Message;
 
-            Console.WriteLine("Received Message from {0}", message.Chat.Id);
+            _logger.LogInformation("Received Message from {0}", message.Chat.Id);
 
             if (message.Type == MessageType.TextMessage)
             {
                 // Echo each Message
-                _botService.Client.SendTextMessageAsync(message.Chat.Id, message.Text).GetAwaiter();
+                await _botService.Client.SendTextMessageAsync(message.Chat.Id, message.Text);
             }
             else if (message.Type == MessageType.PhotoMessage)
             {
                 // Download Photo
-                var file = _botService.Client.GetFileAsync(message.Photo.LastOrDefault()?.FileId).Result;
+                var fileId = message.Photo.LastOrDefault()?.FileId;
+                var file = await _botService.Client.GetFileAsync(fileId);
 
                 var filename = file.FileId + "." + file.FilePath.Split('.').Last();
 
                 using (var saveImageStream = System.IO.File.Open(filename, FileMode.Create))
                 {
-                    file.FileStream.CopyToAsync(saveImageStream);
+                    await file.FileStream.CopyToAsync(saveImageStream);
                 }
 
-                _botService.Client.SendTextMessageAsync(message.Chat.Id, "Thx for the Pics");
+                await _botService.Client.SendTextMessageAsync(message.Chat.Id, "Thx for the Pics");
             }
         }
     }
