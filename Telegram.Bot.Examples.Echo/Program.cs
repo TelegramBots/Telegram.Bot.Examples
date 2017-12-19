@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,11 +12,11 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Telegram.Bot.Examples.Echo
 {
-    static class Program
+    public static class Program
     {
         private static readonly TelegramBotClient Bot = new TelegramBotClient("Your API key");
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Bot.OnMessage += BotOnMessageReceived;
             Bot.OnMessageEdited += BotOnMessageReceived;
@@ -31,6 +30,7 @@ namespace Telegram.Bot.Examples.Echo
             Console.Title = me.Username;
 
             Bot.StartReceiving();
+            Console.WriteLine($"Start listening for @{me.Username}");
             Console.ReadLine();
             Bot.StopReceiving();
         }
@@ -53,15 +53,15 @@ namespace Telegram.Bot.Examples.Echo
 
                     keyboard = new InlineKeyboardMarkup(new[]
                     {
-                        new[] // first row
+                        new [] // first row
                         {
-                            new InlineKeyboardCallbackButton("1.1", "1.1"),
-                            new InlineKeyboardCallbackButton("1.2", "1.2"),
+                            InlineKeyboardButton.WithCallbackData("1.1"),
+                            InlineKeyboardButton.WithCallbackData("1.2"),
                         },
-                        new[] // second row
+                        new [] // second row
                         {
-                            new InlineKeyboardCallbackButton("2.1", "2.1"),
-                            new InlineKeyboardCallbackButton("2.2", "2.2"),
+                            InlineKeyboardButton.WithCallbackData("2.1"),
+                            InlineKeyboardButton.WithCallbackData("2.2"),
                         }
                     });
 
@@ -99,7 +99,7 @@ namespace Telegram.Bot.Examples.Echo
 
                     const string file = @"Files/tux.png";
 
-                    var fileName = file.Split('\\').Last();
+                    var fileName = file.Split(Path.DirectorySeparatorChar).Last();
 
                     using (var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
@@ -157,6 +157,8 @@ namespace Telegram.Bot.Examples.Echo
 
         private static async void BotOnInlineQueryReceived(object sender, InlineQueryEventArgs inlineQueryEventArgs)
         {
+            Console.WriteLine($"Received inline query from: {inlineQueryEventArgs.InlineQuery.From.Id}");
+
             InlineQueryResult[] results = {
                 new InlineQueryResultLocation
                 {
@@ -199,7 +201,9 @@ namespace Telegram.Bot.Examples.Echo
 
         private static void BotOnReceiveError(object sender, ReceiveErrorEventArgs receiveErrorEventArgs)
         {
-            Debugger.Break();
+            Console.WriteLine("Received error: {0} — {1}",
+                receiveErrorEventArgs.ApiRequestException.ErrorCode,
+                receiveErrorEventArgs.ApiRequestException.Message);
         }
     }
 }
