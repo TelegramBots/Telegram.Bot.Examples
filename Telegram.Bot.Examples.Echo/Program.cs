@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,17 +6,18 @@ using System.Threading.Tasks;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.InlineKeyboardButtons;
 using Telegram.Bot.Types.InlineQueryResults;
 using Telegram.Bot.Types.InputMessageContents;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Telegram.Bot.Examples.Echo
 {
-    class Program
+    public class Program
     {
         private static readonly TelegramBotClient Bot = new TelegramBotClient("Your API key");
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Bot.OnCallbackQuery += BotOnCallbackQueryReceived;
             Bot.OnMessage += BotOnMessageReceived;
@@ -31,13 +31,16 @@ namespace Telegram.Bot.Examples.Echo
             Console.Title = me.Username;
 
             Bot.StartReceiving();
+            Console.WriteLine($"Start listening for @{me.Username}");
             Console.ReadLine();
             Bot.StopReceiving();
         }
 
         private static void BotOnReceiveError(object sender, ReceiveErrorEventArgs receiveErrorEventArgs)
         {
-            Debugger.Break();
+            Console.WriteLine("Received error: {0} — {1}",
+                receiveErrorEventArgs.ApiRequestException.ErrorCode,
+                receiveErrorEventArgs.ApiRequestException.Message);
         }
 
         private static void BotOnChosenInlineResultReceived(object sender, ChosenInlineResultEventArgs chosenInlineResultEventArgs)
@@ -47,6 +50,8 @@ namespace Telegram.Bot.Examples.Echo
 
         private static async void BotOnInlineQueryReceived(object sender, InlineQueryEventArgs inlineQueryEventArgs)
         {
+            Console.WriteLine($"Received inline query from: {inlineQueryEventArgs.InlineQuery.From.Id}");
+
             InlineQueryResult[] results = {
                 new InlineQueryResultLocation
                 {
@@ -88,17 +93,17 @@ namespace Telegram.Bot.Examples.Echo
             {
                 await Bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
 
-                var keyboard = new InlineKeyboardMarkup(new[]
+                var keyboard = new InlineKeyboardMarkup(new []
                 {
-                    new[] // first row
+                    new [] // first row
                     {
-                        new InlineKeyboardButton("1.1"),
-                        new InlineKeyboardButton("1.2"),
+                        InlineKeyboardButton.WithCallbackData("1.1"),
+                        InlineKeyboardButton.WithCallbackData("1.2"),
                     },
-                    new[] // second row
+                    new [] // second row
                     {
-                        new InlineKeyboardButton("2.1"),
-                        new InlineKeyboardButton("2.2"),
+                        InlineKeyboardButton.WithCallbackData("2.1"),
+                        InlineKeyboardButton.WithCallbackData("2.2"),
                     }
                 });
 
@@ -109,17 +114,17 @@ namespace Telegram.Bot.Examples.Echo
             }
             else if (message.Text.StartsWith("/keyboard")) // send custom keyboard
             {
-                var keyboard = new ReplyKeyboardMarkup(new[]
+                var keyboard = new ReplyKeyboardMarkup(new []
                 {
                     new [] // first row
                     {
                         new KeyboardButton("1.1"),
-                        new KeyboardButton("1.2"),  
+                        new KeyboardButton("1.2"),
                     },
                     new [] // last row
                     {
                         new KeyboardButton("2.1"),
-                        new KeyboardButton("2.2"),  
+                        new KeyboardButton("2.2"),
                     }
                 });
 
@@ -132,7 +137,7 @@ namespace Telegram.Bot.Examples.Echo
 
                 const string file = @"<FilePath>";
 
-                var fileName = file.Split('\\').Last();
+                var fileName = file.Split(Path.DirectorySeparatorChar).Last();
 
                 using (var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
@@ -152,7 +157,7 @@ namespace Telegram.Bot.Examples.Echo
                     new KeyboardButton("Contact")
                     {
                         RequestContact = true
-                    }, 
+                    },
                 });
 
                 await Bot.SendTextMessageAsync(message.Chat.Id, "Who or Where are you?", replyMarkup: keyboard);
@@ -167,7 +172,7 @@ namespace Telegram.Bot.Examples.Echo
 ";
 
                 await Bot.SendTextMessageAsync(message.Chat.Id, usage,
-                    replyMarkup: new ReplyKeyboardHide());
+                    replyMarkup: new ReplyKeyboardRemove());
             }
         }
 
