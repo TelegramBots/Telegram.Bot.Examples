@@ -1,9 +1,10 @@
-﻿using Telegram.Bot.Types;
+﻿using System.Threading.Tasks;
+using Telegram.Bot.Types;
 
 namespace Telegram.Bot.Examples.DotNetCoreWebHook.Services
 {
     public interface IUpdateService
     {
-        void Echo(Update update);
+        Task EchoAsync(Update update);
     }
 }

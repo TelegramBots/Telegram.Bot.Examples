@@ -1,18 +1,19 @@
-﻿using System;
+﻿using Microsoft.Owin.Hosting;
+using Owin;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Microsoft.Owin.Hosting;
-using Owin;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using File = System.IO.File;
 
 namespace Telegram.Bot.Examples.WebHook
 {
     static class Bot
     {
-        public static readonly Api Api = new Api("Your Api Key");
+        public static readonly TelegramBotClient Api = new TelegramBotClient("Your API Key");
     }
 
     static class Program
@@ -26,7 +27,7 @@ namespace Telegram.Bot.Examples.WebHook
             using (WebApp.Start<Startup>("https://+:8443"))
             {
                 // Register WebHook
-                Bot.Api.SetWebhook("https://YourHostname:8443/WebHook").Wait();
+                Bot.Api.SetWebhookAsync("https://YourHostname:8443/WebHook").Wait();
 
                 Console.WriteLine("Server Started");
 
@@ -34,7 +35,7 @@ namespace Telegram.Bot.Examples.WebHook
                 Console.ReadLine();
 
                 // Unregister WebHook
-                Bot.Api.SetWebhook().Wait();
+                Bot.Api.SetWebhookAsync().Wait();
             }
         }
     }
@@ -62,12 +63,12 @@ namespace Telegram.Bot.Examples.WebHook
             if (message.Type == MessageType.TextMessage)
             {
                 // Echo each Message
-                await Bot.Api.SendTextMessage(message.Chat.Id, message.Text);
+                await Bot.Api.SendTextMessageAsync(message.Chat.Id, message.Text);
             }
             else if (message.Type == MessageType.PhotoMessage)
             {
                 // Download Photo
-                var file = await Bot.Api.GetFile(message.Photo.LastOrDefault()?.FileId);
+                var file = await Bot.Api.GetFileAsync(message.Photo.LastOrDefault()?.FileId);
 
                 var filename = file.FileId + "." + file.FilePath.Split('.').Last();
 
@@ -76,7 +77,7 @@ namespace Telegram.Bot.Examples.WebHook
                     await file.FileStream.CopyToAsync(saveImageStream);
                 }
 
-                await Bot.Api.SendTextMessage(message.Chat.Id, "Thx for the Pics");
+                await Bot.Api.SendTextMessageAsync(message.Chat.Id, "Thx for the Pics");
             }
 
             return Ok();

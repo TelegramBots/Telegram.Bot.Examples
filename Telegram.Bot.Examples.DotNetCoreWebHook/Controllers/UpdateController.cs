@@ -1,26 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Telegram.Bot.Types;
 using Telegram.Bot.Examples.DotNetCoreWebHook.Services;
 
 namespace Telegram.Bot.Examples.DotNetCoreWebHook.Controllers
 {
     [Route("api/[controller]")]
-	public class UpdateController : Controller
-	{
-        readonly IUpdateService _updateService;
-        readonly BotConfiguration _config;
+    public class UpdateController : Controller
+    {
+        private readonly IUpdateService _updateService;
 
-        public UpdateController(IUpdateService updateService, BotConfiguration config)
-		{
-			_updateService = updateService;
-            _config = config;
-		}
+        public UpdateController(IUpdateService updateService)
+        {
+            _updateService = updateService;
+        }
 
-		// POST api/update
-		[HttpPost]
-		public void Post([FromBody]Update update)
-		{
-			_updateService.Echo(update);
-		}
-	}
+        // POST api/update
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody]Update update)
+        {
+            await _updateService.EchoAsync(update);
+            return Ok();
+        }
+    }
 }
