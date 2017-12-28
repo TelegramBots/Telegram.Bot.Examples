@@ -1,10 +1,10 @@
 ﻿{
   "dependencies": {
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
-    "Telegram.Bot": "7.0.0"
+    "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.5",
+    "Telegram.Bot": "13.4.0"
   },
   "frameworks": {
-    "uap10.0": {}
+    "uap10.0.10240": {}
   },
   "runtimes": {
     "win10-arm": {},
