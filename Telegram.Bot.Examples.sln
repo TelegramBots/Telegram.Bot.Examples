@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telegram.Bot.Examples.IoT", "Telegram.Bot.Examples.IoT\Telegram.Bot.Examples.IoT.csproj", "{0383B8B4-44F2-47CC-8C3D-BFD1AEAC5A98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telegram.Bot.Examples.Echo", "Telegram.Bot.Examples.Echo\Telegram.Bot.Examples.Echo.csproj", "{3AFF460B-0963-406C-8A57-29D9323BD206}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.Echo", "Telegram.Bot.Examples.Echo\Telegram.Bot.Examples.Echo.csproj", "{3AFF460B-0963-406C-8A57-29D9323BD206}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telegram.Bot.Examples.WebHook", "Telegram.Bot.Examples.WebHook\Telegram.Bot.Examples.WebHook.csproj", "{97C91678-4323-4C99-81AD-AFF3C862CE8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telegram.Bot.Examples.DotNetCoreWebHook", "Telegram.Bot.Examples.DotNetCoreWebHook\Telegram.Bot.Examples.DotNetCoreWebHook.csproj", "{F7A7710D-D157-4ED9-81F1-8C8F48819521}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.DotNetCoreWebHook", "Telegram.Bot.Examples.DotNetCoreWebHook\Telegram.Bot.Examples.DotNetCoreWebHook.csproj", "{F7A7710D-D157-4ED9-81F1-8C8F48819521}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +24,7 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0383B8B4-44F2-47CC-8C3D-BFD1AEAC5A98}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{0383B8B4-44F2-47CC-8C3D-BFD1AEAC5A98}.Debug|Any CPU.Build.0 = Debug|x86
 		{0383B8B4-44F2-47CC-8C3D-BFD1AEAC5A98}.Debug|ARM.ActiveCfg = Debug|ARM
 		{0383B8B4-44F2-47CC-8C3D-BFD1AEAC5A98}.Debug|ARM.Build.0 = Debug|ARM
 		{0383B8B4-44F2-47CC-8C3D-BFD1AEAC5A98}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -94,5 +95,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {46479B38-C4E4-4C65-B1DE-B5DC008714FC}
 	EndGlobalSection
 EndGlobal

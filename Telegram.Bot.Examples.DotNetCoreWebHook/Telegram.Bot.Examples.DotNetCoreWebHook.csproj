@@ -5,6 +5,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
-    <PackageReference Include="Telegram.Bot" Version="13.4.0" />
+    <PackageReference Include="Telegram.Bot" Version="14.0.0-alpha0" />
   </ItemGroup>
 </Project>
