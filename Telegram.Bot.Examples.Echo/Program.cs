@@ -103,11 +103,9 @@ namespace Telegram.Bot.Examples.Echo
 
                     using (var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
-                        var fts = new FileToSend(fileName, fileStream);
-
                         await Bot.SendPhotoAsync(
                             message.Chat.Id,
-                            fts,
+                            fileStream,
                             "Nice Picture");
                     }
                     break;

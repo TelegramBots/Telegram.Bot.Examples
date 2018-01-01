@@ -11,16 +11,16 @@ using File = System.IO.File;
 
 namespace Telegram.Bot.Examples.WebHook
 {
-    static class Bot
+    public static class Bot
     {
         public static readonly TelegramBotClient Api = new TelegramBotClient("Your API Key");
     }
 
-    static class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            // Endpoint musst be configured with netsh:
+            // Endpoint must be configured with netsh:
             // netsh http add urlacl url=https://+:8443/ user=<username>
             // netsh http add sslcert ipport=0.0.0.0:8443 certhash=<cert thumbprint> appid=<random guid>
 
@@ -35,7 +35,7 @@ namespace Telegram.Bot.Examples.WebHook
                 Console.ReadLine();
 
                 // Unregister WebHook
-                Bot.Api.SetWebhookAsync().Wait();
+                Bot.Api.DeleteWebhookAsync().Wait();
             }
         }
     }
