@@ -3,9 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot.Args;
-using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.InlineKeyboardButtons;
 using Telegram.Bot.Types.InlineQueryResults;
 using Telegram.Bot.Types.InputMessageContents;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -41,7 +39,7 @@ namespace Telegram.Bot.Examples.Echo
 
             if (message == null || message.Type != MessageType.TextMessage) return;
 
-            IReplyMarkup keyboard = new ReplyKeyboardRemove();
+            //IReplyMarkup keyboard = new ReplyKeyboardRemove();
 
             switch (message.Text.Split(' ').First())
             {
@@ -51,7 +49,7 @@ namespace Telegram.Bot.Examples.Echo
 
                     await Task.Delay(500); // simulate longer running task
 
-                    keyboard = new InlineKeyboardMarkup(new[]
+                    var inlineKeyboard = new InlineKeyboardMarkup(new[]
                     {
                         new [] // first row
                         {
@@ -68,29 +66,21 @@ namespace Telegram.Bot.Examples.Echo
                     await Bot.SendTextMessageAsync(
                         message.Chat.Id,
                         "Choose",
-                        replyMarkup: keyboard);
+                        replyMarkup: inlineKeyboard);
                     break;
 
                 // send custom keyboard
                 case "/keyboard":
-                    keyboard = new ReplyKeyboardMarkup(new[]
+                    ReplyKeyboardMarkup ReplyKeyboard = new[]
                     {
-                        new [] // first row
-                        {
-                            new KeyboardButton("1.1"),
-                            new KeyboardButton("1.2"),
-                        },
-                        new [] // last row
-                        {
-                            new KeyboardButton("2.1"),
-                            new KeyboardButton("2.2"),
-                        }
-                    });
+                        new[] { "1.1", "1.2" },
+                        new[] { "2.1", "2.2" },
+                    };
 
                     await Bot.SendTextMessageAsync(
                         message.Chat.Id,
                         "Choose",
-                        replyMarkup: keyboard);
+                        replyMarkup: ReplyKeyboard);
                     break;
 
                 // send a photo
@@ -112,22 +102,16 @@ namespace Telegram.Bot.Examples.Echo
 
                 // request location or contact
                 case "/request":
-                    keyboard = new ReplyKeyboardMarkup(new[]
+                    var RequestReplyKeyboard = new ReplyKeyboardMarkup(new[]
                     {
-                        new KeyboardButton("Location")
-                        {
-                            RequestLocation = true
-                        },
-                        new KeyboardButton("Contact")
-                        {
-                            RequestContact = true
-                        },
+                        KeyboardButton.WithRequestLocation("Location"),
+                        KeyboardButton.WithRequestContact("Contact"),
                     });
 
                     await Bot.SendTextMessageAsync(
                         message.Chat.Id,
                         "Who or Where are you?",
-                        replyMarkup: keyboard);
+                        replyMarkup: RequestReplyKeyboard);
                     break;
 
                 default:
@@ -157,7 +141,7 @@ namespace Telegram.Bot.Examples.Echo
         {
             Console.WriteLine($"Received inline query from: {inlineQueryEventArgs.InlineQuery.From.Id}");
 
-            InlineQueryResult[] results = {
+            InlineQueryResultBase[] results = {
                 new InlineQueryResultLocation
                 {
                     Id = "1",

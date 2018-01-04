@@ -27,7 +27,8 @@ namespace Telegram.Bot.Examples.WebHook
             using (WebApp.Start<Startup>("https://+:8443"))
             {
                 // Register WebHook
-                Bot.Api.SetWebhookAsync("https://YourHostname:8443/WebHook").Wait();
+                // You should replace {YourHostname} with your Internet accessible hosname
+                Bot.Api.SetWebhookAsync("https://{YourHostname}:8443/WebHook").Wait();
 
                 Console.WriteLine("Server Started");
 
