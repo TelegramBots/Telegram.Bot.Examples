@@ -1,6 +1,6 @@
 ﻿{
   "dependencies": {
-    "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.5",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.6",
     "Telegram.Bot": "14.0.0-rc-367"
   },
   "frameworks": {
