@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
-using Telegram.Bot.Types.InputMessageContents;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Telegram.Bot.Examples.Echo
@@ -37,7 +36,7 @@ namespace Telegram.Bot.Examples.Echo
         {
             var message = messageEventArgs.Message;
 
-            if (message == null || message.Type != MessageType.TextMessage) return;
+            if (message == null || message.Type != MessageType.Text) return;
 
             //IReplyMarkup keyboard = new ReplyKeyboardRemove();
 

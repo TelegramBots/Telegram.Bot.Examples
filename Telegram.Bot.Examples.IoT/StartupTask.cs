@@ -34,12 +34,12 @@ namespace Telegram.Bot.Examples.IoT
                 {
                     switch (update.Type)
                     {
-                        case UpdateType.MessageUpdate:
+                        case UpdateType.Message:
                             var message = update.Message;
 
                             switch (message.Type)
                             {
-                                case MessageType.TextMessage:
+                                case MessageType.Text:
 
                                     if (message.Text == "/toggle")
                                     {

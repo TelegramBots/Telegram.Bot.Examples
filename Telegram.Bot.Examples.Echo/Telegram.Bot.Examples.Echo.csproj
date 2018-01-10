@@ -5,7 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="Telegram.Bot" Version="14.0.0-beta-342" />
+    <PackageReference Include="Telegram.Bot" Version="14.0.0-rc-367" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Files\tux.png">

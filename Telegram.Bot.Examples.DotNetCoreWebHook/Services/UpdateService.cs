@@ -20,7 +20,7 @@ namespace Telegram.Bot.Examples.DotNetCoreWebHook.Services
 
         public async Task EchoAsync(Update update)
         {
-            if (update.Type != UpdateType.MessageUpdate)
+            if (update.Type != UpdateType.Message)
             {
                 return;
             }
@@ -29,12 +29,12 @@ namespace Telegram.Bot.Examples.DotNetCoreWebHook.Services
 
             _logger.LogInformation("Received Message from {0}", message.Chat.Id);
 
-            if (message.Type == MessageType.TextMessage)
+            if (message.Type == MessageType.Text)
             {
                 // Echo each Message
                 await _botService.Client.SendTextMessageAsync(message.Chat.Id, message.Text);
             }
-            else if (message.Type == MessageType.PhotoMessage)
+            else if (message.Type == MessageType.Photo)
             {
                 // Download Photo
                 var fileId = message.Photo.LastOrDefault()?.FileId;
@@ -44,7 +44,7 @@ namespace Telegram.Bot.Examples.DotNetCoreWebHook.Services
 
                 using (var saveImageStream = System.IO.File.Open(filename, FileMode.Create))
                 {
-                    await file.FileStream.CopyToAsync(saveImageStream);
+                    await _botService.Client.DownloadFileAsync(file.FilePath, saveImageStream);
                 }
 
                 await _botService.Client.SendTextMessageAsync(message.Chat.Id, "Thx for the Pics");
