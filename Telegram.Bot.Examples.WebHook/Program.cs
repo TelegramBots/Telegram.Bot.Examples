@@ -61,12 +61,12 @@ namespace Telegram.Bot.Examples.WebHook
 
             Console.WriteLine("Received Message from {0}", message.Chat.Id);
 
-            if (message.Type == MessageType.TextMessage)
+            if (message.Type == MessageType.Text)
             {
                 // Echo each Message
                 await Bot.Api.SendTextMessageAsync(message.Chat.Id, message.Text);
             }
-            else if (message.Type == MessageType.PhotoMessage)
+            else if (message.Type == MessageType.Photo)
             {
                 // Download Photo
                 var file = await Bot.Api.GetFileAsync(message.Photo.LastOrDefault()?.FileId);
@@ -75,7 +75,7 @@ namespace Telegram.Bot.Examples.WebHook
 
                 using (var saveImageStream = File.Open(filename, FileMode.Create))
                 {
-                    await file.FileStream.CopyToAsync(saveImageStream);
+                    await Bot.Api.DownloadFileAsync(file.FilePath, saveImageStream);
                 }
 
                 await Bot.Api.SendTextMessageAsync(message.Chat.Id, "Thx for the Pics");

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
-using Telegram.Bot.Types.InputMessageContents;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Telegram.Bot.Examples.Echo
@@ -37,7 +36,7 @@ namespace Telegram.Bot.Examples.Echo
         {
             var message = messageEventArgs.Message;
 
-            if (message == null || message.Type != MessageType.TextMessage) return;
+            if (message == null || message.Type != MessageType.Text) return;
 
             //IReplyMarkup keyboard = new ReplyKeyboardRemove();
 
@@ -142,31 +141,28 @@ namespace Telegram.Bot.Examples.Echo
             Console.WriteLine($"Received inline query from: {inlineQueryEventArgs.InlineQuery.From.Id}");
 
             InlineQueryResultBase[] results = {
-                new InlineQueryResultLocation
-                {
-                    Id = "1",
-                    Latitude = 40.7058316f, // displayed result
-                    Longitude = -74.2581888f,
-                    Title = "New York",
-                    InputMessageContent = new InputLocationMessageContent // message if result is selected
+                new InlineQueryResultLocation(
+                    id: "1",
+                    latitude: 40.7058316f,
+                    longitude: -74.2581888f,
+                    title: "New York")   // displayed result
                     {
-                        Latitude = 40.7058316f,
-                        Longitude = -74.2581888f,
-                    }
-                },
+                        InputMessageContent = new InputLocationMessageContent(
+                            latitude: 40.7058316f,
+                            longitude: -74.2581888f)    // message if result is selected
+                    },
 
-                new InlineQueryResultLocation
-                {
-                    Id = "2",
-                    Longitude = 52.507629f, // displayed result
-                    Latitude = 13.1449577f,
-                    Title = "Berlin",
-                    InputMessageContent = new InputLocationMessageContent // message if result is selected
+                new InlineQueryResultLocation(
+                    id: "2",
+                    latitude: 13.1449577f,
+                    longitude: 52.507629f,
+                    title: "Berlin") // displayed result
                     {
-                        Longitude = 52.507629f,
-                        Latitude = 13.1449577f
+
+                        InputMessageContent = new InputLocationMessageContent(
+                            latitude: 13.1449577f,
+                            longitude: 52.507629f)   // message if result is selected
                     }
-                }
             };
 
             await Bot.AnswerInlineQueryAsync(
