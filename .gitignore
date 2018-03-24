@@ -215,3 +215,4 @@ ModelManifest.xml
 .idea/
 *.*.iml
 
+launchSettings.json
