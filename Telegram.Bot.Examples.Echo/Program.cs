@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
@@ -15,6 +16,9 @@ namespace Telegram.Bot.Examples.Echo
 
         public static void Main(string[] args)
         {
+            var me = Bot.GetMeAsync().Result;
+            Console.Title = me.Username;
+
             Bot.OnMessage += BotOnMessageReceived;
             Bot.OnMessageEdited += BotOnMessageReceived;
             Bot.OnCallbackQuery += BotOnCallbackQueryReceived;
@@ -22,11 +26,7 @@ namespace Telegram.Bot.Examples.Echo
             Bot.OnInlineResultChosen += BotOnChosenInlineResultReceived;
             Bot.OnReceiveError += BotOnReceiveError;
 
-            var me = Bot.GetMeAsync().Result;
-
-            Console.Title = me.Username;
-
-            Bot.StartReceiving();
+            Bot.StartReceiving(Array.Empty<UpdateType>());
             Console.WriteLine($"Start listening for @{me.Username}");
             Console.ReadLine();
             Bot.StopReceiving();
@@ -37,8 +37,6 @@ namespace Telegram.Bot.Examples.Echo
             var message = messageEventArgs.Message;
 
             if (message == null || message.Type != MessageType.Text) return;
-
-            //IReplyMarkup keyboard = new ReplyKeyboardRemove();
 
             switch (message.Text.Split(' ').First())
             {
@@ -114,12 +112,12 @@ namespace Telegram.Bot.Examples.Echo
                     break;
 
                 default:
-                    const string usage = @"Usage:
+                    const string usage = @"
+Usage:
 /inline   - send inline keyboard
 /keyboard - send custom keyboard
 /photo    - send a photo
-/request  - request location or contact
-";
+/request  - request location or contact";
 
                     await Bot.SendTextMessageAsync(
                         message.Chat.Id,
@@ -131,9 +129,15 @@ namespace Telegram.Bot.Examples.Echo
 
         private static async void BotOnCallbackQueryReceived(object sender, CallbackQueryEventArgs callbackQueryEventArgs)
         {
+            var callbackQuery = callbackQueryEventArgs.CallbackQuery;
+
             await Bot.AnswerCallbackQueryAsync(
-                callbackQueryEventArgs.CallbackQuery.Id,
-                $"Received {callbackQueryEventArgs.CallbackQuery.Data}");
+                callbackQuery.Id,
+                $"Received {callbackQuery.Data}");
+
+            await Bot.SendTextMessageAsync(
+                callbackQuery.Message.Chat.Id,
+                $"Received {callbackQuery.Data}");
         }
 
         private static async void BotOnInlineQueryReceived(object sender, InlineQueryEventArgs inlineQueryEventArgs)
