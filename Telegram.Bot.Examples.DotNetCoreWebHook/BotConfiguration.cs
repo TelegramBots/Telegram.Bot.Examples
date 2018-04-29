@@ -1,4 +1,4 @@
-﻿﻿namespace Telegram.Bot.Examples.DotNetCoreWebHook
+namespace Telegram.Bot.Examples.DotNetCoreWebHook
 {
     public class BotConfiguration
     {
