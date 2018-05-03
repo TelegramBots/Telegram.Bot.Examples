@@ -12,7 +12,7 @@ This repository contains some use cases for [Telegram.Bot](https://github.com/Te
 - [BusV is a Telegram chat bot 🤖 that helps you catch your bus 🚍](https://github.com/pouladpld/BusVbot)
 - [Simple Calendar Picker control](https://github.com/karb0f0s/CalendarPicker)
 
-# How to work with this repository
+## How to work with this repository
 
 This repository uses external [module](https://github.com/MihaZupan/HttpToSocks5Proxy.git) to provide Socks5 proxy functionality. To make this work you can:
 
