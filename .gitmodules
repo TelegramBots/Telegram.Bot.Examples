@@ -1,0 +1,6 @@
+[submodule "Proxy"]
+	path = Proxy
+	url = https://github.com/MihaZupan/HttpToSocks5Proxy.git
+[submodule "Telegram.Bot.Examples.DotNetCoreWebHook/Proxy"]
+	path = Telegram.Bot.Examples.DotNetCoreWebHook/Proxy
+	url = https://github.com/MihaZupan/HttpToSocks5Proxy.git

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
+using MihaZupan;
 
 namespace Telegram.Bot.Examples.DotNetCoreWebHook.Services
 {
@@ -9,7 +10,12 @@ namespace Telegram.Bot.Examples.DotNetCoreWebHook.Services
         public BotService(IOptions<BotConfiguration> config)
         {
             _config = config.Value;
-            Client = new TelegramBotClient(_config.BotToken);
+            // use proxy if configured in appsettings.*.json
+            Client = string.IsNullOrEmpty(_config.Socks5Host)
+                ? new TelegramBotClient(_config.BotToken)
+                : new TelegramBotClient(
+                    _config.BotToken,
+                    new HttpToSocks5Proxy(_config.Socks5Host, _config.Socks5Port));
         }
 
         public TelegramBotClient Client { get; }
