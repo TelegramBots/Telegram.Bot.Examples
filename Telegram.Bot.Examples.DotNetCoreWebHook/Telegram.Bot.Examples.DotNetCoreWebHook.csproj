@@ -9,9 +9,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="HttpToSocks5Proxy" Version="1.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.3" />
-    <PackageReference Include="Telegram.Bot" Version="14.9.0" />
+    <PackageReference Include="HttpToSocks5Proxy" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.All" />
+    <PackageReference Include="Telegram.Bot" Version="14.10.0" />
   </ItemGroup>
 
 </Project>
