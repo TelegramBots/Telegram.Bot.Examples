@@ -161,7 +161,6 @@ Usage:
                     longitude: 52.507629f,
                     title: "Berlin") // displayed result
                     {
-
                         InputMessageContent = new InputLocationMessageContent(
                             latitude: 13.1449577f,
                             longitude: 52.507629f)   // message if result is selected
