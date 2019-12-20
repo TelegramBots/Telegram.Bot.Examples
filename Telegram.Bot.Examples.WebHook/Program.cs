@@ -18,7 +18,7 @@ namespace Telegram.Bot.Examples.WebHook
 
     public static class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             // Endpoint must be configured with netsh:
             // netsh http add urlacl url=https://+:8443/ user=<username>
