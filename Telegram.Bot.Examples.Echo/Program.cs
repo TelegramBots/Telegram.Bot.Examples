@@ -1,21 +1,30 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
+using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Telegram.Bot.Examples.Echo
 {
     public static class Program
     {
-        private static readonly TelegramBotClient Bot = new TelegramBotClient("Your API key");
+        private static TelegramBotClient Bot;
 
-        public static void Main(string[] args)
+        public static async Task Main()
         {
-            var me = Bot.GetMeAsync().Result;
+#if USE_PROXY
+            var Proxy = new WebProxy(Configuration.Proxy.Host, Configuration.Proxy.Port) { UseDefaultCredentials = true };
+            Bot = new TelegramBotClient(Configuration.BotToken, webProxy: Proxy);
+#else
+            Bot = new TelegramBotClient(Configuration.BotToken);
+#endif
+
+            var me = await Bot.GetMeAsync();
             Console.Title = me.Username;
 
             Bot.OnMessage += BotOnMessageReceived;
@@ -27,6 +36,7 @@ namespace Telegram.Bot.Examples.Echo
 
             Bot.StartReceiving(Array.Empty<UpdateType>());
             Console.WriteLine($"Start listening for @{me.Username}");
+
             Console.ReadLine();
             Bot.StopReceiving();
         }
@@ -34,7 +44,6 @@ namespace Telegram.Bot.Examples.Echo
         private static async void BotOnMessageReceived(object sender, MessageEventArgs messageEventArgs)
         {
             var message = messageEventArgs.Message;
-
             if (message == null || message.Type != MessageType.Text) return;
 
             switch (message.Text.Split(' ').First())
@@ -43,26 +52,29 @@ namespace Telegram.Bot.Examples.Echo
                 case "/inline":
                     await Bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
 
-                    await Task.Delay(500); // simulate longer running task
+                    // simulate longer running task
+                    await Task.Delay(500);
 
                     var inlineKeyboard = new InlineKeyboardMarkup(new[]
                     {
-                        new [] // first row
+                        // first row
+                        new []
                         {
-                            InlineKeyboardButton.WithCallbackData("1.1"),
-                            InlineKeyboardButton.WithCallbackData("1.2"),
+                            InlineKeyboardButton.WithCallbackData("1.1", "11"),
+                            InlineKeyboardButton.WithCallbackData("1.2", "12"),
                         },
-                        new [] // second row
+                        // second row
+                        new []
                         {
-                            InlineKeyboardButton.WithCallbackData("2.1"),
-                            InlineKeyboardButton.WithCallbackData("2.2"),
+                            InlineKeyboardButton.WithCallbackData("2.1", "21"),
+                            InlineKeyboardButton.WithCallbackData("2.2", "22"),
                         }
                     });
-
                     await Bot.SendTextMessageAsync(
-                        message.Chat.Id,
-                        "Choose",
-                        replyMarkup: inlineKeyboard);
+                        chatId: message.Chat.Id,
+                        text: "Choose",
+                        replyMarkup: inlineKeyboard
+                    );
                     break;
 
                 // send custom keyboard
@@ -72,11 +84,11 @@ namespace Telegram.Bot.Examples.Echo
                         new[] { "1.1", "1.2" },
                         new[] { "2.1", "2.2" },
                     };
-
                     await Bot.SendTextMessageAsync(
-                        message.Chat.Id,
-                        "Choose",
-                        replyMarkup: ReplyKeyboard);
+                        chatId: message.Chat.Id,
+                        text: "Choose",
+                        replyMarkup: ReplyKeyboard
+                    );
                     break;
 
                 // send a photo
@@ -84,15 +96,14 @@ namespace Telegram.Bot.Examples.Echo
                     await Bot.SendChatActionAsync(message.Chat.Id, ChatAction.UploadPhoto);
 
                     const string file = @"Files/tux.png";
-
-                    var fileName = file.Split(Path.DirectorySeparatorChar).Last();
-
                     using (var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
+                        var fileName = file.Split(Path.DirectorySeparatorChar).Last();
                         await Bot.SendPhotoAsync(
-                            message.Chat.Id,
-                            fileStream,
-                            "Nice Picture");
+                            chatId: message.Chat.Id,
+                            photo: new InputOnlineFile(fileStream, fileName),
+                            caption: "Nice Picture"
+                        );
                     }
                     break;
 
@@ -103,25 +114,24 @@ namespace Telegram.Bot.Examples.Echo
                         KeyboardButton.WithRequestLocation("Location"),
                         KeyboardButton.WithRequestContact("Contact"),
                     });
-
                     await Bot.SendTextMessageAsync(
-                        message.Chat.Id,
-                        "Who or Where are you?",
-                        replyMarkup: RequestReplyKeyboard);
+                        chatId: message.Chat.Id,
+                        text: "Who or Where are you?",
+                        replyMarkup: RequestReplyKeyboard
+                    );
                     break;
 
                 default:
-                    const string usage = @"
-Usage:
-/inline   - send inline keyboard
-/keyboard - send custom keyboard
-/photo    - send a photo
-/request  - request location or contact";
-
+                    const string usage = "Usage:\n" +
+                        "/inline   - send inline keyboard\n" +
+                        "/keyboard - send custom keyboard\n" +
+                        "/photo    - send a photo\n" +
+                        "/request  - request location or contact";
                     await Bot.SendTextMessageAsync(
-                        message.Chat.Id,
-                        usage,
-                        replyMarkup: new ReplyKeyboardRemove());
+                        chatId: message.Chat.Id,
+                        text: usage,
+                        replyMarkup: new ReplyKeyboardRemove()
+                    );
                     break;
             }
         }
@@ -131,12 +141,14 @@ Usage:
             var callbackQuery = callbackQueryEventArgs.CallbackQuery;
 
             await Bot.AnswerCallbackQueryAsync(
-                callbackQuery.Id,
-                $"Received {callbackQuery.Data}");
+                callbackQueryId: callbackQuery.Id,
+                text: $"Received {callbackQuery.Data}"
+            );
 
             await Bot.SendTextMessageAsync(
-                callbackQuery.Message.Chat.Id,
-                $"Received {callbackQuery.Data}");
+                chatId: callbackQuery.Message.Chat.Id,
+                text: $"Received {callbackQuery.Data}"
+            );
         }
 
         private static async void BotOnInlineQueryReceived(object sender, InlineQueryEventArgs inlineQueryEventArgs)
@@ -144,35 +156,21 @@ Usage:
             Console.WriteLine($"Received inline query from: {inlineQueryEventArgs.InlineQuery.From.Id}");
 
             InlineQueryResultBase[] results = {
-                new InlineQueryResultLocation(
-                    id: "1",
-                    latitude: 40.7058316f,
-                    longitude: -74.2581888f,
-                    title: "New York")   // displayed result
-                    {
-                        InputMessageContent = new InputLocationMessageContent(
-                            latitude: 40.7058316f,
-                            longitude: -74.2581888f)    // message if result is selected
-                    },
-
-                new InlineQueryResultLocation(
-                    id: "2",
-                    latitude: 13.1449577f,
-                    longitude: 52.507629f,
-                    title: "Berlin") // displayed result
-                    {
-
-                        InputMessageContent = new InputLocationMessageContent(
-                            latitude: 13.1449577f,
-                            longitude: 52.507629f)   // message if result is selected
-                    }
+                // displayed result
+                new InlineQueryResultArticle(
+                    id: "3",
+                    title: "TgBots",
+                    inputMessageContent: new InputTextMessageContent(
+                        "hello"
+                    )
+                )
             };
-
             await Bot.AnswerInlineQueryAsync(
-                inlineQueryEventArgs.InlineQuery.Id,
-                results,
+                inlineQueryId: inlineQueryEventArgs.InlineQuery.Id,
+                results: results,
                 isPersonal: true,
-                cacheTime: 0);
+                cacheTime: 0
+            );
         }
 
         private static void BotOnChosenInlineResultReceived(object sender, ChosenInlineResultEventArgs chosenInlineResultEventArgs)
@@ -184,7 +182,8 @@ Usage:
         {
             Console.WriteLine("Received error: {0} — {1}",
                 receiveErrorEventArgs.ApiRequestException.ErrorCode,
-                receiveErrorEventArgs.ApiRequestException.Message);
+                receiveErrorEventArgs.ApiRequestException.Message
+            );
         }
     }
 }
