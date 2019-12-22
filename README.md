@@ -14,6 +14,10 @@ This repository contains sample applications based on [Telegram.Bot](https://git
 - [BusV is a Telegram chat bot 🤖 that helps you catch your bus 🚍](https://github.com/pouladpld/BusVbot)
 - [Simple Calendar Picker control](https://github.com/karb0f0s/CalendarPicker)
 
+## Requirements
+
+Examples in this repository use .NET Core 2.1 and .NET Core 3.1. You might need to install required version from [here](https://dotnet.microsoft.com/download).
+
 ## Community
 
 Feel free do join our [group chat](https://t.me/tgbots_dotnet)!
