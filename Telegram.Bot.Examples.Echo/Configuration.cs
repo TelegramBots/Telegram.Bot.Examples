@@ -1,4 +1,4 @@
-﻿namespace Telegram.Bot.Examples.Echo
+namespace Telegram.Bot.Examples.Echo
 {
     public static class Configuration
     {

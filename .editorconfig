@@ -25,5 +25,9 @@ indent_size = 2
 indent_size = 2
 
 # Markdown Files
+
+# RCS1090: Call 'ConfigureAwait(false)'.
+dotnet_diagnostic.RCS1090.severity = suggestion
+
 [*.md]
 trim_trailing_whitespace = false
