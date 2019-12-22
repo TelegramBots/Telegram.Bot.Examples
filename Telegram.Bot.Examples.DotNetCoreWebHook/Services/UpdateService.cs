@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -21,33 +21,32 @@ namespace Telegram.Bot.Examples.DotNetCoreWebHook.Services
         public async Task EchoAsync(Update update)
         {
             if (update.Type != UpdateType.Message)
-            {
                 return;
-            }
 
             var message = update.Message;
 
             _logger.LogInformation("Received Message from {0}", message.Chat.Id);
 
-            if (message.Type == MessageType.Text)
+            switch (message.Type)
             {
-                // Echo each Message
-                await _botService.Client.SendTextMessageAsync(message.Chat.Id, message.Text);
-            }
-            else if (message.Type == MessageType.Photo)
-            {
-                // Download Photo
-                var fileId = message.Photo.LastOrDefault()?.FileId;
-                var file = await _botService.Client.GetFileAsync(fileId);
+                case MessageType.Text:
+                    // Echo each Message
+                    await _botService.Client.SendTextMessageAsync(message.Chat.Id, message.Text);
+                    break;
 
-                var filename = file.FileId + "." + file.FilePath.Split('.').Last();
+                case MessageType.Photo:
+                    // Download Photo
+                    var fileId = message.Photo.LastOrDefault()?.FileId;
+                    var file = await _botService.Client.GetFileAsync(fileId);
 
-                using (var saveImageStream = System.IO.File.Open(filename, FileMode.Create))
-                {
-                    await _botService.Client.DownloadFileAsync(file.FilePath, saveImageStream);
-                }
+                    var filename = file.FileId + "." + file.FilePath.Split('.').Last();
+                    using (var saveImageStream = System.IO.File.Open(filename, FileMode.Create))
+                    {
+                        await _botService.Client.DownloadFileAsync(file.FilePath, saveImageStream);
+                    }
 
-                await _botService.Client.SendTextMessageAsync(message.Chat.Id, "Thx for the Pics");
+                    await _botService.Client.SendTextMessageAsync(message.Chat.Id, "Thx for the Pics");
+                    break;
             }
         }
     }
