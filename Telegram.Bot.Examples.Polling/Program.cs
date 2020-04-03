@@ -75,7 +75,7 @@ namespace Telegram.Bot.Examples.Echo
 
         private static async Task BotOnMessageReceived(Message message)
         {
-            Console.WriteLine($"Recevie message type: {message.Type}");
+            Console.WriteLine($"Receive message type: {message.Type}");
             if (message.Type != MessageType.Text)
                 return;
 
