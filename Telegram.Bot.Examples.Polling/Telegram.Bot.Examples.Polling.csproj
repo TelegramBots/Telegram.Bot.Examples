@@ -11,7 +11,7 @@
     <DefineConstants>TRACE;USE_PROXY</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Telegram.Bot" Version="15.5.1" />
+    <PackageReference Include="Telegram.Bot" Version="15.7.1" />
     <PackageReference Include="Telegram.Bot.Extensions.Polling" Version="0.1.3" />
   </ItemGroup>
   <ItemGroup>
