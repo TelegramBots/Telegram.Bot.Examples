@@ -13,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Telegram.Bot" Version="15.7.1" />
-    <PackageReference Include="Telegram.Bot.Extensions.Polling" Version="0.1.3" />
+    <PackageReference Include="Telegram.Bot.Extensions.Polling" Version="0.2.0" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Files\tux.png">
