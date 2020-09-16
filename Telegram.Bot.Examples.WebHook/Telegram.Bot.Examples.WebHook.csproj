@@ -57,7 +57,7 @@
       <Version>5.2.7</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.Hosting">
-      <Version>4.1.0</Version>
+      <Version>4.1.1</Version>
     </PackageReference>
     <PackageReference Include="Telegram.Bot" Version="15.5.1" />
   </ItemGroup>
