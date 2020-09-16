@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29521.150
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.Echo", "Telegram.Bot.Examples.Echo\Telegram.Bot.Examples.Echo.csproj", "{3AFF460B-0963-406C-8A57-29D9323BD206}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.DotNetCoreWebHook", "Telegram.Bot.Examples.DotNetCoreWebHook\Telegram.Bot.Examples.DotNetCoreWebHook.csproj", "{A17D178C-CF08-4071-9288-4BBD17218C09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.WebHook", "Telegram.Bot.Examples.WebHook\Telegram.Bot.Examples.WebHook.csproj", "{A17D178C-CF08-4071-9288-4BBD17218C09}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.Polling", "Telegram.Bot.Examples.Polling\Telegram.Bot.Examples.Polling.csproj", "{55EFEE22-4539-4AB0-98B3-FC2ABEC1EFA8}"
 EndProject
