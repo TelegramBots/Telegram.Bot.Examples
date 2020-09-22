@@ -45,7 +45,7 @@ namespace Telegram.Bot.Examples.Echo
             cts.Cancel();
         }
 
-        public static async Task HandleUpdateAsync(Update update, CancellationToken cancellationToken)
+        public static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
             var handler = update.Type switch
             {
@@ -69,7 +69,7 @@ namespace Telegram.Bot.Examples.Echo
             }
             catch (Exception exception)
             {
-                await HandleErrorAsync(exception, cancellationToken);
+                await HandleErrorAsync(botClient, exception, cancellationToken);
             }
         }
 
@@ -233,7 +233,7 @@ namespace Telegram.Bot.Examples.Echo
             Console.WriteLine($"Unknown update type: {update.Type}");
         }
 
-        public static async Task HandleErrorAsync(Exception exception, CancellationToken cancellationToken)
+        public static async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
             var ErrorMessage = exception switch
             {
