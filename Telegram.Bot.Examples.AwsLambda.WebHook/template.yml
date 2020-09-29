@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: An AWS Lambda application that calls the Lambda API.
+Resources:
+  function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda-bot::LambdaBot.Function::FunctionHandler
+      Runtime: dotnetcore3.1
+      CodeUri: lambda-bot/bin/Release/netcoreapp3.1/lambda-bot.zip
+      Description: Call the AWS Lambda API
+      MemorySize: 256
+      Timeout: 9
+      # Function's execution role
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AWSLambdaReadOnlyAccess
+        - AWSXrayWriteOnlyAccess
+      Tracing: Active
