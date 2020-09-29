@@ -216,4 +216,8 @@ ModelManifest.xml
 .idea/
 *.*.iml
 
-launchSettings.json
+#launchSettings.json
+
+out.json
+bucket-name.txt
+out.yml
