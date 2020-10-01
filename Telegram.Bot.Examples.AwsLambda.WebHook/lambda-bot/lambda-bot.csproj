@@ -11,7 +11,7 @@
     <PackageReference Include="Amazon.Lambda.SQSEvents" Version="1.1.0" />
     <PackageReference Include="Amazon.Lambda.Serialization.Json" Version="1.7.0" />
     <PackageReference Include="AWSSDK.Core" Version="3.3.104.38" />
-    <PackageReference Include="AWSSDK.Lambda" Version="3.3.108.11" />
+    <PackageReference Include="AWSSDK.Lambda" Version="3.5.0.22" />
     <PackageReference Include="AWSXRayRecorder.Core" Version="2.6.2" />
     <PackageReference Include="AWSXRayRecorder.Handlers.AwsSdk" Version="2.7.2" />
     <PackageReference Include="Telegram.Bot" Version="15.7.1" />
