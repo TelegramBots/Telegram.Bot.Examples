@@ -1,9 +1,8 @@
 using System;
-using Amazon.XRay.Recorder.Core;
-
-using Xunit;
 using Amazon.Lambda.TestUtilities;
+using Amazon.XRay.Recorder.Core;
 using Newtonsoft.Json.Linq;
+using Xunit;
 
 namespace LambdaBot.Tests
 {
