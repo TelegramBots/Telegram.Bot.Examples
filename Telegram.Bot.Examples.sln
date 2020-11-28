@@ -22,6 +22,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lambda-bot", "Telegram.Bot.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lambda-bot.Tests", "Telegram.Bot.Examples.AwsLambda.WebHook\lambda-bot.Tests\lambda-bot.Tests.csproj", "{1A6238FD-89F7-468A-989B-CFF665281E41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telegram.Bot.Examples.AzureFunctions.WebHook", "Telegram.Bot.Examples.AzureFunctions.WebHook\Telegram.Bot.Examples.AzureFunctions.WebHook.csproj", "{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,6 +116,22 @@ Global
 		{1A6238FD-89F7-468A-989B-CFF665281E41}.Release|x64.Build.0 = Release|Any CPU
 		{1A6238FD-89F7-468A-989B-CFF665281E41}.Release|x86.ActiveCfg = Release|Any CPU
 		{1A6238FD-89F7-468A-989B-CFF665281E41}.Release|x86.Build.0 = Release|Any CPU
+		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Debug|ARM.Build.0 = Debug|Any CPU
+		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Debug|x64.Build.0 = Debug|Any CPU
+		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Debug|x86.Build.0 = Debug|Any CPU
+		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Release|ARM.ActiveCfg = Release|Any CPU
+		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Release|ARM.Build.0 = Release|Any CPU
+		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Release|x64.ActiveCfg = Release|Any CPU
+		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Release|x64.Build.0 = Release|Any CPU
+		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Release|x86.ActiveCfg = Release|Any CPU
+		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
