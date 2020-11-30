@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Telegram.Bot.Examples.DotNetCoreWebHook
+namespace Telegram.Bot.Examples.WebHook
 {
     public static class Program
     {

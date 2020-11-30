@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
-namespace Telegram.Bot.Examples.DotNetCoreWebHook.Services
+namespace Telegram.Bot.Examples.WebHook.Services
 {
     public class UpdateService : IUpdateService
     {
