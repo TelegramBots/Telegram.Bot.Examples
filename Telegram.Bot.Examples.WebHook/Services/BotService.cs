@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Options;
 using MihaZupan;
 
-namespace Telegram.Bot.Examples.DotNetCoreWebHook.Services
+namespace Telegram.Bot.Examples.WebHook.Services
 {
     public class BotService : IBotService
     {

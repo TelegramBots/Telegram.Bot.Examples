@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Telegram.Bot.Examples.DotNetCoreWebHook.Services;
+using Telegram.Bot.Examples.WebHook.Services;
 
-namespace Telegram.Bot.Examples.DotNetCoreWebHook
+namespace Telegram.Bot.Examples.WebHook
 {
     public class Startup
     {
