@@ -8,33 +8,29 @@ namespace Telegram.Bot.Examples.AzureFunctions.WebHook
 {
     public class UpdateService
     {
-        private readonly TelegramBotClient botClient;
-        private readonly ILogger<UpdateService> logger;
+        private readonly TelegramBotClient _botClient;
+        private readonly ILogger<UpdateService> _logger;
 
         public UpdateService()
         {
             var token = Environment.GetEnvironmentVariable("token", EnvironmentVariableTarget.Process);
+            _ = token ?? throw new ArgumentException("Can not get token. Set token in environment setting");
 
-            if (token == null)
-            {
-                throw new ArgumentException("Can not get token. Set token in environment setting");
-            }
-
-            this.botClient = new TelegramBotClient(token);
+            _botClient = new TelegramBotClient(token);
         }
 
         public async Task EchoAsync(Update update)
         {
-            this.logger?.LogInformation("Invoke telegram update function");
+            _logger?.LogInformation("Invoke telegram update function");
 
-            if (update == null)
+            if (update is null)
                 return;
 
             if (update.Type == UpdateType.Message)
             {
                 var message = update.Message;
-                this.logger?.LogInformation("Received Message from {0}", message.Chat.Id);
-                await this.botClient.SendTextMessageAsync(message.Chat, $"Echo : {message.Text}");
+                _logger?.LogInformation("Received Message from {0}", message.Chat.Id);
+                await _botClient.SendTextMessageAsync(message.Chat, $"Echo : {message.Text}");
             }
 
         }

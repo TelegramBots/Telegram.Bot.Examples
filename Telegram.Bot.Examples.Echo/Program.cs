@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
@@ -18,12 +17,7 @@ namespace Telegram.Bot.Examples.Echo
 
         public static async Task Main()
         {
-#if USE_PROXY
-            var Proxy = new WebProxy(Configuration.Proxy.Host, Configuration.Proxy.Port) { UseDefaultCredentials = true };
-            Bot = new TelegramBotClient(Configuration.BotToken, webProxy: Proxy);
-#else
             Bot = new TelegramBotClient(Configuration.BotToken);
-#endif
 
             var me = await Bot.GetMeAsync();
             Console.Title = me.Username;

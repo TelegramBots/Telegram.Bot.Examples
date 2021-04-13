@@ -32,7 +32,6 @@ namespace Telegram.Bot.Examples.AzureFunctions.WebHook
 
                 await updateService.EchoAsync(update);
             }
-
             catch (Exception e)
             {
                 logger.LogInformation("Exception: " + e.Message);
