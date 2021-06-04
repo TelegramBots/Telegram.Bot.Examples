@@ -5,8 +5,8 @@
     <AWSProjectType>Lambda</AWSProjectType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AWSSDK.Core" Version="3.7.0.11" />
-    <PackageReference Include="AWSSDK.Lambda" Version="3.7.0.10" />
+    <PackageReference Include="AWSSDK.Core" Version="3.7.0.31" />
+    <PackageReference Include="AWSSDK.Lambda" Version="3.7.0.29" />
     <PackageReference Include="Amazon.Lambda.Core" Version="2.0.0" />
     <PackageReference Include="Amazon.Lambda.Serialization.Json" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
