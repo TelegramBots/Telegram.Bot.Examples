@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29521.150
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.Echo", "Telegram.Bot.Examples.Echo\Telegram.Bot.Examples.Echo.csproj", "{3AFF460B-0963-406C-8A57-29D9323BD206}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.WebHook", "Telegram.Bot.Examples.WebHook\Telegram.Bot.Examples.WebHook.csproj", "{A17D178C-CF08-4071-9288-4BBD17218C09}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.Polling", "Telegram.Bot.Examples.Polling\Telegram.Bot.Examples.Polling.csproj", "{55EFEE22-4539-4AB0-98B3-FC2ABEC1EFA8}"
@@ -22,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lambda-bot", "Telegram.Bot.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lambda-bot.Tests", "Telegram.Bot.Examples.AwsLambda.WebHook\lambda-bot.Tests\lambda-bot.Tests.csproj", "{1A6238FD-89F7-468A-989B-CFF665281E41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telegram.Bot.Examples.AzureFunctions.WebHook", "Telegram.Bot.Examples.AzureFunctions.WebHook\Telegram.Bot.Examples.AzureFunctions.WebHook.csproj", "{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.AzureFunctions.WebHook", "Telegram.Bot.Examples.AzureFunctions.WebHook\Telegram.Bot.Examples.AzureFunctions.WebHook.csproj", "{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,22 +34,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3AFF460B-0963-406C-8A57-29D9323BD206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3AFF460B-0963-406C-8A57-29D9323BD206}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3AFF460B-0963-406C-8A57-29D9323BD206}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{3AFF460B-0963-406C-8A57-29D9323BD206}.Debug|ARM.Build.0 = Debug|Any CPU
-		{3AFF460B-0963-406C-8A57-29D9323BD206}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3AFF460B-0963-406C-8A57-29D9323BD206}.Debug|x64.Build.0 = Debug|Any CPU
-		{3AFF460B-0963-406C-8A57-29D9323BD206}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3AFF460B-0963-406C-8A57-29D9323BD206}.Debug|x86.Build.0 = Debug|Any CPU
-		{3AFF460B-0963-406C-8A57-29D9323BD206}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3AFF460B-0963-406C-8A57-29D9323BD206}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3AFF460B-0963-406C-8A57-29D9323BD206}.Release|ARM.ActiveCfg = Release|Any CPU
-		{3AFF460B-0963-406C-8A57-29D9323BD206}.Release|ARM.Build.0 = Release|Any CPU
-		{3AFF460B-0963-406C-8A57-29D9323BD206}.Release|x64.ActiveCfg = Release|Any CPU
-		{3AFF460B-0963-406C-8A57-29D9323BD206}.Release|x64.Build.0 = Release|Any CPU
-		{3AFF460B-0963-406C-8A57-29D9323BD206}.Release|x86.ActiveCfg = Release|Any CPU
-		{3AFF460B-0963-406C-8A57-29D9323BD206}.Release|x86.Build.0 = Release|Any CPU
 		{A17D178C-CF08-4071-9288-4BBD17218C09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A17D178C-CF08-4071-9288-4BBD17218C09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A17D178C-CF08-4071-9288-4BBD17218C09}.Debug|ARM.ActiveCfg = Debug|Any CPU
