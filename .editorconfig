@@ -30,3 +30,4 @@ dotnet_diagnostic.RCS1090.severity = none
 
 [*.md]
 trim_trailing_whitespace = false
+indent_size = 2
