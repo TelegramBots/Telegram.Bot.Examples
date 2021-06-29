@@ -3,15 +3,22 @@
 
 ## About
 
-This example provides an telegram bot, based on the ASP.NET Core framework. Feel free to use it as scaffold for your own bot projects.
+This project is a simple ASP.NET Core application, which provides webhook endpoint for the Telegram Bot.
+
+You can find useful information on setting up webhook for your bot in official docs:
+
+- [Marvin's Marvellous Guide to All Things Webhook](https://core.telegram.org/bots/webhooks)
+- [Getting updates](https://core.telegram.org/bots/api#getting-updates)
+- [setWebhook](https://core.telegram.org/bots/api#setwebhook)
+- [getWebhookInfo](https://core.telegram.org/bots/api#getwebhookinfo)
 
 ## Setup
 
 This is a short description how you can test your bot locally. The description presumes that you already have a bot and it’s token. If not, please create one. You’ll find several explanations on the internet how to do this.
 
-### Replace token
+### Bot configuration
 
-At first you have to set your own token in the **appsettings.json**. For this, replace **{BotToken}** in the **appsettings.json** with the token that belongs to your bot.
+You have to specify your Bot token in **appsettings.json**. Replace **{BotToken}** in **appsettings.json** with actual Bot token. Also you have to specify endpoint, to which Telegram will send new updates with `HostAddress` parameter:
 
 ```json
 "BotConfiguration": {
@@ -20,12 +27,12 @@ At first you have to set your own token in the **appsettings.json**. For this, r
 }
 ```
 
-In **appsettings.Development.json** you can provide the token of a dev bot, if you like to have two separated. If not, you have to remove the **BotToken** section.
+you can specify separate development configuration with **appsettings.Development.json**.
 
-### Ngrok
+## Ngrok
 
 Ngrok gives you the opportunity to access your local machine from a temporary subdomain provided by ngrok. This domain can later send to the telegram API as URL for the webhook.
-Install ngrok from this page [ngrok - download](https://ngrok.com/download) or via homebrew cask:
+Install ngrok from this page: [ngrok - download](https://ngrok.com/download) or via homebrew cask:
 
 ```shell
 brew install --cask ngrok
@@ -41,11 +48,9 @@ Telegram API only supports the ports 443, 80, 88 or 8443. Feel free to change th
 
 ### Set Webhook
 
-From ngrok you get an URL to your local server. It’s important to use the `https` one. You can post this url as form-data (key: url, value: `https://yoursubdomain.ngrok.io/api/update`) to the telegram API.
-`https://api.telegram.org/bot{YourBotToken}/setWebhook`
-Be aware of the **bot** prefix in front of your bot token in the URL.
+From ngrok you get an URL to your local server. It’s important to use the `https` one. You can manually set webhook with  [setWebhook](https://core.telegram.org/bots/api#setwebhook) API call, providing this URL as form-data (key: url, value: `https://yoursubdomain.ngrok.io/api/update`).
 
-### Run bot local
+### Run Bot
 
 Now you can start the Bot in a local instance. Check if the port of the application matches the port on which ngrok is running.
 
