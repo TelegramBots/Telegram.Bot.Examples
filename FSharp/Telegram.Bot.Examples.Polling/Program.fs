@@ -226,7 +226,6 @@ module TelegramBot =
 
         async {
             let! me = botClient.GetMeAsync() |> Async.AwaitTask
-            // Console.Title = me.Username |> ignore
             printfn $"Hello, World! I am user {me.Id} and my name is {me.FirstName}."
             printfn $"Start listening for {me.Username}..."
 
@@ -250,6 +249,6 @@ module TelegramBot =
                                         cts.Token)
         } |> Async.Start
 
-        printfn "Press any key to exit"
+        printfn "Press <Enter> to exit"
         Console.Read() |> ignore
         0
