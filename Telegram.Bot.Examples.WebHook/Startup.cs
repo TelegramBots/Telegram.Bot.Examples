@@ -12,11 +12,11 @@ namespace Telegram.Bot.Examples.WebHook
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            _botConfig = Configuration.GetSection("BotConfiguration").Get<BotConfiguration>();
+            BotConfig = Configuration.GetSection("BotConfiguration").Get<BotConfiguration>();
         }
 
         public IConfiguration Configuration { get; }
-        private BotConfiguration _botConfig { get; }
+        private BotConfiguration BotConfig { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -32,7 +32,7 @@ namespace Telegram.Bot.Examples.WebHook
             //  https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests
             services.AddHttpClient("tgwebhook")
                     .AddTypedClient<ITelegramBotClient>(httpClient
-                        => new TelegramBotClient(_botConfig.BotToken, httpClient));
+                        => new TelegramBotClient(BotConfig.BotToken, httpClient));
 
             // Dummy business-logic service
             services.AddScoped<HandleUpdateService>();
@@ -63,7 +63,7 @@ namespace Telegram.Bot.Examples.WebHook
                 // If you'd like to make sure that the Webhook request comes from Telegram, we recommend
                 // using a secret path in the URL, e.g. https://www.example.com/<token>.
                 // Since nobody else knows your bot's token, you can be pretty sure it's us.
-                var token = _botConfig.BotToken;
+                var token = BotConfig.BotToken;
                 endpoints.MapControllerRoute(name: "tgwebhook",
                                              pattern: $"bot/{token}",
                                              new { controller = "Webhook", action = "Post" });

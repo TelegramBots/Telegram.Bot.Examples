@@ -35,7 +35,7 @@ public class HandleUpdateService
                 // UpdateType.PreCheckoutQuery:
                 // UpdateType.Poll:
                 UpdateType.Message            => BotOnMessageReceived(update.Message),
-                UpdateType.EditedMessage      => BotOnMessageReceived(update.Message),
+                UpdateType.EditedMessage      => BotOnMessageReceived(update.EditedMessage),
                 UpdateType.CallbackQuery      => BotOnCallbackQueryReceived(update.CallbackQuery),
                 UpdateType.InlineQuery        => BotOnInlineQueryReceived(update.InlineQuery),
                 UpdateType.ChosenInlineResult => BotOnChosenInlineResultReceived(update.ChosenInlineResult),

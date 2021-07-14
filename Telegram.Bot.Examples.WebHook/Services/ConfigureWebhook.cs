@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Telegram.Bot.Types.Enums;
 
 namespace Telegram.Bot.Examples.WebHook.Services
 {
@@ -35,7 +36,10 @@ namespace Telegram.Bot.Examples.WebHook.Services
             // Since nobody else knows your bot's token, you can be pretty sure it's us.
             var webhookAddress = @$"{_botConfig.HostAddress}/bot/{_botConfig.BotToken}";
             _logger.LogInformation("Setting webhook: ", webhookAddress);
-            await botClient.SetWebhookAsync(webhookAddress);
+            await botClient.SetWebhookAsync(
+                url: webhookAddress,
+                allowedUpdates: Array.Empty<UpdateType>(),
+                cancellationToken: cancellationToken);
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
@@ -45,7 +49,7 @@ namespace Telegram.Bot.Examples.WebHook.Services
 
             // Remove webhook upon app shutdown
             _logger.LogInformation("Removing webhook");
-            await botClient.DeleteWebhookAsync();
+            await botClient.DeleteWebhookAsync(cancellationToken: cancellationToken);
         }
     }
 }
