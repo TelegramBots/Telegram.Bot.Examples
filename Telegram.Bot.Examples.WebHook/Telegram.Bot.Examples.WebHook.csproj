@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Telegram.Bot" Version="16.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.8" />
   </ItemGroup>
 
   <ItemGroup>
