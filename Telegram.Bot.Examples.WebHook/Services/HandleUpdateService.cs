@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot.Exceptions;
@@ -70,7 +69,6 @@ public class HandleUpdateService
             var sentMessage = await action;
             _logger.LogInformation($"The message was sent with id: {sentMessage.MessageId}");
 
-
             // Send inline keyboard
             // You can process responses in BotOnCallbackQueryReceived handler
             static async Task<Message> SendInlineKeyboard(ITelegramBotClient bot, Message message)
@@ -80,7 +78,7 @@ public class HandleUpdateService
                 // Simulate longer running task
                 await Task.Delay(500);
 
-                InlineKeyboardMarkup inlineKeyboard = new(new[]
+                var inlineKeyboard = new InlineKeyboardMarkup(new[]
                 {
                     // first row
                     new []
@@ -95,6 +93,7 @@ public class HandleUpdateService
                         InlineKeyboardButton.WithCallbackData("2.2", "22"),
                     },
                 });
+
                 return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
                                                       text: "Choose",
                                                       replyMarkup: inlineKeyboard);
@@ -102,14 +101,15 @@ public class HandleUpdateService
 
             static async Task<Message> SendReplyKeyboard(ITelegramBotClient bot, Message message)
             {
-                ReplyKeyboardMarkup replyKeyboardMarkup = new(
+                var replyKeyboardMarkup = new ReplyKeyboardMarkup(
                     new KeyboardButton[][]
                     {
                         new KeyboardButton[] { "1.1", "1.2" },
                         new KeyboardButton[] { "2.1", "2.2" },
-                    },
-                    resizeKeyboard: true
-                );
+                    })
+                    {
+                        ResizeKeyboard = true
+                    };
 
                 return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
                                                       text: "Choose",
@@ -130,6 +130,7 @@ public class HandleUpdateService
                 const string filePath = @"Files/tux.png";
                 using FileStream fileStream = new(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
                 var fileName = filePath.Split(Path.DirectorySeparatorChar).Last();
+
                 return await bot.SendPhotoAsync(chatId: message.Chat.Id,
                                                 photo: new InputOnlineFile(fileStream, fileName),
                                                 caption: "Nice Picture");
@@ -137,11 +138,12 @@ public class HandleUpdateService
 
             static async Task<Message> RequestContactAndLocation(ITelegramBotClient bot, Message message)
             {
-                ReplyKeyboardMarkup RequestReplyKeyboard = new(new[]
+                var RequestReplyKeyboard = new ReplyKeyboardMarkup(new[]
                 {
                     KeyboardButton.WithRequestLocation("Location"),
                     KeyboardButton.WithRequestContact("Contact"),
                 });
+
                 return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
                                                       text: "Who or Where are you?",
                                                       replyMarkup: RequestReplyKeyboard);
@@ -155,6 +157,7 @@ public class HandleUpdateService
                                      "/remove   - remove custom keyboard\n" +
                                      "/photo    - send a photo\n" +
                                      "/request  - request location or contact";
+
                 return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
                                                       text: usage,
                                                       replyMarkup: new ReplyKeyboardRemove());
@@ -164,11 +167,13 @@ public class HandleUpdateService
         // Process Inline Keyboard callback data
         private async Task BotOnCallbackQueryReceived(CallbackQuery callbackQuery)
         {
-            await _botClient.AnswerCallbackQueryAsync(callbackQuery.Id,
-                                                      $"Received {callbackQuery.Data}");
+            await _botClient.AnswerCallbackQueryAsync(
+                callbackQueryId: callbackQuery.Id,
+                text: $"Received {callbackQuery.Data}");
 
-            await _botClient.SendTextMessageAsync(callbackQuery.Message.Chat.Id,
-                                                  $"Received {callbackQuery.Data}");
+            await _botClient.SendTextMessageAsync(
+                chatId: callbackQuery.Message.Chat.Id,
+                text: $"Received {callbackQuery.Data}");
         }
 
         #region Inline Mode
@@ -213,7 +218,7 @@ public class HandleUpdateService
             var ErrorMessage = exception switch
             {
                 ApiRequestException apiRequestException => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
-                _ => exception.ToString()
+                _                                       => exception.ToString()
             };
 
             _logger.LogInformation(ErrorMessage);
