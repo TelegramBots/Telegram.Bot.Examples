@@ -11,6 +11,6 @@
     <PackageReference Include="Amazon.Lambda.Serialization.Json" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Telegram.Bot" Version="16.0.1" />
+    <PackageReference Include="Telegram.Bot" Version="16.0.2" />
   </ItemGroup>
 </Project>

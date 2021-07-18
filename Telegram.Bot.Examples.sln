@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29521.150
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31512.422
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.WebHook", "Telegram.Bot.Examples.WebHook\Telegram.Bot.Examples.WebHook.csproj", "{A17D178C-CF08-4071-9288-4BBD17218C09}"
 EndProject
@@ -21,6 +21,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lambda-bot.Tests", "Telegram.Bot.Examples.AwsLambda.WebHook\lambda-bot.Tests\lambda-bot.Tests.csproj", "{1A6238FD-89F7-468A-989B-CFF665281E41}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.AzureFunctions.WebHook", "Telegram.Bot.Examples.AzureFunctions.WebHook\Telegram.Bot.Examples.AzureFunctions.WebHook.csproj", "{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FSharp.Examples.Polling", "FSharp.Examples.Polling\FSharp.Examples.Polling.fsproj", "{3330367C-0860-4079-8629-F489F452E5B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -114,6 +116,22 @@ Global
 		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Release|x64.Build.0 = Release|Any CPU
 		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Release|x86.ActiveCfg = Release|Any CPU
 		{C7BB4C0A-A0E7-412A-A918-D0935C8250F6}.Release|x86.Build.0 = Release|Any CPU
+		{3330367C-0860-4079-8629-F489F452E5B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3330367C-0860-4079-8629-F489F452E5B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3330367C-0860-4079-8629-F489F452E5B5}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{3330367C-0860-4079-8629-F489F452E5B5}.Debug|ARM.Build.0 = Debug|Any CPU
+		{3330367C-0860-4079-8629-F489F452E5B5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3330367C-0860-4079-8629-F489F452E5B5}.Debug|x64.Build.0 = Debug|Any CPU
+		{3330367C-0860-4079-8629-F489F452E5B5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3330367C-0860-4079-8629-F489F452E5B5}.Debug|x86.Build.0 = Debug|Any CPU
+		{3330367C-0860-4079-8629-F489F452E5B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3330367C-0860-4079-8629-F489F452E5B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3330367C-0860-4079-8629-F489F452E5B5}.Release|ARM.ActiveCfg = Release|Any CPU
+		{3330367C-0860-4079-8629-F489F452E5B5}.Release|ARM.Build.0 = Release|Any CPU
+		{3330367C-0860-4079-8629-F489F452E5B5}.Release|x64.ActiveCfg = Release|Any CPU
+		{3330367C-0860-4079-8629-F489F452E5B5}.Release|x64.Build.0 = Release|Any CPU
+		{3330367C-0860-4079-8629-F489F452E5B5}.Release|x86.ActiveCfg = Release|Any CPU
+		{3330367C-0860-4079-8629-F489F452E5B5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
