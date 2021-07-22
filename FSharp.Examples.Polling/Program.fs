@@ -12,11 +12,11 @@ open System.Threading
 open Telegram.Bot
 open Telegram.Bot.Types
 open Telegram.Bot.Exceptions
-open Telegram.Bot.Extensions.Polling
 open Telegram.Bot.Types.Enums
 open Telegram.Bot.Types.InlineQueryResults
 open Telegram.Bot.Types.InputFiles
 open Telegram.Bot.Types.ReplyMarkups
+open Telegram.Bot.Extensions.Polling
 open System.Threading.Tasks
 
 module Handlers =
@@ -219,14 +219,23 @@ module Handlers =
             | ex -> do! handleErrorAsync botClient ex cts
     }
 
+type FuncConvert =
+    // There is quite some bit of jugglery here, so requires some explanation:
+    // DefaultUpdateHandler() requires two arguments, both of type Func<_,_,_,_>, and both
+    // of which return a Task. Now, in order to be in the F# domain, we would like to
+    // have this Func<> defined as an F# function: and so we need to explicitely construct
+    // Func<>s by passing them to an inner lambda function.
+    // Now, the inner lambda function needs to return a Task, but we want to use F# async.
+    // We therefore use a Async.StartAsTask to start an async computation and get back a Task.
+    // The last ":>" is for upcasting Task<unit> (returned by the async computations) to their
+    // base class Task to avoid and error that says "the expression expects a Task but we have a
+    // Task<unit> here.".
+    // The good thing about doing all this is that handleUpdateAsync and handleErrorAsync are both
+    // in the F# domain - so now can take all advantages of F#!
+    static member inline ToCSharpDelegate (f) =
+        Func<_,_,_,_>(fun a b c -> Async.StartAsTask (f a b c) :> Task)
+
 module TelegramBot =
-    type HandlerType =
-        | Update
-        | Exception
-
-    type UpdateHandler =
-        delegate of ITelegramBotClient * HandlerType * CancellationToken -> Task
-
     [<EntryPoint>]
     let main argv =
         let botClient
@@ -239,22 +248,10 @@ module TelegramBot =
 
             use cts = new CancellationTokenSource();
 
-            // There is quite some bit of jugglery here, so requires some explanation:
-            // DefaultUpdateHandler() requires two arguments, both of type Func<_,_,_,_>, and both
-            // of which return a Task. Now, in order to be in the F# domain, we would like to
-            // have this Func<> defined as an F# function: and so we need to define explicitly
-            // delegate type to UpdateHandler infer.
-            // Now, the inner lambda function needs to return a Task, but we want to use F# async.
-            // We therefore use a Async.StartAsTask to start an async computation and get back a Task.
-            // The last ":>" is for upcasting Task<unit> (returned by the async computations) to their
-            // base class Task to avoid and error that says "the expression expects a Task but we have a
-            // Task<unit> here.". Since F# can already infer the base-type, we simply upcast to "_".
-            // The good thing about doing all this is that handleUpdateAsync and handleErrorAsync are both
-            // in the F# domain - so now can take all advantages of F
             botClient.StartReceiving(DefaultUpdateHandler(
-                                        (fun b u t -> Async.StartAsTask (Handlers.handleUpdateAsync b u t ) :> _),
-                                        (fun b e t -> Async.StartAsTask (Handlers.handleErrorAsync b e t) :> _)),
-                                        cts.Token)
+                                        Handlers.handleUpdateAsync |> FuncConvert.ToCSharpDelegate,
+                                        Handlers.handleErrorAsync |> FuncConvert.ToCSharpDelegate),
+                                    cts.Token)
         } |> Async.RunSynchronously
 
         printfn "Press <Enter> to exit"
