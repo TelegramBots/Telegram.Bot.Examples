@@ -10,17 +10,17 @@ using Telegram.Bot.Types;
 
 namespace Telegram.Bot.Examples.AzureFunctions.WebHook
 {
-    public static class TelegramBotFunction
+    public class TelegramBotFunction
     {
-        private static readonly UpdateService updateService;
+        private readonly UpdateService _updateService;
 
-        static TelegramBotFunction()
+        public TelegramBotFunction(UpdateService updateService)
         {
-            updateService = new UpdateService();
+            _updateService = updateService;
         }
 
         [FunctionName("TelegramBot")]
-        public static async Task<IActionResult> Update(
+        public async Task<IActionResult> Update(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
             HttpRequest request,
             ILogger logger)
@@ -30,7 +30,7 @@ namespace Telegram.Bot.Examples.AzureFunctions.WebHook
                 var body = await request.ReadAsStringAsync();
                 var update = JsonConvert.DeserializeObject<Update>(body);
 
-                await updateService.EchoAsync(update);
+                await _updateService.EchoAsync(update);
             }
             catch (Exception e)
             {

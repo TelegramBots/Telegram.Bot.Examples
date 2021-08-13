@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -8,20 +7,18 @@ namespace Telegram.Bot.Examples.AzureFunctions.WebHook
 {
     public class UpdateService
     {
-        private readonly TelegramBotClient _botClient;
+        private readonly ITelegramBotClient _botClient;
         private readonly ILogger<UpdateService> _logger;
 
-        public UpdateService()
+        public UpdateService(ITelegramBotClient botClient, ILogger<UpdateService> logger)
         {
-            var token = Environment.GetEnvironmentVariable("token", EnvironmentVariableTarget.Process);
-            _ = token ?? throw new ArgumentException("Can not get token. Set token in environment setting");
-
-            _botClient = new TelegramBotClient(token);
+            _botClient = botClient;
+            _logger = logger;
         }
 
         public async Task EchoAsync(Update update)
         {
-            _logger?.LogInformation("Invoke telegram update function");
+            _logger.LogInformation("Invoke telegram update function");
 
             if (update is null)
                 return;
@@ -29,7 +26,7 @@ namespace Telegram.Bot.Examples.AzureFunctions.WebHook
             if (update.Type == UpdateType.Message)
             {
                 var message = update.Message;
-                _logger?.LogInformation("Received Message from {0}", message.Chat.Id);
+                _logger.LogInformation("Received Message from {0}", message.Chat.Id);
                 await _botClient.SendTextMessageAsync(message.Chat, $"Echo : {message.Text}");
             }
 
