@@ -4,7 +4,7 @@
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.20" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.21" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.20" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.13" />
