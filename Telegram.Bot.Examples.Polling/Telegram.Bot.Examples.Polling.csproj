@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <LangVersion>9.0</LangVersion>
+    <TargetFramework>net6.0</TargetFramework>
     <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Telegram.Bot" Version="16.0.2" />
     <PackageReference Include="Telegram.Bot.Extensions.Polling" Version="0.2.0" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <None Update="Files\tux.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
