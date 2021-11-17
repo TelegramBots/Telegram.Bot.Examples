@@ -31,12 +31,12 @@ public class Handlers
             // UpdateType.ShippingQuery:
             // UpdateType.PreCheckoutQuery:
             // UpdateType.Poll:
-            UpdateType.Message => BotOnMessageReceived(botClient, update.Message),
-            UpdateType.EditedMessage => BotOnMessageReceived(botClient, update.EditedMessage),
-            UpdateType.CallbackQuery => BotOnCallbackQueryReceived(botClient, update.CallbackQuery),
-            UpdateType.InlineQuery => BotOnInlineQueryReceived(botClient, update.InlineQuery),
-            UpdateType.ChosenInlineResult => BotOnChosenInlineResultReceived(botClient, update.ChosenInlineResult),
-            _ => UnknownUpdateHandlerAsync(botClient, update)
+            UpdateType.Message            => BotOnMessageReceived(botClient, update.Message!),
+            UpdateType.EditedMessage      => BotOnMessageReceived(botClient, update.EditedMessage!),
+            UpdateType.CallbackQuery      => BotOnCallbackQueryReceived(botClient, update.CallbackQuery!),
+            UpdateType.InlineQuery        => BotOnInlineQueryReceived(botClient, update.InlineQuery!),
+            UpdateType.ChosenInlineResult => BotOnChosenInlineResultReceived(botClient, update.ChosenInlineResult!),
+            _                             => UnknownUpdateHandlerAsync(botClient, update)
         };
 
         try
@@ -55,14 +55,14 @@ public class Handlers
         if (message.Type != MessageType.Text)
             return;
 
-        var action = message.Text.Split(' ').First() switch
+        var action = message.Text!.Split(' ')[0] switch
         {
-            "/inline" => SendInlineKeyboard(botClient, message),
+            "/inline"   => SendInlineKeyboard(botClient, message),
             "/keyboard" => SendReplyKeyboard(botClient, message),
-            "/remove" => RemoveKeyboard(botClient, message),
-            "/photo" => SendFile(botClient, message),
-            "/request" => RequestContactAndLocation(botClient, message),
-            _ => Usage(botClient, message)
+            "/remove"   => RemoveKeyboard(botClient, message),
+            "/photo"    => SendFile(botClient, message),
+            "/request"  => RequestContactAndLocation(botClient, message),
+            _           => Usage(botClient, message)
         };
         Message sentMessage = await action;
         Console.WriteLine($"The message was sent with id: {sentMessage.MessageId}");
@@ -106,9 +106,9 @@ public class Handlers
                         new KeyboardButton[] { "1.1", "1.2" },
                         new KeyboardButton[] { "2.1", "2.2" },
                 })
-            {
-                ResizeKeyboard = true
-            };
+                {
+                    ResizeKeyboard = true
+                };
 
             return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
                                                         text: "Choose",
@@ -180,22 +180,21 @@ public class Handlers
     {
         Console.WriteLine($"Received inline query from: {inlineQuery.From.Id}");
 
-        InlineQueryResultBase[] results = {
-                // displayed result
-                new InlineQueryResultArticle(
-                    id: "3",
-                    title: "TgBots",
-                    inputMessageContent: new InputTextMessageContent(
-                        "hello"
-                    )
+        InlineQueryResult[] results = {
+            // displayed result
+            new InlineQueryResultArticle(
+                id: "3",
+                title: "TgBots",
+                inputMessageContent: new InputTextMessageContent(
+                    "hello"
                 )
-            };
+            )
+        };
 
-        await botClient.AnswerInlineQueryAsync(
-            inlineQueryId: inlineQuery.Id,
-            results: results,
-            isPersonal: true,
-            cacheTime: 0);
+        await botClient.AnswerInlineQueryAsync(inlineQueryId: inlineQuery.Id,
+                                               results: results,
+                                               isPersonal: true,
+                                               cacheTime: 0);
     }
 
     private static Task BotOnChosenInlineResultReceived(ITelegramBotClient botClient, ChosenInlineResult chosenInlineResult)

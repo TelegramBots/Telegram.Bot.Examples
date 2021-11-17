@@ -28,7 +28,7 @@ public class ConfigureWebhook : IHostedService
         // using a secret path in the URL, e.g. https://www.example.com/<token>.
         // Since nobody else knows your bot's token, you can be pretty sure it's us.
         var webhookAddress = @$"{_botConfig.HostAddress}/bot/{_botConfig.BotToken}";
-        _logger.LogInformation("Setting webhook: ", webhookAddress);
+        _logger.LogInformation("Setting webhook: {webhookAddress}", webhookAddress);
         await botClient.SetWebhookAsync(
             url: webhookAddress,
             allowedUpdates: Array.Empty<UpdateType>(),

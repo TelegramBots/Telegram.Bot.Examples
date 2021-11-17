@@ -50,7 +50,6 @@ public class Startup
         app.UseRouting();
         app.UseCors();
 
-
         app.UseEndpoints(endpoints =>
         {
             // Configure custom endpoint per Telegram API recommendations:

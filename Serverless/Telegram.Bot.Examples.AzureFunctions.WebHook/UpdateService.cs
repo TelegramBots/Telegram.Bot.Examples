@@ -29,7 +29,6 @@ namespace Telegram.Bot.Examples.AzureFunctions.WebHook
                 _logger.LogInformation("Received Message from {0}", message.Chat.Id);
                 await _botClient.SendTextMessageAsync(message.Chat, $"Echo : {message.Text}");
             }
-
         }
     }
 }

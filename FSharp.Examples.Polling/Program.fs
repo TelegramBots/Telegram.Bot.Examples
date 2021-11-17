@@ -105,7 +105,8 @@ module Handlers =
 
                     // second row
                     seq { KeyboardButton("1.1"); KeyboardButton("1.2") };
-                })
+                },
+                ResizeKeyboard = true)
 
             do!
                 botClient.SendTextMessageAsync(
@@ -153,7 +154,8 @@ module Handlers =
                 ReplyKeyboardMarkup(seq {
                     KeyboardButton.WithRequestLocation("Location");
                     KeyboardButton.WithRequestContact("Contact");
-                })
+                },
+                ResizeKeyboard = true)
 
             do!
                 botClient.SendTextMessageAsync(
@@ -248,9 +250,9 @@ module TelegramBot =
 
             use cts = new CancellationTokenSource();
 
-            botClient.StartReceiving(DefaultUpdateHandler(
-                                        Handlers.handleUpdateAsync |> FuncConvert.ToCSharpDelegate,
-                                        Handlers.handleErrorAsync |> FuncConvert.ToCSharpDelegate),
+            botClient.StartReceiving(Handlers.handleUpdateAsync |> FuncConvert.ToCSharpDelegate,
+                                    Handlers.handleErrorAsync |> FuncConvert.ToCSharpDelegate,
+                                    ReceiverOptions( AllowedUpdates = [||] ),
                                     cts.Token)
         } |> Async.RunSynchronously
 

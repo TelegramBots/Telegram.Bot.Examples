@@ -28,12 +28,12 @@ public class HandleUpdateService
             // UpdateType.ShippingQuery:
             // UpdateType.PreCheckoutQuery:
             // UpdateType.Poll:
-            UpdateType.Message => BotOnMessageReceived(update.Message),
-            UpdateType.EditedMessage => BotOnMessageReceived(update.EditedMessage),
-            UpdateType.CallbackQuery => BotOnCallbackQueryReceived(update.CallbackQuery),
-            UpdateType.InlineQuery => BotOnInlineQueryReceived(update.InlineQuery),
-            UpdateType.ChosenInlineResult => BotOnChosenInlineResultReceived(update.ChosenInlineResult),
-            _ => UnknownUpdateHandlerAsync(update)
+            UpdateType.Message            => BotOnMessageReceived(update.Message!),
+            UpdateType.EditedMessage      => BotOnMessageReceived(update.EditedMessage!),
+            UpdateType.CallbackQuery      => BotOnCallbackQueryReceived(update.CallbackQuery!),
+            UpdateType.InlineQuery        => BotOnInlineQueryReceived(update.InlineQuery!),
+            UpdateType.ChosenInlineResult => BotOnChosenInlineResultReceived(update.ChosenInlineResult!),
+            _                             => UnknownUpdateHandlerAsync(update)
         };
 
         try
@@ -48,21 +48,21 @@ public class HandleUpdateService
 
     private async Task BotOnMessageReceived(Message message)
     {
-        _logger.LogInformation($"Receive message type: {message.Type}");
+        _logger.LogInformation("Receive message type: {messageType}", message.Type);
         if (message.Type != MessageType.Text)
             return;
 
-        var action = message.Text.Split(' ').First() switch
+        var action = message.Text!.Split(' ')[0] switch
         {
-            "/inline" => SendInlineKeyboard(_botClient, message),
+            "/inline"   => SendInlineKeyboard(_botClient, message),
             "/keyboard" => SendReplyKeyboard(_botClient, message),
-            "/remove" => RemoveKeyboard(_botClient, message),
-            "/photo" => SendFile(_botClient, message),
-            "/request" => RequestContactAndLocation(_botClient, message),
-            _ => Usage(_botClient, message)
+            "/remove"   => RemoveKeyboard(_botClient, message),
+            "/photo"    => SendFile(_botClient, message),
+            "/request"  => RequestContactAndLocation(_botClient, message),
+            _           => Usage(_botClient, message)
         };
         Message sentMessage = await action;
-        _logger.LogInformation($"The message was sent with id: {sentMessage.MessageId}");
+        _logger.LogInformation("The message was sent with id: {sentMessageId}",sentMessage.MessageId);
 
         // Send inline keyboard
         // You can process responses in BotOnCallbackQueryReceived handler
@@ -103,9 +103,9 @@ public class HandleUpdateService
                         new KeyboardButton[] { "1.1", "1.2" },
                         new KeyboardButton[] { "2.1", "2.2" },
                 })
-            {
-                ResizeKeyboard = true
-            };
+                {
+                    ResizeKeyboard = true
+                };
 
             return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
                                                   text: "Choose",
@@ -177,18 +177,18 @@ public class HandleUpdateService
 
     private async Task BotOnInlineQueryReceived(InlineQuery inlineQuery)
     {
-        _logger.LogInformation($"Received inline query from: {inlineQuery.From.Id}");
+        _logger.LogInformation("Received inline query from: {inlineQueryFromId}", inlineQuery.From.Id);
 
-        InlineQueryResultBase[] results = {
-                // displayed result
-                new InlineQueryResultArticle(
-                    id: "3",
-                    title: "TgBots",
-                    inputMessageContent: new InputTextMessageContent(
-                        "hello"
-                    )
+        InlineQueryResult[] results = {
+            // displayed result
+            new InlineQueryResultArticle(
+                id: "3",
+                title: "TgBots",
+                inputMessageContent: new InputTextMessageContent(
+                    "hello"
                 )
-            };
+            )
+        };
 
         await _botClient.AnswerInlineQueryAsync(inlineQueryId: inlineQuery.Id,
                                                 results: results,
@@ -198,7 +198,7 @@ public class HandleUpdateService
 
     private Task BotOnChosenInlineResultReceived(ChosenInlineResult chosenInlineResult)
     {
-        _logger.LogInformation($"Received inline result: {chosenInlineResult.ResultId}");
+        _logger.LogInformation("Received inline result: {chosenInlineResultId}", chosenInlineResult.ResultId);
         return Task.CompletedTask;
     }
 
@@ -206,7 +206,7 @@ public class HandleUpdateService
 
     private Task UnknownUpdateHandlerAsync(Update update)
     {
-        _logger.LogInformation($"Unknown update type: {update.Type}");
+        _logger.LogInformation("Unknown update type: {updateType}", update.Type);
         return Task.CompletedTask;
     }
 
@@ -218,8 +218,7 @@ public class HandleUpdateService
             _ => exception.ToString()
         };
 
-        _logger.LogInformation(ErrorMessage);
+        _logger.LogInformation("HandleError: {ErrorMessage}", ErrorMessage);
         return Task.CompletedTask;
     }
-
 }
