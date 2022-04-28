@@ -1,5 +1,6 @@
 using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace Telegram.Bot.Examples.Polling;
 
@@ -17,11 +18,13 @@ public static class Program
         using var cts = new CancellationTokenSource();
 
         // StartReceiving does not block the caller thread. Receiving is done on the ThreadPool.
-        ReceiverOptions receiverOptions = new() { AllowedUpdates = { } };
-        Bot.StartReceiving(Handlers.HandleUpdateAsync,
-                           Handlers.HandleErrorAsync,
-                           receiverOptions,
-                           cts.Token);
+        Bot.StartReceiving(updateHandler: Handlers.HandleUpdateAsync,
+                           errorHandler: Handlers.HandleErrorAsync,
+                           receiverOptions: new ReceiverOptions()
+                           {
+                               AllowedUpdates = Array.Empty<UpdateType>()
+                           },
+                           cancellationToken: cts.Token);
 
         Console.WriteLine($"Start listening for @{me.Username}");
         Console.ReadLine();
