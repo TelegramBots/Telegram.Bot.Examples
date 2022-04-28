@@ -3,6 +3,7 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
         <WarnOn>3390;$(WarnOn)</WarnOn>
     </PropertyGroup>
 
@@ -16,8 +17,8 @@
 
     <ItemGroup>
         <PackageReference Include="Telegram.Bot" Version="17.0.0" />
-        <PackageReference Include="Telegram.Bot.Extensions.Polling" Version="1.0.0" />
-        <PackageReference Update="FSharp.Core" Version="6.0.1" />
+        <PackageReference Include="Telegram.Bot.Extensions.Polling" Version="1.0.2" />
+        <PackageReference Update="FSharp.Core" Version="6.0.3" />
     </ItemGroup>
 
 </Project>
