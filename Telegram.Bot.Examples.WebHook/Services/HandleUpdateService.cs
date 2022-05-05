@@ -62,7 +62,7 @@ public class HandleUpdateService
             _           => Usage(_botClient, message)
         };
         Message sentMessage = await action;
-        _logger.LogInformation("The message was sent with id: {sentMessageId}",sentMessage.MessageId);
+        _logger.LogInformation("The message was sent with id: {sentMessageId}", sentMessage.MessageId);
 
         // Send inline keyboard
         // You can process responses in BotOnCallbackQueryReceived handler
