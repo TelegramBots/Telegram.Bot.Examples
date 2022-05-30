@@ -169,7 +169,7 @@ public class HandleUpdateService
             text: $"Received {callbackQuery.Data}");
 
         await _botClient.SendTextMessageAsync(
-            chatId: callbackQuery.Message.Chat.Id,
+            chatId: callbackQuery.Message!.Chat.Id,
             text: $"Received {callbackQuery.Data}");
     }
 

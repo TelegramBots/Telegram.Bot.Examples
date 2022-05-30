@@ -172,7 +172,7 @@ public class Handlers
             text: $"Received {callbackQuery.Data}");
 
         await botClient.SendTextMessageAsync(
-            chatId: callbackQuery.Message.Chat.Id,
+            chatId: callbackQuery.Message!.Chat.Id,
             text: $"Received {callbackQuery.Data}");
     }
 
