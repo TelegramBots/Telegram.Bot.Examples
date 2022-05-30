@@ -222,3 +222,6 @@ out.json
 bucket-name.txt
 out.yml
 local.settings.json
+
+.fake
+.ionide
