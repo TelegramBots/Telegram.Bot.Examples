@@ -1,61 +1,55 @@
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+using Amazon.Lambda.Core;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using File = Telegram.Bot.Types.File;
 
-namespace LambdaBot
+namespace LambdaBot;
+
+public class UpdateService
 {
-    public class UpdateService
-    {
-        private readonly TelegramBotClient botClient;
-        private readonly ILogger<UpdateService> logger;
+    private readonly TelegramBotClient botClient;
 
-        public UpdateService()
+    public UpdateService()
+    {
+        // replace with your bot token
+        botClient = new TelegramBotClient("<token>");
+    }
+
+    public async Task EchoAsync(Update update)
+    {
+        if (update is null)
         {
-            // replace with your bot token
-            this.botClient = new TelegramBotClient("<token>");
+            return;
         }
 
-        public async Task EchoAsync(Update update)
+        if (!(update.Message is { } message))
         {
-            if (update == null)
-            {
-                return;
-            }
+            return;
+        }
 
-            if (update.Type != UpdateType.Message)
-            {
-                return;
-            }
+        LambdaLogger.Log("Received Message from " + message.Chat.Id);
 
-            var message = update.Message;
+        switch (message.Type)
+        {
+            case MessageType.Text:
+                // Echo each Message
+                await botClient.SendTextMessageAsync(message.Chat.Id, message.Text!);
+                break;
 
-            this.logger?.LogInformation("Received Message from {0}", message.Chat.Id);
+            case MessageType.Photo:
+                // Download Photo
+                string fileId = message.Photo![^1].FileId;
+                File file = await botClient.GetFileAsync(fileId);
 
-            switch (message.Type)
-            {
-                case MessageType.Text:
-                    // Echo each Message
-                    await this.botClient.SendTextMessageAsync(message.Chat.Id, message.Text);
-                    break;
+                string filename = file.FileId + "." + file.FilePath!.Split('.').Last();
+                await using (FileStream saveImageStream = System.IO.File.Open(filename, FileMode.Create))
+                {
+                    await botClient.DownloadFileAsync(file.FilePath, saveImageStream);
+                }
 
-                case MessageType.Photo:
-                    // Download Photo
-                    var fileId = message.Photo.LastOrDefault()?.FileId;
-                    var file = await this.botClient.GetFileAsync(fileId);
-
-                    var filename = file.FileId + "." + file.FilePath.Split('.').Last();
-                    using (var saveImageStream = System.IO.File.Open(filename, FileMode.Create))
-                    {
-                        await this.botClient.DownloadFileAsync(file.FilePath, saveImageStream);
-                    }
-
-                    await this.botClient.SendTextMessageAsync(message.Chat.Id, "Thx for the Pics");
-                    break;
-            }
+                await botClient.SendTextMessageAsync(message.Chat.Id, "Thx for the Pics");
+                break;
         }
     }
 }
