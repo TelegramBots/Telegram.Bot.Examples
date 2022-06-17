@@ -16,7 +16,7 @@ open Telegram.Bot.Types.Enums
 open Telegram.Bot.Types.InlineQueryResults
 open Telegram.Bot.Types.InputFiles
 open Telegram.Bot.Types.ReplyMarkups
-open Telegram.Bot.Extensions.Polling
+open Telegram.Bot.Polling
 open System.Threading.Tasks
 
 module Handlers =
@@ -250,10 +250,11 @@ module TelegramBot =
 
             use cts = new CancellationTokenSource();
 
-            botClient.StartReceiving(Handlers.handleUpdateAsync |> FuncConvert.ToCSharpDelegate,
-                                    Handlers.handleErrorAsync |> FuncConvert.ToCSharpDelegate,
-                                    ReceiverOptions( AllowedUpdates = [||] ),
-                                    cts.Token)
+            botClient.StartReceiving(
+                Handlers.handleUpdateAsync |> FuncConvert.ToCSharpDelegate,
+                Handlers.handleErrorAsync |> FuncConvert.ToCSharpDelegate,
+                ReceiverOptions( AllowedUpdates = [||] ),
+                cts.Token)
         } |> Async.RunSynchronously
 
         printfn "Press <Enter> to exit"

@@ -9,7 +9,7 @@ namespace Telegram.Bot.Examples.Polling;
 
 public class Handlers
 {
-    public static Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+    public static Task PollingErrorHandler(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
     {
         var ErrorMessage = exception switch
         {
@@ -45,7 +45,7 @@ public class Handlers
         }
         catch (Exception exception)
         {
-            await HandleErrorAsync(botClient, exception, cancellationToken);
+            await PollingErrorHandler(botClient, exception, cancellationToken);
         }
     }
 
