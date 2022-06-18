@@ -30,11 +30,13 @@ public class Function
             Update? updateEvent = request.ToObject<Update>();
             await updateService.EchoAsync(updateEvent);
         }
+#pragma warning disable CA1031
         catch (Exception e)
+#pragma warning restore CA1031
         {
             context.Logger.LogError("exception: " + e.Message);
         }
 
-        return "fine from lambda bot " + DateTimeOffset.UtcNow.ToString();
+        return  FormattableString.Invariant($"fine from lambda bot {DateTimeOffset.UtcNow}");
     }
 }

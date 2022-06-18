@@ -30,7 +30,9 @@ public class TelegramBotFunction
 
             await _updateService.EchoAsync(update);
         }
+        #pragma warning disable CA1031
         catch (Exception e)
+        #pragma warning restore CA1031
         {
             logger.LogInformation("Exception: " + e.Message);
         }

@@ -9,13 +9,13 @@ namespace LambdaBot.Tests
         [Fact]
         public async Task TestFunction()
         {
-            Function function = new Function();
-            TestLambdaContext context = new TestLambdaContext();
-            JObject input = new JObject();
+            Function function = new();
+            TestLambdaContext context = new();
+            JObject input = new();
 
             string functionResult = await function.FunctionHandler(request: input, context: context);
 
-            Assert.StartsWith("fine from lambda bot", functionResult);
+            Assert.StartsWith("fine from lambda bot", functionResult, StringComparison.InvariantCulture);
         }
     }
 }
