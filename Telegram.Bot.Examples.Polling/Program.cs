@@ -3,7 +3,7 @@ using Telegram.Bot.Examples.Polling;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
 
-var bot = new TelegramBotClient(Configuration.BotToken);
+var bot = new TelegramBotClient(BotConfiguration.BotToken);
 
 var me = await bot.GetMeAsync();
 Console.Title = me.Username ?? "My awesome Bot";
@@ -17,8 +17,8 @@ var receiverOptions = new ReceiverOptions()
     ThrowPendingUpdates = true,
 };
 
-bot.StartReceiving(updateHandler: Handlers.HandleUpdateAsync,
-                   pollingErrorHandler: Handlers.PollingErrorHandler,
+bot.StartReceiving(updateHandler: UpdateHandlers.HandleUpdateAsync,
+                   pollingErrorHandler: UpdateHandlers.PollingErrorHandler,
                    receiverOptions: receiverOptions,
                    cancellationToken: cts.Token);
 

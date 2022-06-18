@@ -7,7 +7,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Telegram.Bot.Examples.Polling;
 
-public class Handlers
+public static class UpdateHandlers
 {
     public static Task PollingErrorHandler(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
     {
@@ -43,7 +43,9 @@ public class Handlers
         {
             await handler;
         }
+        #pragma warning disable CA1031
         catch (Exception exception)
+        #pragma warning restore CA1031
         {
             await PollingErrorHandler(botClient, exception, cancellationToken);
         }
@@ -52,10 +54,10 @@ public class Handlers
     private static async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
     {
         Console.WriteLine($"Receive message type: {message.Type}");
-        if (message.Type != MessageType.Text)
+        if (message.Text is not { } messageText)
             return;
 
-        var action = message.Text!.Split(' ')[0] switch
+        var action = messageText.Split(' ')[0] switch
         {
             "/inline"   => SendInlineKeyboard(botClient, message),
             "/keyboard" => SendReplyKeyboard(botClient, message),
@@ -183,7 +185,7 @@ public class Handlers
         InlineQueryResult[] results = {
             // displayed result
             new InlineQueryResultArticle(
-                id: "3",
+                id: "1",
                 title: "TgBots",
                 inputMessageContent: new InputTextMessageContent(
                     "hello"
