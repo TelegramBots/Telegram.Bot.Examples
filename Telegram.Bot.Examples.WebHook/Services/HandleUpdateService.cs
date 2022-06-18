@@ -40,7 +40,9 @@ public class HandleUpdateService
         {
             await handler;
         }
+        #pragma warning disable CA1031
         catch (Exception exception)
+        #pragma warning restore CA1031
         {
             await HandleErrorAsync(exception);
         }
@@ -48,7 +50,7 @@ public class HandleUpdateService
 
     private async Task BotOnMessageReceived(Message message)
     {
-        _logger.LogInformation("Receive message type: {messageType}", message.Type);
+        _logger.LogInformation("Receive message type: {MessageType}", message.Type);
         if (message.Type != MessageType.Text)
             return;
 
@@ -62,7 +64,7 @@ public class HandleUpdateService
             _           => Usage(_botClient, message)
         };
         Message sentMessage = await action;
-        _logger.LogInformation("The message was sent with id: {sentMessageId}", sentMessage.MessageId);
+        _logger.LogInformation("The message was sent with id: {SentMessageId}", sentMessage.MessageId);
 
         // Send inline keyboard
         // You can process responses in BotOnCallbackQueryReceived handler
@@ -177,7 +179,7 @@ public class HandleUpdateService
 
     private async Task BotOnInlineQueryReceived(InlineQuery inlineQuery)
     {
-        _logger.LogInformation("Received inline query from: {inlineQueryFromId}", inlineQuery.From.Id);
+        _logger.LogInformation("Received inline query from: {InlineQueryFromId}", inlineQuery.From.Id);
 
         InlineQueryResult[] results = {
             // displayed result
@@ -198,7 +200,7 @@ public class HandleUpdateService
 
     private Task BotOnChosenInlineResultReceived(ChosenInlineResult chosenInlineResult)
     {
-        _logger.LogInformation("Received inline result: {chosenInlineResultId}", chosenInlineResult.ResultId);
+        _logger.LogInformation("Received inline result: {ChosenInlineResultId}", chosenInlineResult.ResultId);
         return Task.CompletedTask;
     }
 
@@ -206,7 +208,7 @@ public class HandleUpdateService
 
     private Task UnknownUpdateHandlerAsync(Update update)
     {
-        _logger.LogInformation("Unknown update type: {updateType}", update.Type);
+        _logger.LogInformation("Unknown update type: {UpdateType}", update.Type);
         return Task.CompletedTask;
     }
 
