@@ -1,0 +1,11 @@
+<Project>
+
+  <PropertyGroup>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisMode>recommended</AnalysisMode>
+    <AnalysisLevel>latest-all</AnalysisLevel>
+    <NoWarn>CA2007;CA1014</NoWarn>
+    <WarningsAsErrors>true</WarningsAsErrors>
+  </PropertyGroup>
+
+</Project>
