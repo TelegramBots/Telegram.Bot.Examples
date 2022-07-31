@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serverless", "Serverless", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.AzureFunctions.WebHook", "Serverless\Telegram.Bot.Examples.AzureFunctions.WebHook\Telegram.Bot.Examples.AzureFunctions.WebHook.csproj", "{7D6B13B5-B049-43DB-8C89-6F6EF78BC00B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.InlineQueries", "Telegram.Bot.Examples.InlineQueries\Telegram.Bot.Examples.InlineQueries.csproj", "{5AB28E4E-12F5-434A-9B15-91699C544EE4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -135,6 +137,22 @@ Global
 		{7D6B13B5-B049-43DB-8C89-6F6EF78BC00B}.Release|x64.Build.0 = Release|Any CPU
 		{7D6B13B5-B049-43DB-8C89-6F6EF78BC00B}.Release|x86.ActiveCfg = Release|Any CPU
 		{7D6B13B5-B049-43DB-8C89-6F6EF78BC00B}.Release|x86.Build.0 = Release|Any CPU
+		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Debug|ARM.Build.0 = Debug|Any CPU
+		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Debug|x64.Build.0 = Debug|Any CPU
+		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Debug|x86.Build.0 = Debug|Any CPU
+		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Release|ARM.ActiveCfg = Release|Any CPU
+		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Release|ARM.Build.0 = Release|Any CPU
+		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Release|x64.ActiveCfg = Release|Any CPU
+		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Release|x64.Build.0 = Release|Any CPU
+		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Release|x86.ActiveCfg = Release|Any CPU
+		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
