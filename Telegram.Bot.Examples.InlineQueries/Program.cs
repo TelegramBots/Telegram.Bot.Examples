@@ -10,7 +10,7 @@ var token = Environment.GetEnvironmentVariable("TOKEN")!;
 
 // load all articles, sorted alphabetically, in memory (not optimal if you have a huge base of articles)
 var files = Directory.GetFiles("Articles", "*.html");
-Array.Sort(files);
+Array.Sort(files, StringComparer.CurrentCultureIgnoreCase);
 var articleNames = new string[files.Length];
 var articleContents = new string[files.Length];
 for (int i = 0; i < files.Length; i++)
