@@ -1,7 +1,7 @@
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
 
-namespace Telegram.Bot.Examples.Polling;
+namespace Telegram.Bot.Examples.Services;
 
 public class PollingService : BackgroundService
 {
