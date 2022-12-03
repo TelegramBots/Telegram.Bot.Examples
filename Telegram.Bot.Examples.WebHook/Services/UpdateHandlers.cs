@@ -2,7 +2,6 @@ using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
-using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Telegram.Bot.Services;
@@ -18,7 +17,11 @@ public class UpdateHandlers
         _logger = logger;
     }
 
+#pragma warning disable IDE0060 // Remove unused parameter
+#pragma warning disable RCS1163 // Unused parameter.
     public Task HandleErrorAsync(Exception exception, CancellationToken cancellationToken)
+#pragma warning restore RCS1163 // Unused parameter.
+#pragma warning restore IDE0060 // Remove unused parameter
     {
         var ErrorMessage = exception switch
         {
@@ -141,13 +144,13 @@ public class UpdateHandlers
                 ChatAction.UploadPhoto,
                 cancellationToken: cancellationToken);
 
-            const string filePath = @"Files/tux.png";
+            const string filePath = "Files/tux.png";
             await using FileStream fileStream = new(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
             var fileName = filePath.Split(Path.DirectorySeparatorChar).Last();
 
             return await botClient.SendPhotoAsync(
                 chatId: message.Chat.Id,
-                photo: new InputOnlineFile(fileStream, fileName),
+                photo: new InputFile(fileStream, fileName),
                 caption: "Nice Picture",
                 cancellationToken: cancellationToken);
         }
@@ -231,8 +234,8 @@ public class UpdateHandlers
         await _botClient.AnswerInlineQueryAsync(
             inlineQueryId: inlineQuery.Id,
             results: results,
-            isPersonal: true,
             cacheTime: 0,
+            isPersonal: true,
             cancellationToken: cancellationToken);
     }
 
@@ -248,7 +251,11 @@ public class UpdateHandlers
 
     #endregion
 
+#pragma warning disable IDE0060 // Remove unused parameter
+#pragma warning disable RCS1163 // Unused parameter.
     private Task UnknownUpdateHandlerAsync(Update update, CancellationToken cancellationToken)
+#pragma warning restore RCS1163 // Unused parameter.
+#pragma warning restore IDE0060 // Remove unused parameter
     {
         _logger.LogInformation("Unknown update type: {UpdateType}", update.Type);
         return Task.CompletedTask;

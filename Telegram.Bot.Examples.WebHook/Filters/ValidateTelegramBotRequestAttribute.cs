@@ -32,7 +32,7 @@ public class ValidateTelegramBotAttribute : TypeFilterAttribute
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            if (!IsValidRequestAsync(context.HttpContext.Request))
+            if (!IsValidRequest(context.HttpContext.Request))
             {
                 context.Result = new ObjectResult("\"X-Telegram-Bot-Api-Secret-Token\" is invalid")
                 {
@@ -41,7 +41,7 @@ public class ValidateTelegramBotAttribute : TypeFilterAttribute
             }
         }
 
-        private bool IsValidRequestAsync(HttpRequest request)
+        private bool IsValidRequest(HttpRequest request)
         {
             var isSecretTokenProvided = request.Headers.TryGetValue("X-Telegram-Bot-Api-Secret-Token", out var secretTokenHeader);
             if (!isSecretTokenProvided) return false;
