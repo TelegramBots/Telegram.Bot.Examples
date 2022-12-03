@@ -28,6 +28,13 @@ public class Function
         try
         {
             Update? updateEvent = request.ToObject<Update>();
+            if (updateEvent is null)
+            {
+                const string resultMessage = "Unable to deserialize Update.";
+                context.Logger.LogWarning(resultMessage);
+                return resultMessage;
+            }
+
             await updateService.EchoAsync(updateEvent);
         }
 #pragma warning disable CA1031
@@ -37,6 +44,6 @@ public class Function
             context.Logger.LogError("exception: " + e.Message);
         }
 
-        return  FormattableString.Invariant($"fine from lambda bot {DateTimeOffset.UtcNow}");
+        return FormattableString.Invariant($"fine from lambda bot {DateTimeOffset.UtcNow}");
     }
 }

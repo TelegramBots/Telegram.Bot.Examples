@@ -31,8 +31,6 @@ Console.ReadLine();
 // stop the bot
 cts.Cancel();
 
-
-
 Task PollingErrorHandler(ITelegramBotClient bot, Exception ex, CancellationToken ct)
 {
     Console.WriteLine($"Exception while polling for updates: {ex}");
