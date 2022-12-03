@@ -56,7 +56,6 @@ async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, Cancellation
 #pragma warning restore CA1031
 }
 
-
 // for this method to be called, you need to enable "Inline mode" on in BotFather
 async Task BotOnInlineQueryReceived(ITelegramBotClient botClient, InlineQuery inlineQuery)
 {
