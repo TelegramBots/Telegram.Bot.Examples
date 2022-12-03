@@ -27,14 +27,19 @@ public class TelegramBotFunction
         {
             var body = await request.ReadAsStringAsync();
             var update = JsonConvert.DeserializeObject<Update>(body);
+            if (update is null)
+            {
+                logger.LogWarning("Unable to deserialize Update object.");
+                return new OkResult();
+            }
 
             await _updateService.EchoAsync(update);
         }
-        #pragma warning disable CA1031
+#pragma warning disable CA1031
         catch (Exception e)
-        #pragma warning restore CA1031
+#pragma warning restore CA1031
         {
-            logger.LogInformation("Exception: " + e.Message);
+            logger.LogError("Exception: " + e.Message);
         }
 
         return new OkResult();

@@ -12,7 +12,7 @@ public abstract class PollingServiceBase<TReceiverService> : BackgroundService
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger _logger;
 
-    public PollingServiceBase(
+    internal PollingServiceBase(
         IServiceProvider serviceProvider,
         ILogger<PollingServiceBase<TReceiverService>> logger)
     {

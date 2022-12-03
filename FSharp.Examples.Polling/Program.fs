@@ -14,7 +14,6 @@ open Telegram.Bot.Types
 open Telegram.Bot.Exceptions
 open Telegram.Bot.Types.Enums
 open Telegram.Bot.Types.InlineQueryResults
-open Telegram.Bot.Types.InputFiles
 open Telegram.Bot.Types.ReplyMarkups
 open Telegram.Bot.Polling
 open System.Threading.Tasks
@@ -143,7 +142,7 @@ module Handlers =
             do!
                 botClient.SendPhotoAsync(
                     chatId = ChatId(message.Chat.Id),
-                    photo = InputOnlineFile(fileStream, fileName),
+                    photo = InputFile(fileStream, fileName),
                     caption = "Nice Picture")
                 |> Async.AwaitTask
                 |> Async.Ignore
