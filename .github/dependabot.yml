@@ -18,3 +18,6 @@ updates:
     ignore:
       - dependency-name: "Microsoft.*"
         update-types: ["version-update:semver-major"]
+    ignore:
+      - dependency-name: "FSharp.Core"
+        update-types: ["version-update:semver-major"]
