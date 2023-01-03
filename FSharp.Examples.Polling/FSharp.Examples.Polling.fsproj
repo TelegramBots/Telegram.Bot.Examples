@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Telegram.Bot" Version="19.0.0-preview.1" />
+        <PackageReference Include="Telegram.Bot" Version="19.0.0-preview.2" />
         <PackageReference Update="FSharp.Core" Version="6.0.7" />
     </ItemGroup>
 
