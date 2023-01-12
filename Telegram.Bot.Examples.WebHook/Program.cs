@@ -58,4 +58,5 @@ public class BotConfiguration
     public string HostAddress { get; init; } = default!;
     public string Route { get; init; } = default!;
     public string SecretToken { get; init; } = default!;
+    public string WebHookSecretToken { get; init; } = default!;
 }

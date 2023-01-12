@@ -17,18 +17,26 @@ You can find useful information on setting up webhook for your bot in official d
 Please make sure you have .NET 6 or newer installed. You can download .NET runtime from the [official site.](https://dotnet.microsoft.com/download)
 This is a short description how you can test your bot locally. The description presumes that you already have a bot and it’s token. If not, please create one. You’ll find several explanations on the internet how to do this.
 
-### Bot configuration
+### Production bot configuration
+
+Set up bot service endpoints in **appsettings.json**
+
+```json
+"Urls": "https://mydomain.com:443",
+}
+```
 
 You have to specify your Bot token in **appsettings.json**. Replace **{BotToken}** in **appsettings.json** with actual Bot token. Also you have to specify endpoint, to which Telegram will send new updates with `HostAddress` parameter:
-
+HostAddress should be the same as Urls.
 ```json
 "BotConfiguration": {
     "BotToken": "{BotToken}",
     "HostAddress": "https://mydomain.com"
 }
 ```
+Telegram API only supports the ports 443, 80, 88 or 8443. Feel free to change the port in the config of the project.
 
-you can specify separate development configuration with **appsettings.Development.json**.
+
 
 ## Ngrok
 
@@ -39,13 +47,15 @@ Install ngrok from this page: [ngrok - download](https://ngrok.com/download) or 
 brew install --cask ngrok
 ```
 
-and start ngrok on port 8443.
+and start ngrok on port 5000.
 
 ```shell
-ngrok http 8443 
+ngrok http 5000 
 ```
 
-Telegram API only supports the ports 443, 80, 88 or 8443. Feel free to change the port in the config of the project.
+You can specify separate development configuration with **appsettings.Development.json**.
+
+You can set up bot service endpoints for development in **launchSettings.json**
 
 ### Set Webhook
 

@@ -18,12 +18,12 @@ public class ValidateTelegramBotAttribute : TypeFilterAttribute
 
     private class ValidateTelegramBotFilter : IActionFilter
     {
-        private readonly string _secretToken;
+        private readonly string _webHookSecretToken;
 
         public ValidateTelegramBotFilter(IOptions<BotConfiguration> options)
         {
             var botConfiguration = options.Value;
-            _secretToken = botConfiguration.SecretToken;
+            _webHookSecretToken = botConfiguration.WebHookSecretToken;
         }
 
         public void OnActionExecuted(ActionExecutedContext context)
@@ -46,7 +46,7 @@ public class ValidateTelegramBotAttribute : TypeFilterAttribute
             var isSecretTokenProvided = request.Headers.TryGetValue("X-Telegram-Bot-Api-Secret-Token", out var secretTokenHeader);
             if (!isSecretTokenProvided) return false;
 
-            return string.Equals(secretTokenHeader, _secretToken, StringComparison.Ordinal);
+            return string.Equals(secretTokenHeader, _webHookSecretToken, StringComparison.Ordinal);
         }
     }
 }
