@@ -53,6 +53,8 @@ public class UpdateHandler : IUpdateHandler
             "/photo"           => SendFile(_botClient, message, cancellationToken),
             "/request"         => RequestContactAndLocation(_botClient, message, cancellationToken),
             "/inline_mode"     => StartInlineQuery(_botClient, message, cancellationToken),
+            "/add_blog"        => AddBlogCommand(_botClient, message, cancellationToken),
+            "/show_blogs"      => ShowBlogsCommand(_botClient, message, cancellationToken),
             "/throw"           => FailingHandler(_botClient, message, cancellationToken),
             _                  => Usage(_botClient, message, cancellationToken)
         };
@@ -165,7 +167,9 @@ public class UpdateHandler : IUpdateHandler
                                  "/remove      - remove custom keyboard\n" +
                                  "/photo       - send a photo\n" +
                                  "/request     - request location or contact\n" +
-                                 "/inline_mode - send keyboard with Inline Query";
+                                 "/inline_mode - send keyboard with Inline Query\n"+
+                                 "/add_blog - add blog\n" +
+                                 "/show_blogs - show all blogs in database";
 
             return await botClient.SendTextMessageAsync(
                 chatId: message.Chat.Id,
@@ -196,10 +200,41 @@ public class UpdateHandler : IUpdateHandler
 #pragma warning restore RCS1163 // Unused parameter.
     }
 
+    private  async Task<Message> ShowBlogsCommand(ITelegramBotClient telegramBotClient, Message message, CancellationToken cancellationToken)
+    {
+        await using var db = new BloggingContext();
+        var blogUrls = db.Blogs
+            .OrderBy(b => b.BlogId).Select(s => s.Url);
+        var result = String.Join('\n', blogUrls);
+        return await this._botClient.SendTextMessageAsync(
+            chatId: message.Chat.Id,
+            text: $"Database have these blogs{result}");
+    }
+
+    private async Task<Message> AddBlogCommand(ITelegramBotClient telegramBotClient, Message message, CancellationToken cancellationToken)
+    {
+        await using var db = new BloggingContext();
+        db.Add(new Blog { Url = message.Text ?? string.Empty});
+        db.SaveChanges();
+
+        return await this._botClient.SendTextMessageAsync(
+            chatId: message.Chat.Id,
+            text: $"We save data with {message.Text}");
+    }
+
     // Process Inline Keyboard callback data
     private async Task BotOnCallbackQueryReceived(CallbackQuery callbackQuery, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Received inline keyboard callback from: {CallbackQueryId}", callbackQuery.Id);
+        using var db = new BloggingContext();
+
+        db.Add(
+            new Blog
+            {
+                Url = callbackQuery.Data ?? string.Empty
+            });
+        db.SaveChanges();
+
 
         await _botClient.AnswerCallbackQueryAsync(
             callbackQueryId: callbackQuery.Id,

@@ -8,14 +8,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+    <PackageReference Include="SQLite" Version="3.13.0" />
     <PackageReference Include="Telegram.Bot" Version="19.0.0-preview.1" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="Files\tux.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Model1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Model1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
     </None>
   </ItemGroup>
 
