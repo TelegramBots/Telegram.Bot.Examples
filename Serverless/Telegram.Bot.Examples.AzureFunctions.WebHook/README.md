@@ -36,6 +36,9 @@ From ngrok you get an URL to your local server. It’s important to use the `htt
 https://api.telegram.org/botYourBotToken/setWebhook
 Be aware of the **bot** prefix in front of your bot token in the URL.
 
+```
+curl --request POST --url https://api.telegram.org/bot<YOUR_TELEGRAM_TOKEN>/setWebhook --header 'content-type: application/json' --data '{"url": "<YOUR_FUNCTION_URL>"}'
+```
 Now your bot should answer with the text from every message you send to it.
 
 
