@@ -1,30 +1,47 @@
-using System.Net;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System.Net;
+using Telegram.Bot.Types;
 
-namespace Telegram.Bot.Examples.AzureFunctions.IsolatedProcess.WebHook
+namespace Telegram.Bot.Examples.AzureFunctions.IsolatedProcess.WebHook;
+
+public class TelegramBot
 {
-    public class TelegramBot
+    private readonly ILogger<TelegramBot> _logger;
+    private readonly UpdateService _updateService;
+
+    public TelegramBot(ILogger<TelegramBot> logger, UpdateService updateService)
     {
-        private readonly ILogger _logger;
+        _logger = logger;
+        _updateService = updateService;
+    }
 
-        public TelegramBot(ILoggerFactory loggerFactory)
+    [Function("TelegramBot")]
+    public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
+    {
+        _logger.LogInformation("C# HTTP trigger function processed a request.");
+        var response = request.CreateResponse(HttpStatusCode.OK);
+        try
         {
-            _logger = loggerFactory.CreateLogger<TelegramBot>();
+            var body = await request.ReadAsStringAsync() ?? throw new ArgumentNullException(nameof(request));
+            var update = JsonConvert.DeserializeObject<Update>(body);
+            if (update is null)
+            {
+                _logger.LogWarning("Unable to deserialize Update object.");
+                return response;
+            }
+
+            await _updateService.EchoAsync(update);
+        }
+#pragma warning disable CA1031 // Do not catch general exception types
+        catch (Exception e)
+#pragma warning restore CA1031 // Do not catch general exception types
+        {
+            _logger.LogError("Exception: {Message}", e.Message);
         }
 
-        [Function("TelegramBot")]
-        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
-        {
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
-
-            var response = req.CreateResponse(HttpStatusCode.OK);
-            response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
-
-            response.WriteString("Welcome to Azure Functions!");
-
-            return response;
-        }
+        return response;
     }
 }
