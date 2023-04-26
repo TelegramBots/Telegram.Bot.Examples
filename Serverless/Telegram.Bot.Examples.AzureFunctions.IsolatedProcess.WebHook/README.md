@@ -10,17 +10,13 @@
 ## Test bot locally
 
 ### Set a token
-At first, you have to set your own token in the environment variable. For this, replace **<BotToken>** with the token that belongs to your bot.
+At first, you have to set your own token in the environment variable. For this, input the bot token after command:
 
-#### Command prompt
 ```
-set token=<BotToken>
+func settings add TELEGRAM_BOT_TOKEN
 ```
 
-#### PowerShell 
-```
-$Env:token = "<BotToken>"
-```
+it will create `local.settings.json` with encrypted token
 
 ### Ngrok
 Install ngrock from this page [ngrok - download](https://ngrok.com/download).
@@ -44,6 +40,8 @@ Now your bot should answer with the text from every message you send to it.
 
 
 ## Deploy
+
+### Visual Studio
 Some information is taken from the [official documentation](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-your-first-function-visual-studio).
 
 1. In Solution Explorer, right-click the project and select Publish
@@ -52,6 +50,18 @@ Some information is taken from the [official documentation](https://docs.microso
 4. In Function Instance, select Create a new Azure Function and then use the values specified
 5. Select Finish, and on the Publish page, select Publish to deploy the package containing your project files to your new function app in Azure.
 6. Open your function on https://portal.azure.com/
-7. Select tab **Configuration** and **Add new application setting**, where you enter Name: token, Value: <BotToken> and save updates.
+7. Select tab **Configuration** and **Add new application setting**, where you enter Name: token, Value: `<BotToken>` and save updates.
+
+### Azure Functions Core Tools
+Information is taken from the [official documentation](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local)
+
+1. Create function app on https://portal.azure.com/
+2. Copy name from the Function App home page or you can get it from JSON view
+3. Replace `<function-app-name>`
+4. Run command
+    ```
+    func azure functionapp publish <function-app-name> --publish-local-settings
+    ```
+    `--publish-local-settings` will publish your token from `local.settings.json`
 
 <br /> **Don't forget to update yours Webhook**
