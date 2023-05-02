@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.Azure
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.InlineQueries", "Telegram.Bot.Examples.InlineQueries\Telegram.Bot.Examples.InlineQueries.csproj", "{5AB28E4E-12F5-434A-9B15-91699C544EE4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.AzureFunctions.IsolatedProcess.WebHook", "Serverless\Telegram.Bot.Examples.AzureFunctions.IsolatedProcess.WebHook\Telegram.Bot.Examples.AzureFunctions.IsolatedProcess.WebHook.csproj", "{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +155,22 @@ Global
 		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Release|x64.Build.0 = Release|Any CPU
 		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Release|x86.ActiveCfg = Release|Any CPU
 		{5AB28E4E-12F5-434A-9B15-91699C544EE4}.Release|x86.Build.0 = Release|Any CPU
+		{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}.Debug|ARM.Build.0 = Debug|Any CPU
+		{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}.Debug|x64.Build.0 = Debug|Any CPU
+		{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}.Debug|x86.Build.0 = Debug|Any CPU
+		{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}.Release|ARM.ActiveCfg = Release|Any CPU
+		{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}.Release|ARM.Build.0 = Release|Any CPU
+		{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}.Release|x64.ActiveCfg = Release|Any CPU
+		{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}.Release|x64.Build.0 = Release|Any CPU
+		{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}.Release|x86.ActiveCfg = Release|Any CPU
+		{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -162,6 +180,7 @@ Global
 		{95864093-1174-4030-9F9F-A088DFE99462} = {19365BF8-7FA8-43BF-87FB-8CC14F69234C}
 		{1A6238FD-89F7-468A-989B-CFF665281E41} = {19365BF8-7FA8-43BF-87FB-8CC14F69234C}
 		{7D6B13B5-B049-43DB-8C89-6F6EF78BC00B} = {0247900C-74D5-4E9F-BF04-E5EE7D3F31D0}
+		{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A} = {0247900C-74D5-4E9F-BF04-E5EE7D3F31D0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {46479B38-C4E4-4C65-B1DE-B5DC008714FC}
