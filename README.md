@@ -21,7 +21,7 @@ These projects represent older or deprecated technologies you might want to use,
 
 ## Requirements
 
-Examples in this repository use .NET Core 3.1 and .NET 6. You might need to install required version from [here](https://dotnet.microsoft.com/download).
+Examples in this repository use .NET 6. You might need to install required version from [here](https://dotnet.microsoft.com/download).
 
 ## Community
 
