@@ -142,7 +142,7 @@ module Handlers =
             do!
                 botClient.SendPhotoAsync(
                     chatId = ChatId(message.Chat.Id),
-                    photo = InputFile(fileStream, fileName),
+                    photo = InputFileStream(fileStream, fileName),
                     caption = "Nice Picture")
                 |> Async.AwaitTask
                 |> Async.Ignore
