@@ -2,7 +2,7 @@ using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class Extensions
+public static class PollingExtensions
 {
     public static T GetConfiguration<T>(this IServiceProvider serviceProvider)
         where T : class

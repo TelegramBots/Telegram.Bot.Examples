@@ -2,7 +2,7 @@ using Microsoft.Extensions.Options;
 
 #pragma warning disable CA1050 // Declare types in namespaces
 #pragma warning disable RCS1110 // Declare types in namespaces
-public static class Extensions
+public static class WebHookExtensions
 #pragma warning restore RCS1110 // Declare types in namespaces
 #pragma warning restore CA1050 // Declare types in namespaces
 {
@@ -20,7 +20,7 @@ public static class Extensions
         this IEndpointRouteBuilder endpoints,
         string route)
     {
-        var controllerName = typeof(T).Name.Replace("Controller", "");
+        var controllerName = typeof(T).Name.Replace("Controller", "", StringComparison.Ordinal);
         var actionName = typeof(T).GetMethods()[0].Name;
 
         return endpoints.MapControllerRoute(

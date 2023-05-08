@@ -9,7 +9,7 @@ namespace Telegram.Bot.Filters;
 /// Read more: <see href="https://core.telegram.org/bots/api#setwebhook"/> "secret_token"
 /// </summary>
 [AttributeUsage(AttributeTargets.Method)]
-public class ValidateTelegramBotAttribute : TypeFilterAttribute
+public sealed class ValidateTelegramBotAttribute : TypeFilterAttribute
 {
     public ValidateTelegramBotAttribute()
         : base(typeof(ValidateTelegramBotFilter))
