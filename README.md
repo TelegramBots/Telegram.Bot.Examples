@@ -3,7 +3,7 @@
 [![telegram chat](https://img.shields.io/badge/Support_Chat-Telegram-blue.svg?style=flat-square)](https://t.me/joinchat/B35YY0QbLfd034CFnvCtCA)
 [![package](https://img.shields.io/nuget/vpre/Telegram.Bot.svg?label=Telegram.Bot&style=flat-square)](https://www.nuget.org/packages/Telegram.Bot)
 [![documentations](https://img.shields.io/badge/Documentations-Book-orange.svg?style=flat-square)](https://telegrambots.github.io/book/)
-[![master build status](https://img.shields.io/github/workflow/status/TelegramBots/Telegram.Bot.Examples/Build%20Examples/master?style=flat-square)](https://github.com/TelegramBots/Telegram.Bot.Examples/actions/workflows/build_examples.yml)
+[![master build status](https://img.shields.io/github/actions/workflow/status/TelegramBots/Telegram.Bot.Examples/build_examples.yml?style=flat-square)](https://github.com/TelegramBots/Telegram.Bot.Examples/actions/workflows/build_examples.yml)
 
 ## About
 
