@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.16.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.13" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.10.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.11.0" />
     <PackageReference Include="Telegram.Bot" Version="19.0.0" />
   </ItemGroup>
   <ItemGroup>
