@@ -12,6 +12,10 @@ This repository contains sample applications based on [Telegram.Bot](https://git
 - [Simple console application](https://github.com/TelegramBots/Telegram.Bot.Examples/tree/master/Telegram.Bot.Examples.Polling). Demonstrates use of [Telegram.Bot.Extensions.Polling](https://github.com/TelegramBots/Telegram.Bot.Extensions.Polling).
 - [ASP.NET Core Web Hook application](https://github.com/TelegramBots/Telegram.Bot.Examples/tree/master/Telegram.Bot.Examples.WebHook).
 
+### Comunity projects
+
+- [GreenCaptchaBot](https://github.com/ImoutoChan/GreenCaptchaBot) a spam-protection bot. This is a bot that will ask the users coming to a Telegram chat to press a random numbered button.
+
 ### Legacy projects
 
 These projects represent older or deprecated technologies you might want to use, though we do not provide any support for those projects:
