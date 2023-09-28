@@ -2,7 +2,7 @@
   "profiles": {
     "Telegram_Bot_Examples_AzureFunctions_IsolatedProcess_WebHook": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7017",
+      "commandLineArgs": "--port 7071",
       "launchBrowser": false
     }
   }
