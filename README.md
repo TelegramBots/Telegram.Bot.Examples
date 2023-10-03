@@ -15,6 +15,7 @@ This repository contains sample applications based on [Telegram.Bot](https://git
 ### Comunity projects
 
 - [GreenCaptchaBot](https://github.com/ImoutoChan/GreenCaptchaBot) a spam-protection bot. This is a bot that will ask the users coming to a Telegram chat to press a random numbered button.
+- [vahter-bot](https://github.com/fsharplang-ru/vahter-bot) the bot that bans.
 
 ### Legacy projects
 
