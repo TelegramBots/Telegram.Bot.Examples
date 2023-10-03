@@ -1,23 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <WarnOn>3390;$(WarnOn)</WarnOn>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <None Include="Files\tux.png">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <Compile Include="Configuration.fs" />
-        <Compile Include="Program.fs" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Telegram.Bot" Version="19.0.0" />
-        <PackageReference Update="FSharp.Core" Version="6.0.7" />
-    </ItemGroup>
-
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Util.fs" />
+    <Compile Include="Services\Internal\UpdateHandlerFuncs.fs" />
+    <Compile Include="Services\Internal\ReceiverFuncs.fs" />
+    <Compile Include="Services\UpdateHandler.fs" />
+    <Compile Include="Services\ReceiverService.fs" />
+    <Compile Include="Services\PollingService.fs" />
+    <Compile Include="Extensions.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+    <PackageReference Include="Telegram.Bot" Version="19.0.0" />
+  </ItemGroup>
 </Project>
