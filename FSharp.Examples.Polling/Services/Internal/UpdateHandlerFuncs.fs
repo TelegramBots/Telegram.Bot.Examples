@@ -12,6 +12,7 @@ namespace FSharp.Examples.Polling.Services.Internal
 open System
 open System.IO
 open System.Threading
+open System.Threading.Tasks
 
 open Microsoft.Extensions.Logging
 
@@ -25,6 +26,7 @@ open Telegram.Bot.Types.ReplyMarkups
 open FSharp.Examples.Polling.Util
 
 module UpdateHandlerFuncs =
+
   let handlePollingErrorAsync _ (logger: ILogger) _ (err:Exception) = task {
     let errormsg =
       match err with
@@ -34,88 +36,73 @@ module UpdateHandlerFuncs =
     logInfo logger $"{errormsg}"
   }
 
-  let botOnCallbackQueryReceived (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (query:CallbackQuery) = async {
-    do!
-      botClient.AnswerCallbackQueryAsync(query.Id, $"Received {query.Data}")
-      |> Async.AwaitTask
+  let botOnCallbackQueryReceived (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (query:CallbackQuery) =
+    botClient.AnswerCallbackQueryAsync(query.Id, $"Received {query.Data}") |> Async.AwaitTask |> ignore
 
-    do!
-      botClient.SendTextMessageAsync(
+    botClient.SendTextMessageAsync(
         chatId = query.Message.Chat.Id,
         text = $"Received {query.Data}",
-        cancellationToken = cts)
-      |> Async.AwaitTask
-      |> Async.Ignore
-  }
+        cancellationToken = cts) |> Async.AwaitTask |> ignore
 
-  let botOnInlineQueryReceived (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (inlinequery:InlineQuery) = async {
+
+  let botOnInlineQueryReceived (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (inlinequery:InlineQuery) =
     logInfo logger $"Received inline query from: {inlinequery.From.Id}"
 
-    do!
-      // displayed result
-      let results = seq {
-          InlineQueryResultArticle(
-            id = "3",
-            title = "TgBots",
-            inputMessageContent = InputTextMessageContent("hello"))
-        }
+    // displayed result
+    let results = seq {
+        InlineQueryResultArticle(
+          id = "3",
+          title = "TgBots",
+          inputMessageContent = InputTextMessageContent("hello"))
+      }
 
-      botClient.AnswerInlineQueryAsync(inlinequery.Id,
-                                        results |> Seq.cast,
-                                        isPersonal = true,
-                                        cacheTime = 0,
-                                        cancellationToken = cts)
-      |> Async.AwaitTask
-      |> Async.Ignore
-  }
+    botClient.AnswerInlineQueryAsync(inlinequery.Id,
+                                      results |> Seq.cast,
+                                      isPersonal = true,
+                                      cacheTime = 0,
+                                      cancellationToken = cts)
+    |> Async.AwaitTask |> ignore
 
-  let botOnChosenInlineResultReceived (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (chosenInlineResult:ChosenInlineResult) = async {
+  let botOnChosenInlineResultReceived (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (chosenInlineResult:ChosenInlineResult) =
     logInfo logger $"Received inline result: {chosenInlineResult.ResultId}"
-  }
 
   let botOnMessageReceived (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (message:Message) =
     logInfo logger $"Receive message type: {message.Type}"
 
-    let sendInlineKeyboard = async {
-      do!
-        botClient.SendChatActionAsync(
-          chatId = message.Chat.Id,
-          chatAction = ChatAction.Typing,
-          cancellationToken = cts)
-        |> Async.AwaitTask
-        |> Async.Ignore
+    let sendInlineKeyboard =
+      botClient.SendChatActionAsync(
+        chatId = message.Chat.Id,
+        chatAction = ChatAction.Typing,
+        cancellationToken = cts)
+      |> Async.AwaitTask |> ignore
 
       // Simulate a long running task
-      async { do! Async.Sleep 500  } |> ignore
+      delay 500 cts
 
       let inlineKeyboard = seq {
         // first row
         seq {
           InlineKeyboardButton.WithCallbackData("1.1", "11");
           InlineKeyboardButton.WithCallbackData("1.2", "12");
-        };
+        }
 
         // second row
         seq {
           InlineKeyboardButton.WithCallbackData("2.1", "21");
           InlineKeyboardButton.WithCallbackData("2.2", "22");
-        };
+        }
       }
 
-      do!
-        botClient.SendTextMessageAsync(
-          chatId = message.Chat.Id,
-          text = "Choose",
-          replyMarkup = InlineKeyboardMarkup(inlineKeyboard),
-          cancellationToken = cts)
-        |> Async.AwaitTask
-        |> Async.Ignore
-    }
+      botClient.SendTextMessageAsync(
+        chatId = message.Chat.Id,
+        text = "Choose",
+        replyMarkup = InlineKeyboardMarkup(inlineKeyboard),
+        cancellationToken = cts)
+      |> Async.AwaitTask |> ignore
 
-    let sendReplyKeyboard = async {
+    let sendReplyKeyboard =
       let replyKeyboardMarkup =
         ReplyKeyboardMarkup( seq {
-
           // first row
           seq { KeyboardButton("1.1"); KeyboardButton("1.2") };
 
@@ -124,35 +111,27 @@ module UpdateHandlerFuncs =
         },
         ResizeKeyboard = true)
 
-      do!
-        botClient.SendTextMessageAsync(
+      botClient.SendTextMessageAsync(
           chatId = message.Chat.Id,
           text = "Choose",
           replyMarkup = replyKeyboardMarkup,
           cancellationToken = cts)
-        |> Async.AwaitTask
-        |> Async.Ignore
-    }
+        |> Async.AwaitTask |> ignore
 
-    let removeKeyboard = async {
-      do!
-        botClient.SendTextMessageAsync(
-          chatId = message.Chat.Id,
-          text = "Removing keyboard",
-          replyMarkup = ReplyKeyboardRemove(),
-          cancellationToken = cts)
-        |> Async.AwaitTask
-        |> Async.Ignore
-    }
+    let removeKeyboard =
+      botClient.SendTextMessageAsync(
+        chatId = message.Chat.Id,
+        text = "Removing keyboard",
+        replyMarkup = ReplyKeyboardRemove(),
+        cancellationToken = cts)
+      |> Async.AwaitTask |> ignore
 
-    let sendFile = async {
-      do!
-        botClient.SendChatActionAsync(
-          message.Chat.Id,
-          ChatAction.UploadPhoto,
-          cancellationToken = cts)
-        |> Async.AwaitTask
-        |> Async.Ignore
+    let sendFile =
+      botClient.SendChatActionAsync(
+        message.Chat.Id,
+        ChatAction.UploadPhoto,
+        cancellationToken = cts)
+      |> Async.AwaitTask |> ignore
 
       let filePath = @"Files/tux.png"
       use fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read)
@@ -161,17 +140,14 @@ module UpdateHandlerFuncs =
         filePath.Split(Path.DirectorySeparatorChar)
         |> Array.last
 
-      do!
-        botClient.SendPhotoAsync(
-          chatId = message.Chat.Id,
-          photo = InputFileStream(fileStream, fileName),
-          caption = "Nice Picture",
-          cancellationToken = cts)
-        |> Async.AwaitTask
-        |> Async.Ignore
-    }
+      botClient.SendPhotoAsync(
+        chatId = message.Chat.Id,
+        photo = InputFileStream(fileStream, fileName),
+        caption = "Nice Picture",
+        cancellationToken = cts)
+      |> Async.AwaitTask |> ignore
 
-    let requestContactAndLocation = async {
+    let requestContactAndLocation =
       let requestReplyKeyboard =
         ReplyKeyboardMarkup(seq {
           KeyboardButton.WithRequestLocation("Location");
@@ -179,34 +155,27 @@ module UpdateHandlerFuncs =
         },
         ResizeKeyboard = true)
 
-      do!
-        botClient.SendTextMessageAsync(
-          chatId = message.Chat.Id,
-          text = "Who or Where are you?",
-          replyMarkup = requestReplyKeyboard,
-          cancellationToken = cts)
-        |> Async.AwaitTask
-        |> Async.Ignore
-    }
+      botClient.SendTextMessageAsync(
+        chatId = message.Chat.Id,
+        text = "Who or Where are you?",
+        replyMarkup = requestReplyKeyboard,
+        cancellationToken = cts)
+      |> Async.AwaitTask |> ignore
 
-    let startInlineQuery = async {
+    let startInlineQuery =
       let inlineKeyboard =
         InlineKeyboardMarkup (InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Inline Mode"))
 
-      do!
-        botClient.SendTextMessageAsync(
-          chatId = message.Chat.Id,
-          text = "Press the button to start Inline Query",
-          replyMarkup = inlineKeyboard,
-          cancellationToken = cts)
-        |> Async.AwaitTask
-        |> Async.Ignore
-    }
+      botClient.SendTextMessageAsync(
+        chatId = message.Chat.Id,
+        text = "Press the button to start Inline Query",
+        replyMarkup = inlineKeyboard,
+        cancellationToken = cts)
+      |> Async.AwaitTask |> ignore
 
-    let failingHandler =
-      raise <| IndexOutOfRangeException()
+    let failingHandler = raise <| IndexOutOfRangeException()
 
-    let usage = async {
+    let usage =
       let usage =
         "Usage:\n" +
         "/inline_keyboard - send inline keyboard\n" +
@@ -217,39 +186,32 @@ module UpdateHandlerFuncs =
         "/inline_mode - send keyboard with inline query" +
         "/throw - Simulate a failed bot message handler"
 
-      do!
-        botClient.SendTextMessageAsync(
-          chatId = message.Chat.Id,
-          text = usage,
-          replyMarkup = ReplyKeyboardRemove(),
-          cancellationToken = cts)
-        |> Async.AwaitTask
-        |> Async.Ignore
-    }
+      botClient.SendTextMessageAsync(
+        chatId = message.Chat.Id,
+        text = usage,
+        replyMarkup = ReplyKeyboardRemove(),
+        cancellationToken = cts)
+      |> Async.AwaitTask |> ignore
 
-    async {
-      if message.Type <> MessageType.Text then
-        ()
-      else
-        let fn =
-          // We use tryHead here just in case we get an empty
-          // response from the user
-          match message.Text.Split(' ') |> Array.tryHead with
-          | Some "/inline_keyboard"   -> sendInlineKeyboard
-          | Some "/keyboard"          -> sendReplyKeyboard
-          | Some "/remove"            -> removeKeyboard
-          | Some "/photo"             -> sendFile
-          | Some "/request"           -> requestContactAndLocation
-          | Some "/inline_mode"       -> startInlineQuery
-          | Some "/throw"             -> failingHandler
-          | _                         -> usage
+    if message.Type <> MessageType.Text then
+      ()
+    else
+      let fn =
+        // We use tryHead here just in case we get an empty
+        // response from the user
+        match message.Text.Split(' ') |> Array.tryHead with
+        | Some "/inline_keyboard"   -> sendInlineKeyboard
+        | Some "/keyboard"          -> sendReplyKeyboard
+        | Some "/remove"            -> removeKeyboard
+        | Some "/photo"             -> sendFile
+        | Some "/request"           -> requestContactAndLocation
+        | Some "/inline_mode"       -> startInlineQuery
+        | Some "/throw"             -> failingHandler
+        | _                         -> usage
+      fn
 
-        do! fn
-    }
-
-  let unknownUpdateHandlerAsync (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (update:Update) = async {
+  let unknownUpdateHandlerAsync (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (update:Update) =
     logInfo logger $"Unknown update type: {update.Type}"
-  }
 
   let handleUpdateAsync botClient logger cts (update:Update) = task {
     let handleUpdate f  = f botClient logger cts
@@ -263,7 +225,8 @@ module UpdateHandlerFuncs =
         | UpdateType.InlineQuery        -> handleUpdate botOnInlineQueryReceived update.InlineQuery
         | UpdateType.ChosenInlineResult -> handleUpdate botOnChosenInlineResultReceived update.ChosenInlineResult
         | _                             -> handleUpdate unknownUpdateHandlerAsync update
-      return fn |> Async.Start
+
+      fn
     with
       | ex -> do! handleUpdate handlePollingErrorAsync ex
   }

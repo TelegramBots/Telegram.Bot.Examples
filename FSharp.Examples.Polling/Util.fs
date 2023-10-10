@@ -6,6 +6,8 @@
 
 namespace FSharp.Examples.Polling
 
+open System.Threading
+open System.Threading.Tasks
 open Microsoft.Extensions.Logging
 
 module Util =
@@ -14,3 +16,6 @@ module Util =
 
   // Log information using the passed-in logger
   let logInfo (logger: ILogger) (msg: string) = logger.LogInformation msg
+
+  let delay (t: int) (cts: CancellationToken)=
+    Task.Delay(t, cts) |> Async.AwaitTask |> ignore

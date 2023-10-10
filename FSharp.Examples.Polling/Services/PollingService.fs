@@ -15,26 +15,35 @@ namespace FSharp.Examples.Polling.Services
 
 open System
 open System.Threading
+open System.Threading.Tasks
+
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.Hosting
 
+open FSharp.Examples.Polling.Services.Internal
 open FSharp.Examples.Polling.Util
 
-type PollingService(sp: IServiceProvider, logger: ILogger<PollingService>) =
+type PollingService<'T when 'T:> IReceiverService>(sp: IServiceProvider, logger: ILogger<PollingService<'T>>) =
   inherit BackgroundService()
+
+  member __.doWork (cts: CancellationToken) =
+    let getReceiverService _ =
+      use scope = sp.CreateScope()
+      let service: 'T = scope.ServiceProvider.GetRequiredService<'T>()
+      service
+
+    let cancellationNotRequested _ = (not cts.IsCancellationRequested)
+
+    try
+      Seq.initInfinite getReceiverService
+      |> Seq.takeWhile cancellationNotRequested
+      |> Seq.iter (fun r -> (r.ReceiveAsync cts |> Async.AwaitTask |> ignore))
+    with
+    | e ->
+        logger.LogError($"Polling failed with exception: {e.ToString}: {e.Message}");
+
   override __.ExecuteAsync(cts: CancellationToken) = task {
     logInfo logger "Starting polling service"
-    let receive _ =
-      use scope = sp.CreateScope()
-      let receiver = scope.ServiceProvider.GetRequiredService<ReceiverService<UpdateHandler>>()
-      receiver.ReceiveAsync cts
-
-    let isCancellationRequested _ = cts.IsCancellationRequested
-
-    Seq.initInfinite receive
-    |> Seq.takeWhile isCancellationRequested
-    |> ignore
-
-    return 0
+    __.doWork cts
   }

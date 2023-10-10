@@ -13,33 +13,32 @@ open Telegram.Bot
 
 open FSharp.Examples.Polling.Services
 
-type BotConfiguration = {
-  BotToken: string
-}
+type BotConfiguration() =
+  member val BotToken: string
 
 module Program =
   let createHostBuilder args =
     Host.CreateDefaultBuilder(args)
         .ConfigureServices(fun context services ->
 
-      context.Configuration.GetSection(nameof(BotConfiguration)) |> ignore
+      let cfg = context.Configuration.GetSection(nameof(BotConfiguration))
+      let token = cfg.["BotToken"]
 
       // Register named HttpClient to benefits from IHttpClientFactory
       // and consume it with ITelegramBotClient typed client.
       // More read:
       //  https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-5.0#typed-clients
       //  https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests
-      services.AddHttpClient("telegram_bot_client")
-        .AddTypedClient<ITelegramBotClient>(
+      services.AddHttpClient("telegram_bot_client").AddTypedClient<ITelegramBotClient>(
           fun httpClient sp ->
-            let botConfig = sp.GetConfiguration<BotConfiguration>()
-            let options = TelegramBotClientOptions(botConfig.BotToken)
+//            let botConfig = sp.GetConfiguration<BotConfiguration>()
+            let options = TelegramBotClientOptions(token)
             TelegramBotClient(options, httpClient) :> ITelegramBotClient
         ) |> ignore
 
       services.AddScoped<UpdateHandler>() |> ignore
       services.AddScoped<ReceiverService<UpdateHandler>>() |> ignore
-      services.AddHostedService<PollingService>() |> ignore)
+      services.AddHostedService<PollingService<ReceiverService<UpdateHandler>>>() |> ignore)
 
   [<EntryPoint>]
   let main args =

@@ -4,8 +4,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Util.fs" />
+    <Compile Include="Services\Internal\IReceiverService.fs" />
     <Compile Include="Services\Internal\UpdateHandlerFuncs.fs" />
-    <Compile Include="Services\Internal\ReceiverFuncs.fs" />
     <Compile Include="Services\UpdateHandler.fs" />
     <Compile Include="Services\ReceiverService.fs" />
     <Compile Include="Services\PollingService.fs" />
