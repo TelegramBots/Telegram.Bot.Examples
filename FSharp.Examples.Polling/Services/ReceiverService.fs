@@ -22,8 +22,11 @@ open FSharp.Examples.Polling.Util
 type ReceiverService<'T when 'T :> IUpdateHandler>(botClient: ITelegramBotClient, updateHandler: UpdateHandler, logger: ILogger<'T>) =
   interface IReceiverService with
     member __.ReceiveAsync(cts: CancellationToken) = task {
+
+      logInfo logger "ReceiveAsync called"
+
       let options = ReceiverOptions(
-        AllowedUpdates = Array.empty<UpdateType>,
+        AllowedUpdates = [||],
         ThrowPendingUpdates = true
        )
 
@@ -33,18 +36,10 @@ type ReceiverService<'T when 'T :> IUpdateHandler>(botClient: ITelegramBotClient
         | null -> "My Awesome Bot"
         | v -> v
 
-      logger.LogInformation $"Start receiving updates for {username}"
+      logInfo logger $"Start receiving updates for {username}"
 
       botClient.ReceiveAsync(
         updateHandler = updateHandler,
         receiverOptions = options,
-        cancellationToken = cts
-      ) |> Async.AwaitTask |> ignore
-
-      // Delay here before the next call is done to Receive
-      delay 500 cts
+        cancellationToken = cts) |> Async.AwaitTask |> ignore
   }
-
-
-
-    //ReceiverFuncs.receiveAsync botClient logger cts updateHandler

@@ -27,7 +27,7 @@ open FSharp.Examples.Polling.Util
 type PollingService<'T when 'T:> IReceiverService>(sp: IServiceProvider, logger: ILogger<PollingService<'T>>) =
   inherit BackgroundService()
 
-  member __.doWork (cts: CancellationToken) =
+  member __.doWork (cts: CancellationToken) = async {
     let getReceiverService _ =
       use scope = sp.CreateScope()
       let service: 'T = scope.ServiceProvider.GetRequiredService<'T>()
@@ -38,12 +38,12 @@ type PollingService<'T when 'T:> IReceiverService>(sp: IServiceProvider, logger:
     try
       Seq.initInfinite getReceiverService
       |> Seq.takeWhile cancellationNotRequested
-      |> Seq.iter (fun r -> (r.ReceiveAsync cts |> Async.AwaitTask |> ignore))
+      |> Seq.fold
     with
     | e ->
         logger.LogError($"Polling failed with exception: {e.ToString}: {e.Message}");
+  }
 
-  override __.ExecuteAsync(cts: CancellationToken) = task {
+  override __.ExecuteAsync(cts: CancellationToken) =
     logInfo logger "Starting polling service"
     __.doWork cts
-  }

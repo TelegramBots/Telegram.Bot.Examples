@@ -27,15 +27,6 @@ open FSharp.Examples.Polling.Util
 
 module UpdateHandlerFuncs =
 
-  let handlePollingErrorAsync _ (logger: ILogger) _ (err:Exception) = task {
-    let errormsg =
-      match err with
-      | :? ApiRequestException as apiex -> $"Telegram API Error:\n[{apiex.ErrorCode}]\n{apiex.Message}"
-      | _                                                     -> err.ToString()
-
-    logInfo logger $"{errormsg}"
-  }
-
   let botOnCallbackQueryReceived (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (query:CallbackQuery) =
     botClient.AnswerCallbackQueryAsync(query.Id, $"Received {query.Data}") |> Async.AwaitTask |> ignore
 
@@ -213,7 +204,16 @@ module UpdateHandlerFuncs =
   let unknownUpdateHandlerAsync (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (update:Update) =
     logInfo logger $"Unknown update type: {update.Type}"
 
-  let handleUpdateAsync botClient logger cts (update:Update) = task {
+  let handlePollingErrorAsync _ (logger: ILogger) _ (err:Exception) = async {
+    let errormsg =
+      match err with
+      | :? ApiRequestException as apiex -> $"Telegram API Error:\n[{apiex.ErrorCode}]\n{apiex.Message}"
+      | _                                                     -> err.ToString()
+
+    logInfo logger $"{errormsg}"
+  }
+
+  let handleUpdateAsync botClient logger cts (update:Update) = async {
     let handleUpdate f  = f botClient logger cts
 
     try
