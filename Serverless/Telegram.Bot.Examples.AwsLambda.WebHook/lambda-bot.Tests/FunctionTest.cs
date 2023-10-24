@@ -2,20 +2,19 @@ using Amazon.Lambda.TestUtilities;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace LambdaBot.Tests
+namespace LambdaBot.Tests;
+
+public class FunctionTest
 {
-    public class FunctionTest
+    [Fact]
+    public async Task TestFunction()
     {
-        [Fact]
-        public async Task TestFunction()
-        {
-            Function function = new();
-            TestLambdaContext context = new();
-            JObject input = new();
+        LambdaFunction function = new();
+        TestLambdaContext context = new();
+        JObject input = new();
 
-            string functionResult = await function.FunctionHandler(request: input, context: context);
+        string functionResult = await function.FunctionHandler(request: input, context: context);
 
-            Assert.StartsWith("fine from lambda bot", functionResult, StringComparison.InvariantCulture);
-        }
+        Assert.StartsWith("fine from lambda bot", functionResult, StringComparison.InvariantCulture);
     }
 }

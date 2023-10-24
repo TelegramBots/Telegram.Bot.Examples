@@ -7,14 +7,9 @@ using Telegram.Bot.Types;
 
 namespace LambdaBot;
 
-public class Function
+public class LambdaFunction
 {
-    private static readonly UpdateService updateService;
-
-    static Function()
-    {
-        updateService = new UpdateService();
-    }
+    private static readonly UpdateService updateService = new();
 
     // link it to api gateway / rest / post / lambda function with lambda proxy integration enabled
     // to set it as webhook post manually to https://api.telegram.org/bot<token>/setWebhook
