@@ -10,9 +10,9 @@
 namespace FSharp.Examples.Polling.Services
 
 open System.Threading
+open System.Threading.Tasks
 open Microsoft.Extensions.Logging
 open Telegram.Bot.Polling
-open Telegram.Bot.Types.Enums
 open Telegram.Bot
 
 open FSharp.Examples.Polling.Services.Internal
@@ -21,7 +21,7 @@ open FSharp.Examples.Polling.Util
 
 type ReceiverService<'T when 'T :> IUpdateHandler>(botClient: ITelegramBotClient, updateHandler: UpdateHandler, logger: ILogger<'T>) =
   interface IReceiverService with
-    member __.ReceiveAsync(cts: CancellationToken) = task {
+    member __.ReceiveAsync(cts: CancellationToken) = async {
 
       logInfo logger "ReceiveAsync called"
 
@@ -30,16 +30,20 @@ type ReceiverService<'T when 'T :> IUpdateHandler>(botClient: ITelegramBotClient
         ThrowPendingUpdates = true
        )
 
-      let! me = botClient.GetMeAsync(cts) |> Async.AwaitTask
-      let username =
-        match me.Username with
-        | null -> "My Awesome Bot"
-        | v -> v
+      try
+        let! me = botClient.GetMeAsync(cts) |> Async.AwaitTask
+        let username =
+          match me.Username with
+          | null -> "My Awesome Bot"
+          | v -> v
 
-      logInfo logger $"Start receiving updates for {username}"
+        logInfo logger $"Start receiving updates for {username}"
 
-      botClient.ReceiveAsync(
-        updateHandler = updateHandler,
-        receiverOptions = options,
-        cancellationToken = cts) |> Async.AwaitTask |> ignore
+        botClient.ReceiveAsync(
+          updateHandler = updateHandler,
+          receiverOptions = options,
+          cancellationToken = cts) |> ignore
+        with
+        | :? TaskCanceledException -> logInfo logger "INFO: Receive cancelled."
+        | e -> logInfo logger $"ERROR: {e.Message}"
   }

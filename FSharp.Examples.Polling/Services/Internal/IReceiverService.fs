@@ -12,4 +12,4 @@ open System.Threading
 open System.Threading.Tasks
 
 type IReceiverService =
-  abstract member ReceiveAsync: CancellationToken -> Task
+  abstract member ReceiveAsync: CancellationToken -> Async<unit>

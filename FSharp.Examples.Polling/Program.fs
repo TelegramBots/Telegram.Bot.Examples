@@ -13,6 +13,8 @@ open Telegram.Bot
 
 open FSharp.Examples.Polling.Services
 
+type ReceiverSvc = ReceiverService<UpdateHandler>
+
 type BotConfiguration() =
   member val BotToken: string
 
@@ -31,14 +33,13 @@ module Program =
       //  https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests
       services.AddHttpClient("telegram_bot_client").AddTypedClient<ITelegramBotClient>(
           fun httpClient sp ->
-//            let botConfig = sp.GetConfiguration<BotConfiguration>()
             let options = TelegramBotClientOptions(token)
             TelegramBotClient(options, httpClient) :> ITelegramBotClient
         ) |> ignore
 
       services.AddScoped<UpdateHandler>() |> ignore
-      services.AddScoped<ReceiverService<UpdateHandler>>() |> ignore
-      services.AddHostedService<PollingService<ReceiverService<UpdateHandler>>>() |> ignore)
+      services.AddScoped<ReceiverSvc>() |> ignore
+      services.AddHostedService<PollingService<ReceiverSvc>>() |> ignore)
 
   [<EntryPoint>]
   let main args =

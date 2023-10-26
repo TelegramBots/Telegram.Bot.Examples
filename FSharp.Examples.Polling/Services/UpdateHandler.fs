@@ -22,7 +22,7 @@ open FSharp.Examples.Polling.Services.Internal
 type UpdateHandler(botClient: ITelegramBotClient, logger: ILogger<UpdateHandler>) =
   interface IUpdateHandler with
     member __.HandleUpdateAsync( _ , update, cancellation) =
-      UpdateHandlerFuncs.handleUpdateAsync botClient logger cancellation update
+      UpdateHandlerFuncs.handleUpdateAsync botClient logger cancellation update |> Async.StartAsTask :> Tasks.Task
 
     member __.HandlePollingErrorAsync( _ , ex: Exception, cancellationToken: CancellationToken) =
-      UpdateHandlerFuncs.handlePollingErrorAsync botClient logger cancellationToken ex
+      UpdateHandlerFuncs.handlePollingErrorAsync botClient logger cancellationToken ex |> Async.StartAsTask :> Tasks.Task

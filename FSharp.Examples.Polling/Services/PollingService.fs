@@ -15,7 +15,6 @@ namespace FSharp.Examples.Polling.Services
 
 open System
 open System.Threading
-open System.Threading.Tasks
 
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Logging
@@ -27,7 +26,7 @@ open FSharp.Examples.Polling.Util
 type PollingService<'T when 'T:> IReceiverService>(sp: IServiceProvider, logger: ILogger<PollingService<'T>>) =
   inherit BackgroundService()
 
-  member __.doWork (cts: CancellationToken) = async {
+  member __.doWork (cts: CancellationToken) = task {
     let getReceiverService _ =
       use scope = sp.CreateScope()
       let service: 'T = scope.ServiceProvider.GetRequiredService<'T>()
@@ -36,9 +35,9 @@ type PollingService<'T when 'T:> IReceiverService>(sp: IServiceProvider, logger:
     let cancellationNotRequested _ = (not cts.IsCancellationRequested)
 
     try
-      Seq.initInfinite getReceiverService
+      return Seq.initInfinite getReceiverService
       |> Seq.takeWhile cancellationNotRequested
-      |> Seq.fold
+      |> Seq.iter (fun r -> (r.ReceiveAsync cts |> ignore))
     with
     | e ->
         logger.LogError($"Polling failed with exception: {e.ToString}: {e.Message}");
