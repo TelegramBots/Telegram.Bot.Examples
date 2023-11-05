@@ -37,7 +37,7 @@ type PollingService<'T when 'T:> IReceiverService>(sp: IServiceProvider, logger:
     try
       return Seq.initInfinite getReceiverService
       |> Seq.takeWhile cancellationNotRequested
-      |> Seq.iter (fun r -> (r.ReceiveAsync cts |> ignore))
+      |> Seq.iter (fun r -> (r.ReceiveAsync cts |> Async.RunSynchronously |> ignore))
     with
     | e ->
         logger.LogError($"Polling failed with exception: {e.ToString}: {e.Message}");

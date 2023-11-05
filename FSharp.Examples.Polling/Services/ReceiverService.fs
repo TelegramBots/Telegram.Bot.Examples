@@ -13,6 +13,7 @@ open System.Threading
 open System.Threading.Tasks
 open Microsoft.Extensions.Logging
 open Telegram.Bot.Polling
+open Telegram.Bot.Types
 open Telegram.Bot
 
 open FSharp.Examples.Polling.Services.Internal
@@ -39,10 +40,10 @@ type ReceiverService<'T when 'T :> IUpdateHandler>(botClient: ITelegramBotClient
 
         logInfo logger $"Start receiving updates for {username}"
 
-        botClient.ReceiveAsync(
+        return! botClient.ReceiveAsync(
           updateHandler = updateHandler,
           receiverOptions = options,
-          cancellationToken = cts) |> ignore
+          cancellationToken = cts) |> Async.AwaitTask
         with
         | :? TaskCanceledException -> logInfo logger "INFO: Receive cancelled."
         | e -> logInfo logger $"ERROR: {e.Message}"

@@ -16,6 +16,3 @@ module Util =
 
   // Log information using the passed-in logger
   let logInfo (logger: ILogger) (msg: string) = logger.LogInformation msg
-
-  let delay (t: int) (cts: CancellationToken)=
-    Task.Delay(t, cts) |> Async.AwaitTask |> ignore
