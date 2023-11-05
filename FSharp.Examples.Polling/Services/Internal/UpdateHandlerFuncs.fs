@@ -87,15 +87,16 @@ module UpdateHandlerFuncs =
       |> Async.AwaitTask |> ignore
 
       let filePath = @"Files/tux.png"
-      use fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read)
-
       let fileName =
         filePath.Split(Path.DirectorySeparatorChar)
         |> Array.last
+      let inputStream =
+        InputFileStream(new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read),
+                        fileName)
 
       botClient.SendPhotoAsync(
         chatId = message.Chat.Id,
-        photo = InputFileStream(fileStream, fileName),
+        photo = inputStream,
         caption = "Nice Picture",
         cancellationToken = cts)
       |> Async.AwaitTask |> Async.Ignore
