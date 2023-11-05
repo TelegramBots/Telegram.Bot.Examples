@@ -12,7 +12,6 @@ namespace FSharp.Examples.Polling.Services.Internal
 open System
 open System.IO
 open System.Threading
-open System.Threading.Tasks
 
 open Microsoft.Extensions.Logging
 
@@ -26,6 +25,147 @@ open Telegram.Bot.Types.ReplyMarkups
 open FSharp.Examples.Polling.Util
 
 module UpdateHandlerFuncs =
+  module private BotTextMessages =
+    let sendInlineKeyboard (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (message:Message) =
+      botClient.SendChatActionAsync(
+        chatId = message.Chat.Id,
+        chatAction = ChatAction.Typing,
+        cancellationToken = cts) |> Async.AwaitTask |> ignore
+
+      let inlineKeyboard = seq {
+        // first row
+        seq {
+          InlineKeyboardButton.WithCallbackData("1.1", "11");
+          InlineKeyboardButton.WithCallbackData("1.2", "12");
+        }
+
+        // second row
+        seq {
+          InlineKeyboardButton.WithCallbackData("2.1", "21");
+          InlineKeyboardButton.WithCallbackData("2.2", "22");
+        }
+      }
+
+      botClient.SendTextMessageAsync(
+        chatId = message.Chat.Id,
+        text = "Choose",
+        replyMarkup = InlineKeyboardMarkup(inlineKeyboard),
+        cancellationToken = cts)
+      |> Async.AwaitTask |> Async.Ignore
+
+    let sendReplyKeyboard (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (message:Message) =
+      let replyKeyboardMarkup =
+        ReplyKeyboardMarkup( seq {
+          // first row
+          seq { KeyboardButton("1.1"); KeyboardButton("1.2") };
+
+          // second row
+          seq { KeyboardButton("1.1"); KeyboardButton("1.2") };
+        },
+        ResizeKeyboard = true)
+
+      botClient.SendTextMessageAsync(
+          chatId = message.Chat.Id,
+          text = "Choose",
+          replyMarkup = replyKeyboardMarkup,
+          cancellationToken = cts)
+        |> Async.AwaitTask |> Async.Ignore
+
+    let removeKeyboard (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (message:Message) =
+      botClient.SendTextMessageAsync(
+        chatId = message.Chat.Id,
+        text = "Removing keyboard",
+        replyMarkup = ReplyKeyboardRemove(),
+        cancellationToken = cts)
+      |> Async.AwaitTask |> Async.Ignore
+
+    let sendFile (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (message:Message) =
+      botClient.SendChatActionAsync(
+        message.Chat.Id,
+        ChatAction.UploadPhoto,
+        cancellationToken = cts)
+      |> Async.AwaitTask |> ignore
+
+      let filePath = @"Files/tux.png"
+      use fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read)
+
+      let fileName =
+        filePath.Split(Path.DirectorySeparatorChar)
+        |> Array.last
+
+      botClient.SendPhotoAsync(
+        chatId = message.Chat.Id,
+        photo = InputFileStream(fileStream, fileName),
+        caption = "Nice Picture",
+        cancellationToken = cts)
+      |> Async.AwaitTask |> Async.Ignore
+
+    let requestContactAndLocation (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (message:Message) =
+      let requestReplyKeyboard =
+        ReplyKeyboardMarkup(seq {
+          KeyboardButton.WithRequestLocation("Location");
+          KeyboardButton.WithRequestContact("Contact");
+        },
+        ResizeKeyboard = true)
+
+      botClient.SendTextMessageAsync(
+        chatId = message.Chat.Id,
+        text = "Who or Where are you?",
+        replyMarkup = requestReplyKeyboard,
+        cancellationToken = cts)
+      |> Async.AwaitTask |> Async.Ignore
+
+    let startInlineQuery (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (message:Message) =
+      let inlineKeyboard =
+        InlineKeyboardMarkup (InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Inline Mode"))
+
+      botClient.SendTextMessageAsync(
+        chatId = message.Chat.Id,
+        text = "Press the button to start Inline Query",
+        replyMarkup = inlineKeyboard,
+        cancellationToken = cts)
+      |> Async.AwaitTask |> Async.Ignore
+
+    let failingHandler (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (message:Message) =
+      raise <| IndexOutOfRangeException()
+
+    let usage (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (message:Message) =
+      let usage =
+        "Usage:\n" +
+        "/inline_keyboard - send inline keyboard\n" +
+        "/keyboard - send custom keyboard\n" +
+        "/remove   - remove custom keyboard\n" +
+        "/photo    - send a photo\n" +
+        "/request  - request location or contact\n" +
+        "/inline_mode - send keyboard with inline query\n" +
+        "/throw - Simulate a failed bot message handler\n"
+
+      botClient.SendTextMessageAsync(
+        chatId = message.Chat.Id,
+        text = usage,
+        replyMarkup = ReplyKeyboardRemove(),
+        cancellationToken = cts)
+      |> Async.AwaitTask |> Async.Ignore
+
+  let botOnMessageReceived (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (message:Message) =
+    let handleBotMessage f = f botClient logger cts message
+
+    logInfo logger $"Receive message type: {message.Type}"
+
+    match message.Text with
+    | text when message.Text <> "" ->
+        // We use tryHead here just in case we get an empty
+        // response from the user
+        match text.Split(' ') |> Array.tryHead with
+        | Some "/inline_keyboard"   -> handleBotMessage BotTextMessages.sendInlineKeyboard
+        | Some "/keyboard"          -> handleBotMessage BotTextMessages.sendReplyKeyboard
+        | Some "/remove"            -> handleBotMessage BotTextMessages.removeKeyboard
+        | Some "/photo"             -> handleBotMessage BotTextMessages.sendFile
+        | Some "/request"           -> handleBotMessage BotTextMessages.requestContactAndLocation
+        | Some "/inline_mode"       -> handleBotMessage BotTextMessages.startInlineQuery
+        | Some "/throw"             -> handleBotMessage BotTextMessages.failingHandler
+        | _                         -> handleBotMessage BotTextMessages.usage
+    | _ -> async { return () }
 
   let botOnCallbackQueryReceived (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (query:CallbackQuery) =
     botClient.AnswerCallbackQueryAsync(query.Id, $"Received {query.Data}") |> Async.AwaitTask |> ignore
@@ -58,144 +198,6 @@ module UpdateHandlerFuncs =
     async {
       logInfo logger $"Received inline result: {chosenInlineResult.ResultId}"
     }
-
-  let botOnMessageReceived (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (message:Message) =
-    logInfo logger $"Receive message type: {message.Type}"
-
-    let sendInlineKeyboard =
-      botClient.SendChatActionAsync(
-        chatId = message.Chat.Id,
-        chatAction = ChatAction.Typing,
-        cancellationToken = cts) |> Async.AwaitTask |> ignore
-
-      let inlineKeyboard = seq {
-        // first row
-        seq {
-          InlineKeyboardButton.WithCallbackData("1.1", "11");
-          InlineKeyboardButton.WithCallbackData("1.2", "12");
-        }
-
-        // second row
-        seq {
-          InlineKeyboardButton.WithCallbackData("2.1", "21");
-          InlineKeyboardButton.WithCallbackData("2.2", "22");
-        }
-      }
-
-      botClient.SendTextMessageAsync(
-        chatId = message.Chat.Id,
-        text = "Choose",
-        replyMarkup = InlineKeyboardMarkup(inlineKeyboard),
-        cancellationToken = cts)
-      |> Async.AwaitTask |> Async.Ignore
-
-    let sendReplyKeyboard =
-      let replyKeyboardMarkup =
-        ReplyKeyboardMarkup( seq {
-          // first row
-          seq { KeyboardButton("1.1"); KeyboardButton("1.2") };
-
-          // second row
-          seq { KeyboardButton("1.1"); KeyboardButton("1.2") };
-        },
-        ResizeKeyboard = true)
-
-      botClient.SendTextMessageAsync(
-          chatId = message.Chat.Id,
-          text = "Choose",
-          replyMarkup = replyKeyboardMarkup,
-          cancellationToken = cts)
-        |> Async.AwaitTask |> Async.Ignore
-
-    let removeKeyboard =
-      botClient.SendTextMessageAsync(
-        chatId = message.Chat.Id,
-        text = "Removing keyboard",
-        replyMarkup = ReplyKeyboardRemove(),
-        cancellationToken = cts)
-      |> Async.AwaitTask |> Async.Ignore
-
-    let sendFile =
-      botClient.SendChatActionAsync(
-        message.Chat.Id,
-        ChatAction.UploadPhoto,
-        cancellationToken = cts)
-      |> Async.AwaitTask |> ignore
-
-      let filePath = @"Files/tux.png"
-      use fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read)
-
-      let fileName =
-        filePath.Split(Path.DirectorySeparatorChar)
-        |> Array.last
-
-      botClient.SendPhotoAsync(
-        chatId = message.Chat.Id,
-        photo = InputFileStream(fileStream, fileName),
-        caption = "Nice Picture",
-        cancellationToken = cts)
-      |> Async.AwaitTask |> Async.Ignore
-
-    let requestContactAndLocation =
-      let requestReplyKeyboard =
-        ReplyKeyboardMarkup(seq {
-          KeyboardButton.WithRequestLocation("Location");
-          KeyboardButton.WithRequestContact("Contact");
-        },
-        ResizeKeyboard = true)
-
-      botClient.SendTextMessageAsync(
-        chatId = message.Chat.Id,
-        text = "Who or Where are you?",
-        replyMarkup = requestReplyKeyboard,
-        cancellationToken = cts)
-      |> Async.AwaitTask |> Async.Ignore
-
-    let startInlineQuery =
-      let inlineKeyboard =
-        InlineKeyboardMarkup (InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Inline Mode"))
-
-      botClient.SendTextMessageAsync(
-        chatId = message.Chat.Id,
-        text = "Press the button to start Inline Query",
-        replyMarkup = inlineKeyboard,
-        cancellationToken = cts)
-      |> Async.AwaitTask |> Async.Ignore
-
-    let failingHandler = raise <| IndexOutOfRangeException()
-
-    let usage =
-      let usage =
-        "Usage:\n" +
-        "/inline_keyboard - send inline keyboard\n" +
-        "/keyboard - send custom keyboard\n" +
-        "/remove   - remove custom keyboard\n" +
-        "/photo    - send a photo\n" +
-        "/request  - request location or contact" +
-        "/inline_mode - send keyboard with inline query" +
-        "/throw - Simulate a failed bot message handler"
-
-      botClient.SendTextMessageAsync(
-        chatId = message.Chat.Id,
-        text = usage,
-        replyMarkup = ReplyKeyboardRemove(),
-        cancellationToken = cts)
-      |> Async.AwaitTask |> Async.Ignore
-
-    match message.Text with
-    | text when message.Text <> "" ->
-        // We use tryHead here just in case we get an empty
-        // response from the user
-        match text.Split(' ') |> Array.tryHead with
-        | Some "/inline_keyboard"   -> sendInlineKeyboard
-        | Some "/keyboard"          -> sendReplyKeyboard
-        | Some "/remove"            -> removeKeyboard
-        | Some "/photo"             -> sendFile
-        | Some "/request"           -> requestContactAndLocation
-        | Some "/inline_mode"       -> startInlineQuery
-        | Some "/throw"             -> failingHandler
-        | _                         -> usage
-    | _ -> async { return () }
 
   let unknownUpdateHandlerAsync (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (update:Update) =
     async {
