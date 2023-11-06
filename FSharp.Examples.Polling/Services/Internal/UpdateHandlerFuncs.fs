@@ -154,7 +154,7 @@ module UpdateHandlerFuncs =
     logInfo logger $"Receive message type: {message.Type}"
 
     match message.Text with
-    | text when message.Text <> "" ->
+    | text when (not (String.IsNullOrEmpty message.Text)) ->
         // We use tryHead here just in case we get an empty
         // response from the user
         match text.Split(' ') |> Array.tryHead with
