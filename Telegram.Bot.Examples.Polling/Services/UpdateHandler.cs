@@ -11,6 +11,7 @@ public class UpdateHandler : IUpdateHandler
 {
     private readonly ITelegramBotClient _botClient;
     private readonly ILogger<UpdateHandler> _logger;
+    private static readonly string[] PollAnswers = new[] { "Hello", "Bye!" };
 
     public UpdateHandler(ITelegramBotClient botClient, ILogger<UpdateHandler> logger)
     {
@@ -27,12 +28,13 @@ public class UpdateHandler : IUpdateHandler
             // UpdateType.EditedChannelPost:
             // UpdateType.ShippingQuery:
             // UpdateType.PreCheckoutQuery:
-            // UpdateType.Poll:
             { Message: { } message }                       => BotOnMessageReceived(message, cancellationToken),
             { EditedMessage: { } message }                 => BotOnMessageReceived(message, cancellationToken),
             { CallbackQuery: { } callbackQuery }           => BotOnCallbackQueryReceived(callbackQuery, cancellationToken),
             { InlineQuery: { } inlineQuery }               => BotOnInlineQueryReceived(inlineQuery, cancellationToken),
             { ChosenInlineResult: { } chosenInlineResult } => BotOnChosenInlineResultReceived(chosenInlineResult, cancellationToken),
+            { Poll: { } poll}                              => BotOnPollReceived(poll, cancellationToken),
+            { PollAnswer: { } pollAnswer}                  => BotOnPollAnswerReceived(pollAnswer, cancellationToken),
             _                                              => UnknownUpdateHandlerAsync(update, cancellationToken)
         };
 
@@ -53,6 +55,8 @@ public class UpdateHandler : IUpdateHandler
             "/photo"           => SendFile(_botClient, message, cancellationToken),
             "/request"         => RequestContactAndLocation(_botClient, message, cancellationToken),
             "/inline_mode"     => StartInlineQuery(_botClient, message, cancellationToken),
+            "/poll"            => SendPoll(_botClient, message, cancellationToken),
+            "/poll_anonymous"  => SendAnonymousPoll(_botClient, message, cancellationToken),
             "/throw"           => FailingHandler(_botClient, message, cancellationToken),
             _                  => Usage(_botClient, message, cancellationToken)
         };
@@ -186,6 +190,18 @@ public class UpdateHandler : IUpdateHandler
                 cancellationToken: cancellationToken);
         }
 
+        static async Task<Message> SendPoll(ITelegramBotClient botClient, Message message, CancellationToken cancellationToken)
+        {
+            return await botClient
+                .SendPollAsync(chatId: message.Chat.Id, "Question", PollAnswers, isAnonymous: false, cancellationToken: cancellationToken);
+        }
+
+        static async Task<Message> SendAnonymousPoll(ITelegramBotClient botClient, Message message, CancellationToken cancellationToken)
+        {
+            return await botClient
+                .SendPollAsync(chatId: message.Chat.Id, "Question", PollAnswers, cancellationToken: cancellationToken);
+        }
+
 #pragma warning disable RCS1163 // Unused parameter.
 #pragma warning disable IDE0060 // Remove unused parameter
         static Task<Message> FailingHandler(ITelegramBotClient botClient, Message message, CancellationToken cancellationToken)
@@ -245,6 +261,23 @@ public class UpdateHandler : IUpdateHandler
     }
 
     #endregion
+
+    private Task BotOnPollReceived(Poll poll, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($"Received Pull info: {poll.Question}");
+        return Task.CompletedTask;
+    }
+
+    private async Task BotOnPollAnswerReceived(PollAnswer pollAnswer, CancellationToken cancellationToken)
+    {
+        var answer = pollAnswer.OptionIds.FirstOrDefault();
+        var selectedAnswer = PollAnswers[answer];
+
+        await _botClient.SendTextMessageAsync(
+            chatId: pollAnswer.User.Id,
+            text: $"You've chosen: {selectedAnswer} in poll!",
+            cancellationToken: cancellationToken);
+    }
 
 #pragma warning disable IDE0060 // Remove unused parameter
 #pragma warning disable RCS1163 // Unused parameter.
