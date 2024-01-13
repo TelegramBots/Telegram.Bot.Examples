@@ -30,7 +30,7 @@ public class ConfigureWebhook : IHostedService
         // in the parameter secret_token. If specified, the request will contain a header
         // "X-Telegram-Bot-Api-Secret-Token" with the secret token as content.
         var webhookAddress = $"{_botConfig.HostAddress}{_botConfig.Route}";
-        _logger.LogInformation("Setting webhook: {WebhookAddress}", webhookAddress);
+        _logger.LogInformation("Setting webhook: {webhookAddress}", webhookAddress);
         await botClient.SetWebhookAsync(
             url: webhookAddress,
             allowedUpdates: Array.Empty<UpdateType>(),
