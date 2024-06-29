@@ -15,21 +15,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AwsLambda.WebHook", "AwsLambda.WebHook", "{19365BF8-7FA8-43BF-87FB-8CC14F69234C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AwsLambda.Webhook", "AwsLambda.Webhook", "{19365BF8-7FA8-43BF-87FB-8CC14F69234C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lambda-bot", "Serverless\AwsLambda.WebHook\lambda-bot\lambda-bot.csproj", "{95864093-1174-4030-9F9F-A088DFE99462}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lambda-bot", "Serverless\AwsLambda.Webhook\lambda-bot\lambda-bot.csproj", "{95864093-1174-4030-9F9F-A088DFE99462}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lambda-bot.Tests", "Serverless\AwsLambda.WebHook\lambda-bot.Tests\lambda-bot.Tests.csproj", "{1A6238FD-89F7-468A-989B-CFF665281E41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lambda-bot.Tests", "Serverless\AwsLambda.Webhook\lambda-bot.Tests\lambda-bot.Tests.csproj", "{1A6238FD-89F7-468A-989B-CFF665281E41}"
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FSharp.Example", "FSharp.Example\FSharp.Example.fsproj", "{3330367C-0860-4079-8629-F489F452E5B5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serverless", "Serverless", "{0247900C-74D5-4E9F-BF04-E5EE7D3F31D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctions.WebHook", "Serverless\AzureFunctions.WebHook\AzureFunctions.WebHook.csproj", "{7D6B13B5-B049-43DB-8C89-6F6EF78BC00B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctions.Webhook", "Serverless\AzureFunctions.Webhook\AzureFunctions.Webhook.csproj", "{7D6B13B5-B049-43DB-8C89-6F6EF78BC00B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InlineQueries", "InlineQueries\InlineQueries.csproj", "{5AB28E4E-12F5-434A-9B15-91699C544EE4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctions.IsolatedProcess.WebHook", "Serverless\AzureFunctions.IsolatedProcess.WebHook\AzureFunctions.IsolatedProcess.WebHook.csproj", "{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctions.IsolatedProcess.Webhook", "Serverless\AzureFunctions.IsolatedProcess.Webhook\AzureFunctions.IsolatedProcess.Webhook.csproj", "{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console", "Console\Console.csproj", "{188CDE3C-E044-4109-A0E8-CF72BCC20F99}"
 EndProject
