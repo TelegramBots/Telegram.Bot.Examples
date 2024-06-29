@@ -28,7 +28,7 @@ type ReceiverService<'T when 'T :> IUpdateHandler>(botClient: ITelegramBotClient
 
       let options = ReceiverOptions(
         AllowedUpdates = [||],
-        ThrowPendingUpdates = true
+        DropPendingUpdates = true
        )
 
       try

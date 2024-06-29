@@ -1,13 +1,11 @@
-# Telegram.Bot Polling Example
+# Telegram.Bot advanced example
 
 ## About
 
-This example demonstrates simple Telegram Bot using long polling 
-([wiki](https://en.wikipedia.org/wiki/Push_technology#Long_polling)).
-
-This example utilize [Worker Service](https://docs.microsoft.com/en-us/dotnet/core/extensions/workers)
-template for hosting Bot application. This approach gives you such benefits as:
-
+This example demonstrates Telegram Bot using:
+- long polling ([wiki](https://en.wikipedia.org/wiki/Push_technology#Long_polling)).
+- [Worker Service](https://docs.microsoft.com/en-us/dotnet/core/extensions/workers)
+template for hosting Bot application.
 - cross-platform hosting;
 - configuration;
 - dependency injection (DI);
@@ -29,7 +27,7 @@ Make sure that your .csproj contains these items (versions may vary):
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Telegram.Bot" Version="18.0.0" />
+  <PackageReference Include="Telegram.Bot" Version="21.2.0" />
 </ItemGroup>
 ```
 

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31512.422
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.WebHook", "Telegram.Bot.Examples.WebHook\Telegram.Bot.Examples.WebHook.csproj", "{A17D178C-CF08-4071-9288-4BBD17218C09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webhook.Controllers", "Webhook.Controllers\Webhook.Controllers.csproj", "{A17D178C-CF08-4071-9288-4BBD17218C09}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.Polling", "Telegram.Bot.Examples.Polling\Telegram.Bot.Examples.Polling.csproj", "{55EFEE22-4539-4AB0-98B3-FC2ABEC1EFA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console.Advanced", "Console.Advanced\Console.Advanced.csproj", "{55EFEE22-4539-4AB0-98B3-FC2ABEC1EFA8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0F969A97-C51F-4FFF-B345-FE014000F7FB}"
 	ProjectSection(SolutionItems) = preProject
@@ -15,21 +15,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Telegram.Bot.Examples.AwsLambda.WebHook", "Telegram.Bot.Examples.AwsLambda.WebHook", "{19365BF8-7FA8-43BF-87FB-8CC14F69234C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AwsLambda.WebHook", "AwsLambda.WebHook", "{19365BF8-7FA8-43BF-87FB-8CC14F69234C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lambda-bot", "Serverless\Telegram.Bot.Examples.AwsLambda.WebHook\lambda-bot\lambda-bot.csproj", "{95864093-1174-4030-9F9F-A088DFE99462}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lambda-bot", "Serverless\AwsLambda.WebHook\lambda-bot\lambda-bot.csproj", "{95864093-1174-4030-9F9F-A088DFE99462}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lambda-bot.Tests", "Serverless\Telegram.Bot.Examples.AwsLambda.WebHook\lambda-bot.Tests\lambda-bot.Tests.csproj", "{1A6238FD-89F7-468A-989B-CFF665281E41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lambda-bot.Tests", "Serverless\AwsLambda.WebHook\lambda-bot.Tests\lambda-bot.Tests.csproj", "{1A6238FD-89F7-468A-989B-CFF665281E41}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FSharp.Examples.Polling", "FSharp.Examples.Polling\FSharp.Examples.Polling.fsproj", "{3330367C-0860-4079-8629-F489F452E5B5}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FSharp.Example", "FSharp.Example\FSharp.Example.fsproj", "{3330367C-0860-4079-8629-F489F452E5B5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serverless", "Serverless", "{0247900C-74D5-4E9F-BF04-E5EE7D3F31D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.AzureFunctions.WebHook", "Serverless\Telegram.Bot.Examples.AzureFunctions.WebHook\Telegram.Bot.Examples.AzureFunctions.WebHook.csproj", "{7D6B13B5-B049-43DB-8C89-6F6EF78BC00B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctions.WebHook", "Serverless\AzureFunctions.WebHook\AzureFunctions.WebHook.csproj", "{7D6B13B5-B049-43DB-8C89-6F6EF78BC00B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.InlineQueries", "Telegram.Bot.Examples.InlineQueries\Telegram.Bot.Examples.InlineQueries.csproj", "{5AB28E4E-12F5-434A-9B15-91699C544EE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InlineQueries", "InlineQueries\InlineQueries.csproj", "{5AB28E4E-12F5-434A-9B15-91699C544EE4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.AzureFunctions.IsolatedProcess.WebHook", "Serverless\Telegram.Bot.Examples.AzureFunctions.IsolatedProcess.WebHook\Telegram.Bot.Examples.AzureFunctions.IsolatedProcess.WebHook.csproj", "{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctions.IsolatedProcess.WebHook", "Serverless\AzureFunctions.IsolatedProcess.WebHook\AzureFunctions.IsolatedProcess.WebHook.csproj", "{3C94708A-0391-4401-BF1D-4B5ED4C6FB0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

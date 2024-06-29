@@ -29,7 +29,7 @@ module UpdateHandlerFuncs =
     let sendInlineKeyboard (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (message:Message) =
       botClient.SendChatActionAsync(
         chatId = message.Chat.Id,
-        chatAction = ChatAction.Typing,
+        action = ChatAction.Typing,
         cancellationToken = cts) |> Async.AwaitTask |> ignore
 
       let inlineKeyboard = seq {

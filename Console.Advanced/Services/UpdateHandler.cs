@@ -1,4 +1,5 @@
 using Telegram.Bot.Exceptions;
+using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
@@ -6,34 +7,18 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Telegram.Bot.Services;
 
-public class UpdateHandlers
+public class UpdateHandler : IUpdateHandler
 {
     private readonly ITelegramBotClient _botClient;
-    private readonly ILogger<UpdateHandlers> _logger;
+    private readonly ILogger<UpdateHandler> _logger;
 
-    public UpdateHandlers(ITelegramBotClient botClient, ILogger<UpdateHandlers> logger)
+    public UpdateHandler(ITelegramBotClient botClient, ILogger<UpdateHandler> logger)
     {
         _botClient = botClient;
         _logger = logger;
     }
 
-#pragma warning disable IDE0060 // Remove unused parameter
-#pragma warning disable RCS1163 // Unused parameter.
-    public Task HandleErrorAsync(Exception exception, CancellationToken cancellationToken)
-#pragma warning restore RCS1163 // Unused parameter.
-#pragma warning restore IDE0060 // Remove unused parameter
-    {
-        var ErrorMessage = exception switch
-        {
-            ApiRequestException apiRequestException => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
-            _                                       => exception.ToString()
-        };
-
-        _logger.LogInformation("HandleError: {ErrorMessage}", ErrorMessage);
-        return Task.CompletedTask;
-    }
-
-    public async Task HandleUpdateAsync(Update update, CancellationToken cancellationToken)
+    public async Task HandleUpdateAsync(ITelegramBotClient _, Update update, CancellationToken cancellationToken)
     {
         var handler = update switch
         {
@@ -63,12 +48,13 @@ public class UpdateHandlers
         var action = messageText.Split(' ')[0] switch
         {
             "/inline_keyboard" => SendInlineKeyboard(_botClient, message, cancellationToken),
-            "/keyboard" => SendReplyKeyboard(_botClient, message, cancellationToken),
-            "/remove" => RemoveKeyboard(_botClient, message, cancellationToken),
-            "/photo" => SendFile(_botClient, message, cancellationToken),
-            "/request" => RequestContactAndLocation(_botClient, message, cancellationToken),
-            "/inline_mode" => StartInlineQuery(_botClient, message, cancellationToken),
-            _ => Usage(_botClient, message, cancellationToken)
+            "/keyboard"        => SendReplyKeyboard(_botClient, message, cancellationToken),
+            "/remove"          => RemoveKeyboard(_botClient, message, cancellationToken),
+            "/photo"           => SendFile(_botClient, message, cancellationToken),
+            "/request"         => RequestContactAndLocation(_botClient, message, cancellationToken),
+            "/inline_mode"     => StartInlineQuery(_botClient, message, cancellationToken),
+            "/throw"           => FailingHandler(_botClient, message, cancellationToken),
+            _                  => Usage(_botClient, message, cancellationToken)
         };
         Message sentMessage = await action;
         _logger.LogInformation("The message was sent with id: {SentMessageId}", sentMessage.MessageId);
@@ -79,7 +65,7 @@ public class UpdateHandlers
         {
             await botClient.SendChatActionAsync(
                 chatId: message.Chat.Id,
-                chatAction: ChatAction.Typing,
+                action: ChatAction.Typing,
                 cancellationToken: cancellationToken);
 
             // Simulate longer running task
@@ -199,6 +185,15 @@ public class UpdateHandlers
                 replyMarkup: inlineKeyboard,
                 cancellationToken: cancellationToken);
         }
+
+#pragma warning disable RCS1163 // Unused parameter.
+#pragma warning disable IDE0060 // Remove unused parameter
+        static Task<Message> FailingHandler(ITelegramBotClient botClient, Message message, CancellationToken cancellationToken)
+        {
+            throw new IndexOutOfRangeException();
+        }
+#pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore RCS1163 // Unused parameter.
     }
 
     // Process Inline Keyboard callback data
@@ -259,5 +254,20 @@ public class UpdateHandlers
     {
         _logger.LogInformation("Unknown update type: {UpdateType}", update.Type);
         return Task.CompletedTask;
+    }
+
+    public async Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+    {
+        var ErrorMessage = exception switch
+        {
+            ApiRequestException apiRequestException => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
+            _ => exception.ToString()
+        };
+
+        _logger.LogInformation("HandleError: {ErrorMessage}", ErrorMessage);
+
+        // Cooldown in case of network connection error
+        if (exception is RequestException)
+            await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
     }
 }

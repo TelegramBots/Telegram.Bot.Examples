@@ -35,7 +35,7 @@ public abstract class ReceiverServiceBase<TUpdateHandler> : IReceiverService
         var receiverOptions = new ReceiverOptions()
         {
             AllowedUpdates = Array.Empty<UpdateType>(),
-            ThrowPendingUpdates = true,
+            DropPendingUpdates = true,
         };
 
         var me = await _botClient.GetMeAsync(stoppingToken);
