@@ -24,5 +24,5 @@ type UpdateHandler(botClient: ITelegramBotClient, logger: ILogger<UpdateHandler>
     member __.HandleUpdateAsync( _ , update, cancellation) =
       UpdateHandlerFuncs.handleUpdateAsync botClient logger cancellation update |> Async.StartAsTask :> Tasks.Task
 
-    member __.HandlePollingErrorAsync( _ , ex: Exception, cancellationToken: CancellationToken) =
-      UpdateHandlerFuncs.handlePollingErrorAsync botClient logger cancellationToken ex |> Async.StartAsTask :> Tasks.Task
+    member __.HandleErrorAsync( _ , ex: Exception, source: HandleErrorSource, cancellationToken: CancellationToken) =
+      UpdateHandlerFuncs.handleErrorAsync botClient logger cancellationToken ex |> Async.StartAsTask :> Tasks.Task

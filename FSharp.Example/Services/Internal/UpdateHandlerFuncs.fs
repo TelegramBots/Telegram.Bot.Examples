@@ -205,13 +205,8 @@ module UpdateHandlerFuncs =
       logInfo logger $"Unknown update type: {update.Type}"
     }
 
-  let handlePollingErrorAsync _ (logger: ILogger) _ (err:Exception) = async {
-    let errormsg =
-      match err with
-      | :? ApiRequestException as apiex -> $"Telegram API Error:\n[{apiex.ErrorCode}]\n{apiex.Message}"
-      | _                                                     -> err.ToString()
-
-    logInfo logger $"{errormsg}"
+  let handleErrorAsync _ (logger: ILogger) _ (err:Exception) = async {
+    logInfo logger $"{err.ToString()}"
   }
 
   let handleUpdateAsync botClient logger cts (update:Update) = async {
@@ -229,5 +224,5 @@ module UpdateHandlerFuncs =
 
       return! fn
     with
-      | ex -> do! handleUpdate handlePollingErrorAsync ex
+      | ex -> do! handleUpdate handleErrorAsync ex
   }
