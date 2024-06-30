@@ -1,9 +1,9 @@
 using Amazon.Lambda.Core;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using Telegram.Bot.Serialization;
 using Telegram.Bot.Types;
 
-[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
+[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
 namespace LambdaBot;
 
@@ -15,14 +15,14 @@ public class LambdaFunction
     // to set it as webhook post manually to https://api.telegram.org/bot<token>/setWebhook
     // with form-data: "url": "<your_invoke_url>"
 #pragma warning disable CA1822 // Mark members as static
-    public async Task<string> FunctionHandler(JObject request, ILambdaContext context)
+    public async Task<string> FunctionHandler(JsonElement request, ILambdaContext context)
 #pragma warning restore CA1822 // Mark members as static
     {
-        context.Logger.LogInformation("REQUEST: " + JsonConvert.SerializeObject(request));
+        context.Logger.LogInformation("REQUEST: " + JsonSerializer.Serialize(request));
 
         try
         {
-            Update? updateEvent = request.ToObject<Update>();
+            Update? updateEvent = request.Deserialize<Update>(JsonSerializerOptionsProvider.Options);
             if (updateEvent is null)
             {
                 const string resultMessage = "Unable to deserialize Update.";

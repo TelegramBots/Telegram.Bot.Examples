@@ -1,5 +1,7 @@
 using Amazon.Lambda.TestUtilities;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using Telegram.Bot.Serialization;
+using Telegram.Bot.Types;
 using Xunit;
 
 namespace LambdaBot.Tests;
@@ -11,7 +13,8 @@ public class FunctionTest
     {
         LambdaFunction function = new();
         TestLambdaContext context = new();
-        JObject input = new();
+        Update update = new() { Message = new() { Text = "123", Chat = new() { Id = 456 } } };
+        var input = JsonSerializer.SerializeToElement(update, JsonSerializerOptionsProvider.Options);
 
         string functionResult = await function.FunctionHandler(request: input, context: context);
 
