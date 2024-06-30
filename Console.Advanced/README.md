@@ -27,7 +27,7 @@ Make sure that your .csproj contains these items (versions may vary):
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Telegram.Bot" Version="21.2.0" />
+  <PackageReference Include="Telegram.Bot" Version="21.3.0" />
 </ItemGroup>
 ```
 

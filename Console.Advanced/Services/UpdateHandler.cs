@@ -256,15 +256,9 @@ public class UpdateHandler : IUpdateHandler
         return Task.CompletedTask;
     }
 
-    public async Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+    public async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, HandleErrorSource source, CancellationToken cancellationToken)
     {
-        var ErrorMessage = exception switch
-        {
-            ApiRequestException apiRequestException => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
-            _ => exception.ToString()
-        };
-
-        _logger.LogInformation("HandleError: {ErrorMessage}", ErrorMessage);
+        _logger.LogInformation("HandleError: {exception}", exception);
 
         // Cooldown in case of network connection error
         if (exception is RequestException)
