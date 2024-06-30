@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using Telegram.Bot;
+using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
@@ -23,7 +24,7 @@ for (int i = 0; i < files.Length; i++)
 var bot = new TelegramBotClient(token);
 var me = await bot.GetMeAsync();
 using var cts = new CancellationTokenSource();
-bot.StartReceiving(HandleUpdateAsync, PollingErrorHandler, null, cts.Token);
+bot.StartReceiving(OnUpdate, OnError, null, cts.Token);
 
 Console.WriteLine($"Start listening for @{me.Username}");
 Console.ReadLine();
@@ -31,13 +32,13 @@ Console.ReadLine();
 // stop the bot
 cts.Cancel();
 
-Task PollingErrorHandler(ITelegramBotClient bot, Exception ex, CancellationToken ct)
+Task OnError(ITelegramBotClient bot, Exception ex, HandleErrorSource source, CancellationToken ct)
 {
-    Console.WriteLine($"Exception while polling for updates: {ex}");
+    Console.WriteLine($"A {source} occured: {ex}");
     return Task.CompletedTask;
 }
 
-async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken ct)
+async Task OnUpdate(ITelegramBotClient bot, Update update, CancellationToken ct)
 {
     try
     {

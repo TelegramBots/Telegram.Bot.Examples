@@ -9,13 +9,13 @@ token ??= "{YOUR_BOT_TOKEN}";
 using var cts = new CancellationTokenSource();
 var bot = new TelegramBotClient(token, cancellationToken: cts.Token);
 var me = await bot.GetMeAsync();
-bot.StartReceiving(OnUpdate, OnPollingError);
+bot.StartReceiving(OnUpdate, OnError);
 
 Console.WriteLine($"@{me.Username} is running... Press Escape to terminate");
 while (Console.ReadKey(true).Key != ConsoleKey.Escape) ;
 cts.Cancel(); // stop the bot
 
-async Task OnPollingError(ITelegramBotClient client, Exception exception, CancellationToken ct)
+async Task OnError(ITelegramBotClient client, Exception exception, CancellationToken ct)
 {
     Console.WriteLine(exception);
     await Task.Delay(2000, ct);
