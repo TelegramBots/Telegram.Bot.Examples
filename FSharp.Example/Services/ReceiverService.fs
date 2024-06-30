@@ -7,7 +7,7 @@
 // Copyright (c) 2023 Arvind Devarajan
 // Licensed to you under the MIT License.
 // See the LICENSE file in the project root for more information.
-namespace FSharp.Examples.Polling.Services
+namespace FSharp.Example.Services
 
 open System.Threading
 open System.Threading.Tasks
@@ -16,9 +16,9 @@ open Telegram.Bot.Polling
 open Telegram.Bot.Types
 open Telegram.Bot
 
-open FSharp.Examples.Polling.Services.Internal
+open FSharp.Example.Services.Internal
 
-open FSharp.Examples.Polling.Util
+open FSharp.Example.Util
 
 type ReceiverService<'T when 'T :> IUpdateHandler>(botClient: ITelegramBotClient, updateHandler: UpdateHandler, logger: ILogger<'T>) =
   interface IReceiverService with

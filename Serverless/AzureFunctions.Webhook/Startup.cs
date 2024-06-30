@@ -1,9 +1,9 @@
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
-[assembly: FunctionsStartup(typeof(Telegram.Bot.Examples.AzureFunctions.WebHook.Startup))]
+[assembly: FunctionsStartup(typeof(Telegram.Bot.Examples.AzureFunctions.Webhook.Startup))]
 
-namespace Telegram.Bot.Examples.AzureFunctions.WebHook;
+namespace Telegram.Bot.Examples.AzureFunctions.Webhook;
 
 public class Startup : FunctionsStartup
 {

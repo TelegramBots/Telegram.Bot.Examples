@@ -7,7 +7,7 @@
 // Licensed to you under the MIT License.
 // See the LICENSE file in the project root for more information.
 
-namespace FSharp.Examples.Polling.Services.Internal
+namespace FSharp.Example.Services.Internal
 
 open System
 open System.IO
@@ -22,7 +22,7 @@ open Telegram.Bot.Types.Enums
 open Telegram.Bot.Types.InlineQueryResults
 open Telegram.Bot.Types.ReplyMarkups
 
-open FSharp.Examples.Polling.Util
+open FSharp.Example.Util
 
 module UpdateHandlerFuncs =
   module private BotTextMessages =

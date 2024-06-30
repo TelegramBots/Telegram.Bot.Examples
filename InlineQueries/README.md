@@ -10,7 +10,7 @@ and the bot may tell which article was selected.
 
 ## Prerequisites
 
-* Same as Telegram.Bot.Examples.Polling.
+* .NET 6 and Telegram.Bot v21.3
 * You need to set your bot token in the `TOKEN` environment variable *(in launchSettings.json or via Project Properties > Debug > General)*
 * You need to enable "**Inline mode on**" in BotFather for this bot to work.
 * If you want the bot to tell which article was selected by the user, you need to enable "**Inline feedback**" (for example: 100%)

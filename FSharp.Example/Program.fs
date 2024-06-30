@@ -4,14 +4,14 @@
 // Licensed to you under the MIT License.
 // See the LICENSE file in the project root for more information.
 
-namespace FSharp.Examples.Polling
+namespace FSharp.Example
 
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 
 open Telegram.Bot
 
-open FSharp.Examples.Polling.Services
+open FSharp.Example.Services
 
 type ReceiverSvc = ReceiverService<UpdateHandler>
 

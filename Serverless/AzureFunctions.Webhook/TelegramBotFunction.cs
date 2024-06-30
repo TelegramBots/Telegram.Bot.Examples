@@ -7,7 +7,7 @@ using System.Text.Json;
 using Telegram.Bot.Serialization;
 using Telegram.Bot.Types;
 
-namespace Telegram.Bot.Examples.AzureFunctions.WebHook;
+namespace Telegram.Bot.Examples.AzureFunctions.Webhook;
 
 public class TelegramBotFunction
 {

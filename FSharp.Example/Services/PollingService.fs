@@ -5,13 +5,13 @@
 //
 // This file simply forms that "link" between the .NET
 // class to the actual service functions implemented in
-// FSharp.Examples.Polling.Services.Internal.PollingServiceFuncs
+// FSharp.Example.Services.Internal.PollingServiceFuncs
 //
 // Copyright (c) 2023 Arvind Devarajan
 // Licensed to you under the MIT License.
 // See the LICENSE file in the project root for more information.
 
-namespace FSharp.Examples.Polling.Services
+namespace FSharp.Example.Services
 
 open System
 open System.Threading
@@ -20,8 +20,8 @@ open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.Hosting
 
-open FSharp.Examples.Polling.Services.Internal
-open FSharp.Examples.Polling.Util
+open FSharp.Example.Services.Internal
+open FSharp.Example.Util
 
 type PollingService<'T when 'T:> IReceiverService>(sp: IServiceProvider, logger: ILogger<PollingService<'T>>) =
   inherit BackgroundService()

@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Telegram.Bot;
-using Telegram.Bot.Examples.AzureFunctions.IsolatedProcess.WebHook;
+using Telegram.Bot.Examples.AzureFunctions.IsolatedProcess.Webhook;
 
 var tgToken = Environment.GetEnvironmentVariable("TELEGRAM_BOT_TOKEN", EnvironmentVariableTarget.Process)
     ?? throw new ArgumentException("Can not get token. Set token in environment setting");

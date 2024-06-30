@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Telegram.Bot.Types;
 
-namespace Telegram.Bot.Examples.AzureFunctions.IsolatedProcess.WebHook;
+namespace Telegram.Bot.Examples.AzureFunctions.IsolatedProcess.Webhook;
 
 public class UpdateService
 {
