@@ -40,11 +40,15 @@ public class ConfigureWebhook : IHostedService
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
+        /* You shouldn't delete webhook on app stop (typically when recycled by your host provider)
+            otherwise your app will not be restarted by the next incoming Update
+
         using var scope = _serviceProvider.CreateScope();
         var botClient = scope.ServiceProvider.GetRequiredService<ITelegramBotClient>();
 
         // Remove webhook on app shutdown
         _logger.LogInformation("Removing webhook");
         await botClient.DeleteWebhookAsync(cancellationToken: cancellationToken);
+        */
     }
 }
