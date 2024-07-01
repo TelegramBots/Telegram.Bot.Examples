@@ -13,7 +13,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         // More read:
         //  https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-5.0#typed-clients
         //  https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests
-        services.AddHttpClient("telegram_bot_client")
+        services.AddHttpClient("telegram_bot_client").RemoveAllLoggers()
                 .AddTypedClient<ITelegramBotClient>((httpClient, sp) =>
                 {
                     BotConfiguration? botConfig = sp.GetConfiguration<BotConfiguration>();
