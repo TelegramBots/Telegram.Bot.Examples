@@ -108,11 +108,6 @@ async Task OnCommand(string command, string args, Message msg)
         case "/remove":
             await bot.SendTextMessageAsync(msg.Chat, "Removing keyboard", replyMarkup: new ReplyKeyboardRemove());
             break;
-        case "/inline_mode":
-            var button = InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Inline Mode");
-            await bot.SendTextMessageAsync(msg.Chat, "Press the button to start Inline Query\n\n" +
-                "(Make sure you enabled Inline Mode in @BotFather)", replyMarkup: new InlineKeyboardMarkup(button));
-            break;
     }
 }
 
