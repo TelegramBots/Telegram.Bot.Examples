@@ -7,7 +7,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Telegram.Bot.Services;
 
-public class UpdateHandler : IUpdateHandler
+public class UpdateHandler
 {
     private readonly ITelegramBotClient _bot;
     private readonly ILogger<UpdateHandler> _logger;
@@ -19,7 +19,7 @@ public class UpdateHandler : IUpdateHandler
         _logger = logger;
     }
 
-    public async Task HandleErrorAsync(ITelegramBotClient bot, Exception exception, HandleErrorSource source, CancellationToken cancellationToken)
+    public async Task HandleErrorAsync(Exception exception, HandleErrorSource source, CancellationToken cancellationToken)
     {
         _logger.LogInformation("HandleError: {exception}", exception);
         // Cooldown in case of network connection error
@@ -27,7 +27,7 @@ public class UpdateHandler : IUpdateHandler
             await Task.Delay(TimeSpan.FromSeconds(2));
     }
 
-    public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+    public async Task HandleUpdateAsync(Update update, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
         await (update switch

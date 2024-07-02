@@ -11,10 +11,17 @@ public class BotController : ControllerBase
     [ValidateTelegramBot]
     public async Task<IActionResult> Post(
         [FromBody] Update update,
-        [FromServices] UpdateHandlers handleUpdateService,
+        [FromServices] UpdateHandler handleUpdateService,
         CancellationToken cancellationToken)
     {
-        await handleUpdateService.HandleUpdateAsync(update, cancellationToken);
+        try
+        {
+            await handleUpdateService.HandleUpdateAsync(update, cancellationToken);
+        }
+        catch (Exception exception)
+        {
+            await handleUpdateService.HandleErrorAsync(exception, Polling.HandleErrorSource.HandleUpdateError, cancellationToken);
+        }
         return Ok();
     }
 }

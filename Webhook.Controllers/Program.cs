@@ -24,20 +24,18 @@ builder.Services.AddHttpClient("telegram_bot_client")
                 });
 
 // Dummy business-logic service
-builder.Services.AddScoped<UpdateHandlers>();
+builder.Services.AddScoped<UpdateHandler>();
 
 // There are several strategies for completing asynchronous tasks during startup.
 // Some of them could be found in this article https://andrewlock.net/running-async-tasks-on-app-startup-in-asp-net-core-part-1/
 // We are going to use IHostedService to add and later remove Webhook
 builder.Services.AddHostedService<ConfigureWebhook>();
 
-// The Telegram.Bot library heavily depends on Newtonsoft.Json library to deserialize
-// incoming webhook updates and send serialized responses back.
-// Read more about adding Newtonsoft.Json to ASP.NET Core pipeline:
-//   https://docs.microsoft.com/en-us/aspnet/core/web-api/advanced/formatting?view=aspnetcore-6.0#add-newtonsoftjson-based-json-format-support
-builder.Services
-    .AddControllers()
-    .AddNewtonsoftJson();
+builder.Services.AddControllers();
+
+// The Telegram.Bot library heavily depends on System.Text.Json library with special Json
+// settings to deserialize incoming webhook updates and send serialized responses back.
+builder.Services.ConfigureTelegramBotMvc();
 
 var app = builder.Build();
 // Construct webhook route from the Route configuration parameter
