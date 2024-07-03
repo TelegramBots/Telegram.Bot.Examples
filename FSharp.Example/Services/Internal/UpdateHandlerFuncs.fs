@@ -86,7 +86,7 @@ module UpdateHandlerFuncs =
         cancellationToken = cts)
       |> Async.AwaitTask |> ignore
 
-      let filePath = @"Files/tux.png"
+      let filePath = @"Files/bot.gif"
       let fileName =
         filePath.Split(Path.DirectorySeparatorChar)
         |> Array.last

@@ -1,25 +1,25 @@
+using Telegram.Bot;
 using Telegram.Bot.Exceptions;
-using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace Telegram.Bot.Services;
+namespace Webhook.Controllers.Services;
 
 public class UpdateHandler
 {
-    private readonly ITelegramBotClient _bot;
+    private readonly TelegramBotClient _bot;
     private readonly ILogger<UpdateHandler> _logger;
     private static readonly InputPollOption[] PollOptions = ["Hello", "World!"];
 
-    public UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger)
+    public UpdateHandler(TelegramBotClient bot, ILogger<UpdateHandler> logger)
     {
         _bot = bot;
         _logger = logger;
     }
 
-    public async Task HandleErrorAsync(Exception exception, HandleErrorSource source, CancellationToken cancellationToken)
+    public async Task HandleErrorAsync(Exception exception, CancellationToken cancellationToken)
     {
         _logger.LogInformation("HandleError: {exception}", exception);
         // Cooldown in case of network connection error
@@ -90,7 +90,7 @@ public class UpdateHandler
     {
         await _bot.SendChatActionAsync(msg.Chat, ChatAction.UploadPhoto);
         await Task.Delay(2000); // simulate a long task
-        await using var fileStream = new FileStream("Files/tux.png", FileMode.Open, FileAccess.Read);
+        await using var fileStream = new FileStream("Files/bot.gif", FileMode.Open, FileAccess.Read);
         return await _bot.SendPhotoAsync(msg.Chat, fileStream, caption: "Read https://telegrambots.github.io/book/");
     }
 

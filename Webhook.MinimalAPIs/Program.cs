@@ -10,7 +10,7 @@ builder.Services.AddHttpClient("tgwebhook").RemoveAllLoggers().AddTypedClient(ht
 var app = builder.Build();
 app.UseHttpsRedirection();
 
-app.MapGet("/setWebhook", async (TelegramBotClient bot) => { await bot.SetWebhookAsync(webhookUrl); return $"Webhook set to {webhookUrl}"; });
+app.MapGet("/bot/setWebhook", async (TelegramBotClient bot) => { await bot.SetWebhookAsync(webhookUrl); return $"Webhook set to {webhookUrl}"; });
 app.MapPost("/bot", OnUpdate);
 app.Run();
 

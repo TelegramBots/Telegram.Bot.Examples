@@ -13,8 +13,8 @@
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Files\tux.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Files\bot.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

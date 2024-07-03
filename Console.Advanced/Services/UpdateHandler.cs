@@ -90,7 +90,7 @@ public class UpdateHandler : IUpdateHandler
     {
         await _bot.SendChatActionAsync(msg.Chat, ChatAction.UploadPhoto);
         await Task.Delay(2000); // simulate a long task
-        await using var fileStream = new FileStream("Files/tux.png", FileMode.Open, FileAccess.Read);
+        await using var fileStream = new FileStream("Files/bot.gif", FileMode.Open, FileAccess.Read);
         return await _bot.SendPhotoAsync(msg.Chat, fileStream, caption: "Read https://telegrambots.github.io/book/");
     }
 
