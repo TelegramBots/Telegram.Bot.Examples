@@ -1,7 +1,8 @@
+using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
 
-namespace Telegram.Bot.Abstract;
+namespace Console.Advanced.Abstract;
 
 /// <summary>
 /// An abstract class to compose Receiver Service and Update Handler classes
@@ -34,7 +35,7 @@ public abstract class ReceiverServiceBase<TUpdateHandler> : IReceiverService
         // ToDo: we can inject ReceiverOptions through IOptions container
         var receiverOptions = new ReceiverOptions()
         {
-            AllowedUpdates = Array.Empty<UpdateType>(),
+            AllowedUpdates = [],
             DropPendingUpdates = true,
         };
 

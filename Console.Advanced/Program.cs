@@ -1,12 +1,13 @@
+using Microsoft.Extensions.Options;
 using Telegram.Bot;
-using Telegram.Bot.Services;
+using Console.Advanced;
+using Console.Advanced.Services;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
         // Register Bot configuration
-        services.Configure<BotConfiguration>(
-            context.Configuration.GetSection(BotConfiguration.Configuration));
+        services.Configure<BotConfiguration>(context.Configuration.GetSection("BotConfiguration"));
 
         // Register named HttpClient to benefits from IHttpClientFactory
         // and consume it with ITelegramBotClient typed client.
@@ -16,8 +17,9 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddHttpClient("telegram_bot_client").RemoveAllLoggers()
                 .AddTypedClient<ITelegramBotClient>((httpClient, sp) =>
                 {
-                    BotConfiguration? botConfig = sp.GetConfiguration<BotConfiguration>();
-                    TelegramBotClientOptions options = new(botConfig.BotToken);
+                    BotConfiguration? botConfiguration = sp.GetService<IOptions<BotConfiguration>>()?.Value;
+                    ArgumentNullException.ThrowIfNull(botConfiguration);
+                    TelegramBotClientOptions options = new(botConfiguration.BotToken);
                     return new TelegramBotClient(options, httpClient);
                 });
 
@@ -28,14 +30,3 @@ IHost host = Host.CreateDefaultBuilder(args)
     .Build();
 
 await host.RunAsync();
-
-#pragma warning disable CA1050 // Declare types in namespaces
-#pragma warning disable RCS1110 // Declare type inside namespace.
-public class BotConfiguration
-#pragma warning restore RCS1110 // Declare type inside namespace.
-#pragma warning restore CA1050 // Declare types in namespaces
-{
-    public static readonly string Configuration = "BotConfiguration";
-
-    public string BotToken { get; set; } = "";
-}
