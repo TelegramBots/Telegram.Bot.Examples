@@ -28,6 +28,9 @@ indent_size = 2
 # RCS1090: Call 'ConfigureAwait(false)'.
 dotnet_diagnostic.RCS1090.severity = none
 
+# CA1848: Use the LoggerMessage delegates
+dotnet_diagnostic.CA1848.severity = silent
+
 [*.md]
 trim_trailing_whitespace = false
 indent_size = 2
