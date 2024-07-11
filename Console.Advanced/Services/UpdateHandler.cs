@@ -14,10 +14,10 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
 
     public async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, HandleErrorSource source, CancellationToken cancellationToken)
     {
-        logger.LogInformation("HandleError: {exception}", exception);
+        logger.LogInformation("HandleError: {Exception}", exception);
         // Cooldown in case of network connection error
         if (exception is RequestException)
-            await Task.Delay(TimeSpan.FromSeconds(2));
+            await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
     }
 
     public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
@@ -145,7 +145,7 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
 
     static Task<Message> FailingHandler(Message msg)
     {
-        throw new IndexOutOfRangeException();
+        throw new NotImplementedException("FailingHandler");
     }
 
     // Process Inline Keyboard callback data
@@ -179,7 +179,7 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
 
     private Task OnPoll(Poll poll)
     {
-        logger.LogInformation($"Received Pull info: {poll.Question}");
+        logger.LogInformation("Received Poll info: {Question}", poll.Question);
         return Task.CompletedTask;
     }
 
@@ -187,7 +187,8 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
     {
         var answer = pollAnswer.OptionIds.FirstOrDefault();
         var selectedOption = PollOptions[answer];
-        await bot.SendTextMessageAsync(pollAnswer.User.Id, $"You've chosen: {selectedOption.Text} in poll");
+        if (pollAnswer.User != null)
+            await bot.SendTextMessageAsync(pollAnswer.User.Id, $"You've chosen: {selectedOption.Text} in poll");
     }
 
     private Task UnknownUpdateHandlerAsync(Update update)
