@@ -1,4 +1,5 @@
 using Telegram.Bot;
+using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -9,32 +10,23 @@ token ??= "{YOUR_BOT_TOKEN}";
 using var cts = new CancellationTokenSource();
 var bot = new TelegramBotClient(token, cancellationToken: cts.Token);
 var me = await bot.GetMeAsync();
-bot.StartReceiving(OnUpdate, OnError);
+await bot.DropPendingUpdatesAsync();
+bot.OnError += OnError;
+bot.OnMessage += OnMessage;
+bot.OnUpdate += OnUpdate;
 
 Console.WriteLine($"@{me.Username} is running... Press Escape to terminate");
 while (Console.ReadKey(true).Key != ConsoleKey.Escape) ;
 cts.Cancel(); // stop the bot
 
-async Task OnError(ITelegramBotClient client, Exception exception, CancellationToken ct)
+
+async Task OnError(Exception exception, HandleErrorSource source)
 {
     Console.WriteLine(exception);
-    await Task.Delay(2000, ct);
+    await Task.Delay(2000, cts.Token);
 }
 
-async Task OnUpdate(ITelegramBotClient bot, Update update, CancellationToken ct)
-{
-    await (update switch
-    {
-        { Message: { } message } => OnMessage(message),
-        { EditedMessage: { } message } => OnMessage(message, true),
-        { CallbackQuery: { } callbackQuery } => OnCallbackQuery(callbackQuery),
-        _ => OnUnhandledUpdate(update)
-    });
-}
-
-async Task OnUnhandledUpdate(Update update) => Console.WriteLine($"Received unhandled update {update.Type}");
-
-async Task OnMessage(Message msg, bool edited = false)
+async Task OnMessage(Message msg, UpdateType type)
 {
     if (msg.Text is not { } text)
         Console.WriteLine($"Received a message of type {msg.Type}");
@@ -72,6 +64,7 @@ async Task OnCommand(string command, string args, Message msg)
                 /inline_buttons - send inline buttons
                 /keyboard       - send keyboard buttons
                 /remove         - remove keyboard buttons
+                /poll           - send a poll
                 """, parseMode: ParseMode.Html, linkPreviewOptions: true,
                 replyMarkup: new ReplyKeyboardRemove()); // also remove keyboard to clean-up things
             break;
@@ -87,28 +80,36 @@ async Task OnCommand(string command, string args, Message msg)
             }
             break;
         case "/inline_buttons":
-            List<List<InlineKeyboardButton>> buttons =
-            [
-                ["1.1", "1.2", "1.3"],
-                [
-                    InlineKeyboardButton.WithCallbackData("WithCallbackData", "CallbackData"),
-                    InlineKeyboardButton.WithUrl("WithUrl", "https://github.com/TelegramBots/Telegram.Bot")
-                ],
-            ];
-            await bot.SendTextMessageAsync(msg.Chat, "Inline buttons:", replyMarkup: new InlineKeyboardMarkup(buttons));
+            var inlineMarkup = new InlineKeyboardMarkup()
+                .AddNewRow("1.1", "1.2", "1.3")
+                .AddNewRow()
+                    .AddButton("WithCallbackData", "CallbackData")
+                    .AddButton(InlineKeyboardButton.WithUrl("WithUrl", "https://github.com/TelegramBots/Telegram.Bot"));
+            await bot.SendTextMessageAsync(msg.Chat, "Inline buttons:", replyMarkup: inlineMarkup);
             break;
         case "/keyboard":
-            List<List<KeyboardButton>> keys = 
-            [
-                ["1.1", "1.2", "1.3"],
-                ["2.1", "2.2"],
-            ];
-            await bot.SendTextMessageAsync(msg.Chat, "Keyboard buttons:", replyMarkup: new ReplyKeyboardMarkup(keys) { ResizeKeyboard = true });
+            var replyMarkup = new ReplyKeyboardMarkup(true)
+                .AddNewRow("1.1", "1.2", "1.3")
+                .AddNewRow().AddButton("2.1").AddButton("2.2");
+            await bot.SendTextMessageAsync(msg.Chat, "Keyboard buttons:", replyMarkup: replyMarkup);
             break;
         case "/remove":
             await bot.SendTextMessageAsync(msg.Chat, "Removing keyboard", replyMarkup: new ReplyKeyboardRemove());
             break;
+        case "/poll":
+            await bot.SendPollAsync(msg.Chat, "Question", ["Option 0", "Option 1", "Option 2"], isAnonymous: false, allowsMultipleAnswers: true);
+            break;
     }
+}
+
+async Task OnUpdate(Update update)
+{
+    await (update switch
+    {
+        { CallbackQuery: { } callbackQuery } => OnCallbackQuery(callbackQuery),
+        { PollAnswer: { } pollAnswer } => OnPollAnswer(pollAnswer),
+        _ => OnUnhandledUpdate(update)
+    });
 }
 
 async Task OnCallbackQuery(CallbackQuery callbackQuery)
@@ -116,3 +117,11 @@ async Task OnCallbackQuery(CallbackQuery callbackQuery)
     await bot.AnswerCallbackQueryAsync(callbackQuery.Id, $"You selected {callbackQuery.Data}");
     await bot.SendTextMessageAsync(callbackQuery.Message!.Chat.Id, $"Received callback from inline button {callbackQuery.Data}");
 }
+
+async Task OnPollAnswer(PollAnswer pollAnswer)
+{
+    if (pollAnswer.User != null)
+        await bot.SendTextMessageAsync(pollAnswer.User.Id, $"You voted for option(s) id [{string.Join(',', pollAnswer.OptionIds)}]");
+}
+
+async Task OnUnhandledUpdate(Update update) => Console.WriteLine($"Received unhandled update {update.Type}");

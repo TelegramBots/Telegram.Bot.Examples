@@ -90,25 +90,20 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
     // Send inline keyboard. You can process responses in OnCallbackQuery handler
     async Task<Message> SendInlineKeyboard(Message msg)
     {
-        List<List<InlineKeyboardButton>> buttons =
-        [
-            ["1.1", "1.2", "1.3"],
-            [
-                InlineKeyboardButton.WithCallbackData("WithCallbackData", "CallbackData"),
-                InlineKeyboardButton.WithUrl("WithUrl", "https://github.com/TelegramBots/Telegram.Bot")
-            ],
-        ];
-        return await bot.SendTextMessageAsync(msg.Chat, "Inline buttons:", replyMarkup: new InlineKeyboardMarkup(buttons));
+        var inlineMarkup = new InlineKeyboardMarkup()
+            .AddNewRow("1.1", "1.2", "1.3")
+            .AddNewRow()
+                .AddButton("WithCallbackData", "CallbackData")
+                .AddButton(InlineKeyboardButton.WithUrl("WithUrl", "https://github.com/TelegramBots/Telegram.Bot"));
+        return await bot.SendTextMessageAsync(msg.Chat, "Inline buttons:", replyMarkup: inlineMarkup);
     }
 
     async Task<Message> SendReplyKeyboard(Message msg)
     {
-        List<List<KeyboardButton>> keys =
-        [
-            ["1.1", "1.2", "1.3"],
-            ["2.1", "2.2"],
-        ];
-        return await bot.SendTextMessageAsync(msg.Chat, "Keyboard buttons:", replyMarkup: new ReplyKeyboardMarkup(keys) { ResizeKeyboard = true });
+        var replyMarkup = new ReplyKeyboardMarkup(true)
+            .AddNewRow("1.1", "1.2", "1.3")
+            .AddNewRow().AddButton("2.1").AddButton("2.2");
+        return await bot.SendTextMessageAsync(msg.Chat, "Keyboard buttons:", replyMarkup: replyMarkup);
     }
 
     async Task<Message> RemoveKeyboard(Message msg)
@@ -118,12 +113,10 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
 
     async Task<Message> RequestContactAndLocation(Message msg)
     {
-        List<KeyboardButton> buttons =
-            [
-                KeyboardButton.WithRequestLocation("Location"),
-                KeyboardButton.WithRequestContact("Contact"),
-            ];
-        return await bot.SendTextMessageAsync(msg.Chat, "Who or Where are you?", replyMarkup: new ReplyKeyboardMarkup(buttons));
+        var replyMarkup = new ReplyKeyboardMarkup(true)
+            .AddButton(KeyboardButton.WithRequestLocation("Location"))
+            .AddButton(KeyboardButton.WithRequestContact("Contact"));
+        return await bot.SendTextMessageAsync(msg.Chat, "Who or Where are you?", replyMarkup: replyMarkup);
     }
 
     async Task<Message> StartInlineQuery(Message msg)

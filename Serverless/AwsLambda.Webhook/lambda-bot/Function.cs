@@ -1,6 +1,5 @@
 using Amazon.Lambda.Core;
 using System.Text.Json;
-using Telegram.Bot.Serialization;
 using Telegram.Bot.Types;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
@@ -22,7 +21,7 @@ public class LambdaFunction
 
         try
         {
-            Update? updateEvent = request.Deserialize<Update>(JsonSerializerOptionsProvider.Options);
+            Update? updateEvent = request.Deserialize<Update>(Telegram.Bot.JsonBotAPI.Options);
             if (updateEvent is null)
             {
                 const string resultMessage = "Unable to deserialize Update.";

@@ -3,7 +3,6 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
-using Telegram.Bot.Serialization;
 using Telegram.Bot.Types;
 
 namespace Telegram.Bot.Examples.AzureFunctions.IsolatedProcess.Webhook;
@@ -27,7 +26,7 @@ public class TelegramBot
         try
         {
             var body = await request.ReadAsStringAsync() ?? throw new ArgumentNullException(nameof(request));
-            var update = JsonSerializer.Deserialize<Update>(body, JsonSerializerOptionsProvider.Options);
+            var update = JsonSerializer.Deserialize<Update>(body, JsonBotAPI.Options);
             if (update is null)
             {
                 _logger.LogWarning("Unable to deserialize Update object.");

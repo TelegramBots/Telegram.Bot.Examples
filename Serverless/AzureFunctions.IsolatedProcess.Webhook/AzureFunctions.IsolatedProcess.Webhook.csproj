@@ -10,7 +10,7 @@
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.20.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.1.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.16.4" />
-    <PackageReference Include="Telegram.Bot" Version="21.3.0" />
+    <PackageReference Include="Telegram.Bot" Version="21.7.0" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
