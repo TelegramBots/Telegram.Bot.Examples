@@ -14,7 +14,7 @@ You can find useful information on setting up webhook for your bot in official d
 
 ## Setup
 
-Please make sure you have .NET 6 or newer installed. You can download .NET runtime from the [official site.](https://dotnet.microsoft.com/download)
+Please make sure you have .NET 8 or newer installed. You can download .NET runtime from the [official site.](https://dotnet.microsoft.com/download)
 This is a short description how you can test your bot locally. The description presumes that you already have a bot and it’s token. If not, please create one. You’ll find several explanations on the internet how to do this.
 
 ### Bot configuration

@@ -216,6 +216,8 @@ ModelManifest.xml
 .idea/
 *.*.iml
 
+# Settings for different environments
+appsettings.*.json
 launchSettings.json
 
 out.json

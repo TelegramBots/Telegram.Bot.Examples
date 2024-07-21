@@ -7,7 +7,8 @@ using Telegram.Bot.Types.InlineQueryResults;
 
 const int MaxEntries = 20;
 
-var token = Environment.GetEnvironmentVariable("TOKEN")!;
+// replace YOUR_BOT_TOKEN below, or set your TOKEN in Project Properties > Debug > Launch profiles UI > Environment variables
+var token = Environment.GetEnvironmentVariable("TOKEN") ?? "YOUR_BOT_TOKEN";
 
 // load all articles, sorted alphabetically, in memory (not optimal if you have a huge base of articles)
 var files = Directory.GetFiles("Articles", "*.html");

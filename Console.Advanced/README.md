@@ -14,7 +14,7 @@ template for hosting Bot application.
 
 ## Prerequisites
 
-Please make sure you have .NET 6 or newer installed. You can download .NET runtime from the [official site.](https://dotnet.microsoft.com/download)
+Please make sure you have .NET 8 or newer installed. You can download .NET runtime from the [official site.](https://dotnet.microsoft.com/download)
 
 You have to add [Telegram.Bot](https://www.nuget.org/packages/Telegram.Bot/) 
 nuget package to your project to be able to use polling:
@@ -35,11 +35,11 @@ Make sure that your .csproj contains these items (versions may vary):
 
 You should provide your Telegram Bot token with one of the available providers.
 Read futher on [Configuration in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-6.0).
-We provide plaecehoder for bot configuration in `appsettings*.json`. You have to replace {BOT_TOKEN} with actual Bot token:
+We provide placeholder for bot configuration in `appsettings.json`. You have to replace YOUR_BOT_TOKEN with actual Bot token:
 
 ```json
 "BotConfiguration": {
-  "BotToken": "{BOT_TOKEN}"
+  "BotToken": "YOUR_BOT_TOKEN"
 }
 ```
 

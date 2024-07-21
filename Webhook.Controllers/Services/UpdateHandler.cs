@@ -32,10 +32,10 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
             { ChosenInlineResult: { } chosenInlineResult }  => OnChosenInlineResult(chosenInlineResult),
             { Poll: { } poll }                              => OnPoll(poll),
             { PollAnswer: { } pollAnswer }                  => OnPollAnswer(pollAnswer),
-            // UpdateType.ChannelPost:
-            // UpdateType.EditedChannelPost:
-            // UpdateType.ShippingQuery:
-            // UpdateType.PreCheckoutQuery:
+            // ChannelPost:
+            // EditedChannelPost:
+            // ShippingQuery:
+            // PreCheckoutQuery:
             _                                               => UnknownUpdateHandlerAsync(update)
         });
     }

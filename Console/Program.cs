@@ -4,8 +4,8 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
-var token = Environment.GetEnvironmentVariable("TOKEN");
-token ??= "{YOUR_BOT_TOKEN}";
+// replace YOUR_BOT_TOKEN below, or set your TOKEN in Project Properties > Debug > Launch profiles UI > Environment variables
+var token = Environment.GetEnvironmentVariable("TOKEN") ?? "YOUR_BOT_TOKEN";
 
 using var cts = new CancellationTokenSource();
 var bot = new TelegramBotClient(token, cancellationToken: cts.Token);
@@ -115,7 +115,7 @@ async Task OnUpdate(Update update)
 async Task OnCallbackQuery(CallbackQuery callbackQuery)
 {
     await bot.AnswerCallbackQueryAsync(callbackQuery.Id, $"You selected {callbackQuery.Data}");
-    await bot.SendTextMessageAsync(callbackQuery.Message!.Chat.Id, $"Received callback from inline button {callbackQuery.Data}");
+    await bot.SendTextMessageAsync(callbackQuery.Message!.Chat, $"Received callback from inline button {callbackQuery.Data}");
 }
 
 async Task OnPollAnswer(PollAnswer pollAnswer)
