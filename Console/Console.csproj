@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Telegram.Bot" Version="21.7.1" />
+    <ProjectReference Include="..\..\Telegram.Bot\src\Telegram.Bot\Telegram.Bot.csproj" />
   </ItemGroup>
 
   <ItemGroup>

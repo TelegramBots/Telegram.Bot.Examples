@@ -65,6 +65,7 @@ async Task OnCommand(string command, string args, Message msg)
                 /keyboard       - send keyboard buttons
                 /remove         - remove keyboard buttons
                 /poll           - send a poll
+                /reaction       - send a reaction
                 """, parseMode: ParseMode.Html, linkPreviewOptions: true,
                 replyMarkup: new ReplyKeyboardRemove()); // also remove keyboard to clean-up things
             break;
@@ -98,6 +99,9 @@ async Task OnCommand(string command, string args, Message msg)
             break;
         case "/poll":
             await bot.SendPollAsync(msg.Chat, "Question", ["Option 0", "Option 1", "Option 2"], isAnonymous: false, allowsMultipleAnswers: true);
+            break;
+        case "/reaction":
+            await bot.SetMessageReactionAsync(msg.Chat, msg.MessageId, ["❤"], false);
             break;
     }
 }
