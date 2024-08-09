@@ -216,10 +216,6 @@ ModelManifest.xml
 .idea/
 *.*.iml
 
-# Settings for different environments
-appsettings.*.json
-launchSettings.json
-
 out.json
 bucket-name.txt
 out.yml
@@ -227,3 +223,6 @@ local.settings.json
 
 .fake
 .ionide
+
+/Console/Properties/launchSettings.json
+/InlineQueries/Properties/launchSettings.json

@@ -108,12 +108,12 @@ async Task OnCommand(string command, string args, Message msg)
 
 async Task OnUpdate(Update update)
 {
-    await (update switch
+    switch (update)
     {
-        { CallbackQuery: { } callbackQuery } => OnCallbackQuery(callbackQuery),
-        { PollAnswer: { } pollAnswer } => OnPollAnswer(pollAnswer),
-        _ => OnUnhandledUpdate(update)
-    });
+        case { CallbackQuery: { } callbackQuery }: await OnCallbackQuery(callbackQuery); break;
+        case { PollAnswer: { } pollAnswer }: await OnPollAnswer(pollAnswer); break;
+        default: Console.WriteLine($"Received unhandled update {update.Type}"); break;
+    };
 }
 
 async Task OnCallbackQuery(CallbackQuery callbackQuery)
@@ -127,5 +127,3 @@ async Task OnPollAnswer(PollAnswer pollAnswer)
     if (pollAnswer.User != null)
         await bot.SendTextMessageAsync(pollAnswer.User.Id, $"You voted for option(s) id [{string.Join(',', pollAnswer.OptionIds)}]");
 }
-
-async Task OnUnhandledUpdate(Update update) => Console.WriteLine($"Received unhandled update {update.Type}");

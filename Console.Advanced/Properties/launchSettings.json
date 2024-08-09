@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Console.Advanced": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

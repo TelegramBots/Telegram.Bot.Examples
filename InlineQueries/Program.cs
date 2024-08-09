@@ -22,33 +22,24 @@ for (int i = 0; i < files.Length; i++)
 }
 
 // start the bot
-var bot = new TelegramBotClient(token);
-var me = await bot.GetMeAsync();
 using var cts = new CancellationTokenSource();
-bot.StartReceiving(OnUpdate, OnError, null, cts.Token);
+var bot = new TelegramBotClient(token, cancellationToken: cts.Token);
+var me = await bot.GetMeAsync();
+bot.OnUpdate += OnUpdate;
 
 Console.WriteLine($"Start listening for @{me.Username}");
 Console.ReadLine();
+cts.Cancel(); // stop the bot
 
-// stop the bot
-cts.Cancel();
-
-Task OnError(ITelegramBotClient bot, Exception ex, HandleErrorSource source, CancellationToken ct)
-{
-    Console.WriteLine($"A {source} occured: {ex}");
-    return Task.CompletedTask;
-}
-
-async Task OnUpdate(ITelegramBotClient bot, Update update, CancellationToken ct)
+async Task OnUpdate(Update update)
 {
     try
     {
-        await (update.Type switch
+        switch (update.Type)
         {
-            UpdateType.InlineQuery => BotOnInlineQueryReceived(bot, update.InlineQuery!),
-            UpdateType.ChosenInlineResult => BotOnChosenInlineResultReceived(bot, update.ChosenInlineResult!),
-            _ => Task.CompletedTask
-        });
+            case UpdateType.InlineQuery: await OnInlineQuery(bot, update.InlineQuery!); break;
+            case UpdateType.ChosenInlineResult: await OnChosenInlineResult(bot, update.ChosenInlineResult!); break;
+        };
     }
 #pragma warning disable CA1031
     catch (Exception ex)
@@ -59,7 +50,7 @@ async Task OnUpdate(ITelegramBotClient bot, Update update, CancellationToken ct)
 }
 
 // for this method to be called, you need to enable "Inline mode" on in BotFather
-async Task BotOnInlineQueryReceived(ITelegramBotClient botClient, InlineQuery inlineQuery)
+async Task OnInlineQuery(ITelegramBotClient botClient, InlineQuery inlineQuery)
 {
     var results = new List<InlineQueryResult>();
 
@@ -86,11 +77,10 @@ async Task BotOnInlineQueryReceived(ITelegramBotClient botClient, InlineQuery in
 }
 
 // for this method to be called, you need to enable "Inline feedback" in BotFather (100% if you want to know all your users choices)
-Task BotOnChosenInlineResultReceived(ITelegramBotClient botClient, ChosenInlineResult chosenInlineResult)
+async Task OnChosenInlineResult(ITelegramBotClient botClient, ChosenInlineResult chosenInlineResult)
 {
     if (uint.TryParse(chosenInlineResult.ResultId, out uint index) && index < articleNames.Length)
     {
         Console.WriteLine($"User {chosenInlineResult.From} has selected article: {articleNames[index]}");
     }
-    return Task.CompletedTask;
 }
