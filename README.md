@@ -1,7 +1,7 @@
 # Telegram.Bot Examples
 
 [![Telegram chat](https://img.shields.io/badge/Support_Chat-Telegram-blue.svg?style=flat-square)](https://t.me/joinchat/B35YY0QbLfd034CFnvCtCA)
-[![Nuget](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fnuget.voids.site%2Fv3%2Fpackage%2FTelegram.Bot%2Findex.json&query=versions%5B-1%3A%5D&style=flat-square&label=Telegram.Bot&color=d8b541)](https://nuget.voids.site/packages/Telegram.Bot)
+[![Nuget](https://img.shields.io/badge/dynamic/json?url=https://pkgs.dev.azure.com/tgbots/Telegram.Bot/_packaging/release/nuget/v3/flat2/Telegram.Bot/index.json&query=versions%5B-1%3A%5D&style=flat-square&label=Telegram.Bot&color=d8b541)](https://dev.azure.com/tgbots/Telegram.Bot/_artifacts/feed/release/NuGet/Telegram.Bot)
 [![Documentations](https://img.shields.io/badge/Documentations-Book-orange.svg?style=flat-square)](https://telegrambots.github.io/book/)
 [![Build status](https://img.shields.io/github/actions/workflow/status/TelegramBots/Telegram.Bot.Examples/.github/workflows/build_examples.yml?branch=master&style=flat-square)](https://github.com/TelegramBots/Telegram.Bot.Examples/actions/workflows/build_examples.yml)
 
