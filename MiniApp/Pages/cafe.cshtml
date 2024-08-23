@@ -1,0 +1,97 @@
+@page
+@using System.Globalization
+@{Layout = null;}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>DurgerKingBot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, viewport-fit=cover" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="MobileOptimized" content="176" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="robots" content="noindex, nofollow" />
+    <script src="https://tg.dev/js/telegram-web-app.js?52"></script>
+    <script>
+      function setThemeClass() {
+        document.documentElement.className = Telegram.WebApp.colorScheme;
+      }
+      Telegram.WebApp.onEvent('themeChanged', setThemeClass);
+      setThemeClass();
+    </script>
+    <link href="/css/cafe.css?22" rel="stylesheet">
+  </head>
+  <body style="display:none">
+    <section class="cafe-page cafe-items">
+@{int id = 0;}
+@foreach (var item in Cafe.FoodItems)
+{
+    <div class="cafe-item js-item" data-item-id="@(id++)" data-item-price="@((int)(item.price*100))">
+    <div class="cafe-item-counter js-item-counter">1</div>
+    <div class="cafe-item-photo">
+            <picture class="cafe-item-lottie js-item-lottie">
+        <source type="application/x-tgsticker" srcset="@item.tgs">
+        <img src="@item.png" style="background-image: url('data:image/svg+xml;base64,@item.img');">
+      </picture>
+      
+    </div>
+    <div class="cafe-item-label">
+      <span class="cafe-item-title">@item.name</span>
+      <span class="cafe-item-price">$@item.price.ToString("0.00", CultureInfo.InvariantCulture)</span>
+    </div>
+    <div class="cafe-item-buttons">
+            <button class="cafe-item-decr-button js-item-decr-btn button-item ripple-handler">
+        <span class="ripple-mask"><span class="ripple"></span></span>
+      </button>
+      <button class="cafe-item-incr-button js-item-incr-btn button-item ripple-handler">
+        <span class="button-item-label">Add</span>
+        <span class="ripple-mask"><span class="ripple"></span></span>
+      </button>
+    </div>
+  </div>
+}
+  <div class="cafe-item-shadow"></div><div class="cafe-item-shadow"></div><div class="cafe-item-shadow"></div><div class="cafe-item-shadow"></div>
+</section>
+<section class="cafe-page cafe-order-overview">
+  <div class="cafe-block">
+    <div class="cafe-order-header-wrap">
+      <h2 class="cafe-order-header">Your Order</h2>
+      <span class="cafe-order-edit js-order-edit">Edit</span>
+    </div>
+    <div class="cafe-order-items">
+@{id = 0;}
+@foreach (var item in Cafe.FoodItems)
+{
+  <div class="cafe-order-item js-order-item" data-item-id="@(id++)">
+    <div class="cafe-order-item-photo">
+            <picture class="cafe-item-lottie js-item-lottie">
+        <source type="application/x-tgsticker" srcset="@item.tgs">
+        <img src="@item.png" style="background-image: url('data:image/svg+xml;base64,@item.img');">
+      </picture>
+    </div>
+    <div class="cafe-order-item-label">
+      <div class="cafe-order-item-title">@item.name <span class="cafe-order-item-counter"><span class="js-order-item-counter">1</span>x</span></div>
+      <div class="cafe-order-item-description">@item.descr</div>
+    </div>
+    <div class="cafe-order-item-price js-order-item-price">$@item.price.ToString("0.00", CultureInfo.InvariantCulture)</div>
+  </div>
+}
+    </div>
+  </div>
+  <div class="cafe-text-field-wrap">
+    <textarea class="cafe-text-field js-order-comment-field cafe-block" rows="1" placeholder="Add comment…"></textarea>
+    <div class="cafe-text-field-hint">
+      Any special requests, details, final wishes etc.
+    </div>
+  </div>
+</section>
+<div class="cafe-status-wrap">
+  <div class="cafe-status js-status"></div>
+</div>
+    <script src="https://tg.dev/js/jquery.min.js"></script>
+    <script src="https://tg.dev/js/tgsticker.js?31"></script>
+    <script src="/js/cafe.js?31"></script>
+    <script>Cafe.init({"apiUrl":"\/cafe\/api","mode":"@Request.Query["mode"]","userId":"@Request.Query["userId"]","userHash":"@Request.Query["userHash"]"});</script>
+  </body>
+</html>
