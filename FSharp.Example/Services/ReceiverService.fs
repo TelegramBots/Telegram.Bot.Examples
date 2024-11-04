@@ -32,7 +32,7 @@ type ReceiverService<'T when 'T :> IUpdateHandler>(botClient: ITelegramBotClient
        )
 
       try
-        let! me = botClient.GetMeAsync(cts) |> Async.AwaitTask
+        let! me = botClient.GetMe(cts) |> Async.AwaitTask
         let username =
           match me.Username with
           | null -> "My Awesome Bot"

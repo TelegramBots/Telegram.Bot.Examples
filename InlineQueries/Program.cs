@@ -24,7 +24,7 @@ for (int i = 0; i < files.Length; i++)
 // start the bot
 using var cts = new CancellationTokenSource();
 var bot = new TelegramBotClient(token, cancellationToken: cts.Token);
-var me = await bot.GetMeAsync();
+var me = await bot.GetMe();
 bot.OnUpdate += OnUpdate;
 
 Console.WriteLine($"Start listening for @{me.Username}");
@@ -73,7 +73,7 @@ async Task OnInlineQuery(ITelegramBotClient botClient, InlineQuery inlineQuery)
             });
         index++;
     }
-    await botClient.AnswerInlineQueryAsync(inlineQuery.Id, results);
+    await botClient.AnswerInlineQuery(inlineQuery.Id, results);
 }
 
 // for this method to be called, you need to enable "Inline feedback" in BotFather (100% if you want to know all your users choices)

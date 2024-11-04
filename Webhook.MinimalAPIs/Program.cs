@@ -10,7 +10,7 @@ builder.Services.AddHttpClient("tgwebhook").RemoveAllLoggers().AddTypedClient(ht
 var app = builder.Build();
 app.UseHttpsRedirection();
 
-app.MapGet("/bot/setWebhook", async (TelegramBotClient bot) => { await bot.SetWebhookAsync(webhookUrl); return $"Webhook set to {webhookUrl}"; });
+app.MapGet("/bot/setWebhook", async (TelegramBotClient bot) => { await bot.SetWebhook(webhookUrl); return $"Webhook set to {webhookUrl}"; });
 app.MapPost("/bot", OnUpdate);
 app.Run();
 
@@ -21,5 +21,5 @@ async void OnUpdate(TelegramBotClient bot, Update update)
     var msg = update.Message;
     Console.WriteLine($"Received message '{msg.Text}' in {msg.Chat}");
     // let's echo back received text in the chat
-    await bot.SendTextMessageAsync(msg.Chat, $"{msg.From} said: {msg.Text}");
+    await bot.SendMessage(msg.Chat, $"{msg.From} said: {msg.Text}");
 }

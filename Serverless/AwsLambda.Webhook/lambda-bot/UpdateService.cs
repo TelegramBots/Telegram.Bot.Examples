@@ -34,21 +34,21 @@ public class UpdateService
         {
             case MessageType.Text:
                 // Echo each Message
-                await botClient.SendTextMessageAsync(message.Chat.Id, message.Text!);
+                await botClient.SendMessage(message.Chat.Id, message.Text!);
                 break;
 
             case MessageType.Photo:
                 // Download Photo
                 string fileId = message.Photo![^1].FileId;
-                File file = await botClient.GetFileAsync(fileId);
+                File file = await botClient.GetFile(fileId);
 
                 string filename = file.FileId + "." + file.FilePath!.Split('.').Last();
                 await using (FileStream saveImageStream = System.IO.File.Open(filename, FileMode.Create))
                 {
-                    await botClient.DownloadFileAsync(file.FilePath, saveImageStream);
+                    await botClient.DownloadFile(file.FilePath, saveImageStream);
                 }
 
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Thx for the Pics");
+                await botClient.SendMessage(message.Chat.Id, "Thx for the Pics");
                 break;
         }
     }

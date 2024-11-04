@@ -24,7 +24,7 @@ public class UpdateService
         if (!(update.Message is { } message)) return;
 
         _logger.LogInformation("Received Message from {0}", message.Chat.Id);
-        await _botClient.SendTextMessageAsync(
+        await _botClient.SendMessage(
             chatId: message.Chat.Id,
             text: $"Echo : {message.Text}");
     }

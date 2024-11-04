@@ -14,7 +14,7 @@ public class BotController(IOptions<BotConfiguration> Config) : ControllerBase
     public async Task<string> SetWebHook([FromServices] ITelegramBotClient bot, CancellationToken ct)
     {
         var webhookUrl = Config.Value.BotWebhookUrl.AbsoluteUri;
-        await bot.SetWebhookAsync(webhookUrl, allowedUpdates: [], secretToken: Config.Value.SecretToken, cancellationToken: ct);
+        await bot.SetWebhook(webhookUrl, allowedUpdates: [], secretToken: Config.Value.SecretToken, cancellationToken: ct);
         return $"Webhook set to {webhookUrl}";
     }
 

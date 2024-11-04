@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
-    <PackageReference Include="Telegram.Bot" Version="21.7.1" />
+    <PackageReference Include="Telegram.Bot" Version="22.0.0" />
   </ItemGroup>
 
   <ItemGroup>

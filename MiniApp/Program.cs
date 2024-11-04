@@ -36,7 +36,7 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 // Bot entrypoints:
-app.MapGet("/bot/setWebhook", async (TelegramBotClient bot) => { await bot.SetWebhookAsync(webappUrl + "/bot"); return $"Webhook set to {webappUrl}/bot"; });
+app.MapGet("/bot/setWebhook", async (TelegramBotClient bot) => { await bot.SetWebhook(webappUrl + "/bot"); return $"Webhook set to {webappUrl}/bot"; });
 app.MapPost("/bot", OnUpdate);
 // WebAppDemo & DurgerKing backend: (their AJAX don't use XSRF antiforgery but we validate Telegram Data anyway)
 app.MapPost("/cafe/api", Cafe.OnCafeApi).DisableAntiforgery();
@@ -50,15 +50,15 @@ async void OnUpdate(TelegramBotClient bot, Update update, ILogger<Program> logge
     switch (update)
     {
         case { Message.Text: "/start" }:
-            await bot.SendTextMessageAsync(update.Message.Chat, "<b>Let's get started</b>\n\nTry our Razor Webapp or order your perfect lunch! 🍟",
+            await bot.SendMessage(update.Message.Chat, "<b>Let's get started</b>\n\nTry our Razor Webapp or order your perfect lunch! 🍟",
                 parseMode: Telegram.Bot.Types.Enums.ParseMode.Html,
                 replyMarkup: (InlineKeyboardMarkup)InlineKeyboardButton.WithWebApp("Launch Mini-App", webappUrl));
             break;
         case { PreCheckoutQuery: { } pcq }:
-            await bot.AnswerPreCheckoutQueryAsync(pcq.Id, Cafe.OnPreCheckoutQuery(pcq));
+            await bot.AnswerPreCheckoutQuery(pcq.Id, Cafe.OnPreCheckoutQuery(pcq));
             break;
         case { Message.SuccessfulPayment: { } sp }:
-            await bot.SendTextMessageAsync(update.Message.Chat, "Thank you for your 'payment'! Don't worry, your imaginary credit card was not charged. Your order is not on the way.");
+            await bot.SendMessage(update.Message.Chat, "Thank you for your 'payment'! Don't worry, your imaginary credit card was not charged. Your order is not on the way.");
             break;
         case { Message.WebAppData: { } wad }:
             logger.LogInformation("Received WebAppData: {Data} | button {ButtonText}", wad.Data, wad.ButtonText);
@@ -77,7 +77,7 @@ async Task<object> OnDemoApi(TelegramBotClient bot, IConfiguration config, [From
         case "sendMessage":
             string? msg_id = form["msg_id"], with_webview = form["with_webview"];
             var user = JsonSerializer.Deserialize<User>(query["user"], JsonBotAPI.Options)!;
-            await bot.SendTextMessageAsync(user.Id, "Hello, World!",
+            await bot.SendMessage(user.Id, "Hello, World!",
                 replyMarkup: with_webview == "0" ? new ReplyKeyboardRemove() :
                     new ReplyKeyboardMarkup(true).AddButton(KeyboardButton.WithWebApp("Open WebApp", webappUrl + "/demo")));
             return new { response = new { ok = true } };

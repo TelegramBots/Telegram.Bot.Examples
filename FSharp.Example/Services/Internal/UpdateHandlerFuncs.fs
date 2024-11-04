@@ -27,7 +27,7 @@ open FSharp.Example.Util
 module UpdateHandlerFuncs =
   module private BotTextMessages =
     let sendInlineKeyboard (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (message:Message) =
-      botClient.SendChatActionAsync(
+      botClient.SendChatAction(
         chatId = message.Chat.Id,
         action = ChatAction.Typing,
         cancellationToken = cts) |> Async.AwaitTask |> ignore
@@ -46,7 +46,7 @@ module UpdateHandlerFuncs =
         }
       }
 
-      botClient.SendTextMessageAsync(
+      botClient.SendMessage(
         chatId = message.Chat.Id,
         text = "Choose",
         replyMarkup = InlineKeyboardMarkup(inlineKeyboard),
@@ -64,7 +64,7 @@ module UpdateHandlerFuncs =
         },
         ResizeKeyboard = true)
 
-      botClient.SendTextMessageAsync(
+      botClient.SendMessage(
           chatId = message.Chat.Id,
           text = "Choose",
           replyMarkup = replyKeyboardMarkup,
@@ -72,7 +72,7 @@ module UpdateHandlerFuncs =
         |> Async.AwaitTask |> Async.Ignore
 
     let removeKeyboard (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (message:Message) =
-      botClient.SendTextMessageAsync(
+      botClient.SendMessage(
         chatId = message.Chat.Id,
         text = "Removing keyboard",
         replyMarkup = ReplyKeyboardRemove(),
@@ -80,7 +80,7 @@ module UpdateHandlerFuncs =
       |> Async.AwaitTask |> Async.Ignore
 
     let sendFile (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (message:Message) =
-      botClient.SendChatActionAsync(
+      botClient.SendChatAction(
         message.Chat.Id,
         ChatAction.UploadPhoto,
         cancellationToken = cts)
@@ -94,7 +94,7 @@ module UpdateHandlerFuncs =
         InputFileStream(new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read),
                         fileName)
 
-      botClient.SendPhotoAsync(
+      botClient.SendPhoto(
         chatId = message.Chat.Id,
         photo = inputStream,
         caption = "Nice Picture",
@@ -109,7 +109,7 @@ module UpdateHandlerFuncs =
         },
         ResizeKeyboard = true)
 
-      botClient.SendTextMessageAsync(
+      botClient.SendMessage(
         chatId = message.Chat.Id,
         text = "Who or Where are you?",
         replyMarkup = requestReplyKeyboard,
@@ -120,7 +120,7 @@ module UpdateHandlerFuncs =
       let inlineKeyboard =
         InlineKeyboardMarkup (InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Inline Mode"))
 
-      botClient.SendTextMessageAsync(
+      botClient.SendMessage(
         chatId = message.Chat.Id,
         text = "Press the button to start Inline Query",
         replyMarkup = inlineKeyboard,
@@ -141,7 +141,7 @@ module UpdateHandlerFuncs =
         "/inline_mode - send keyboard with inline query\n" +
         "/throw - Simulate a failed bot message handler\n"
 
-      botClient.SendTextMessageAsync(
+      botClient.SendMessage(
         chatId = message.Chat.Id,
         text = usage,
         replyMarkup = ReplyKeyboardRemove(),
@@ -169,9 +169,9 @@ module UpdateHandlerFuncs =
     | _ -> async { return () }
 
   let botOnCallbackQueryReceived (botClient:ITelegramBotClient) (logger: ILogger) (cts: CancellationToken) (query:CallbackQuery) =
-    botClient.AnswerCallbackQueryAsync(query.Id, $"Received {query.Data}") |> Async.AwaitTask |> ignore
+    botClient.AnswerCallbackQuery(query.Id, $"Received {query.Data}") |> Async.AwaitTask |> ignore
 
-    botClient.SendTextMessageAsync(
+    botClient.SendMessage(
         chatId = query.Message.Chat.Id,
         text = $"Received {query.Data}",
         cancellationToken = cts) |> Async.AwaitTask |> Async.Ignore
@@ -188,7 +188,7 @@ module UpdateHandlerFuncs =
           inputMessageContent = InputTextMessageContent("hello"))
       }
 
-    botClient.AnswerInlineQueryAsync(inlinequery.Id,
+    botClient.AnswerInlineQuery(inlinequery.Id,
                                       results |> Seq.cast,
                                       isPersonal = true,
                                       cacheTime = 0,

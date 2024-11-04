@@ -2,7 +2,7 @@ using System.Text.Json;
 using Telegram.Bot;
 using Telegram.Bot.Types.Payments;
 
-#pragma warning disable CA1305, IDE0059, IDE1006
+#pragma warning disable CA1305, CA1812, CA1852, IDE0059, IDE1006
 
 internal static class Cafe
 {
@@ -28,8 +28,8 @@ internal static class Cafe
         return new
         {
             ok = true,
-            invoice_url = await bot.CreateInvoiceLinkAsync("Order #12345678", "Perfect lunch from Durger King",
-                payload.ToString(), config["PaymentProviderToken"], "USD", prices, needName: true, needPhoneNumber: true, needShippingAddress: true)
+            invoice_url = await bot.CreateInvoiceLink("Order #12345678", "Perfect lunch from Durger King",
+                payload.ToString(), "USD", prices, config["PaymentProviderToken"], needName: true, needPhoneNumber: true, needShippingAddress: true)
         };
     }
 

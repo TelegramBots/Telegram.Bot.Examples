@@ -59,7 +59,7 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
             "/throw" => FailingHandler(msg),
             _ => Usage(msg)
         });
-        logger.LogInformation("The message was sent with id: {SentMessageId}", sentMessage.MessageId);
+        logger.LogInformation("The message was sent with id: {SentMessageId}", sentMessage.Id);
     }
 
     async Task<Message> Usage(Message msg)
@@ -76,15 +76,15 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
                 /poll_anonymous - send an anonymous poll
                 /throw          - what happens if handler fails
             """;
-        return await bot.SendTextMessageAsync(msg.Chat, usage, parseMode: ParseMode.Html, replyMarkup: new ReplyKeyboardRemove());
+        return await bot.SendMessage(msg.Chat, usage, parseMode: ParseMode.Html, replyMarkup: new ReplyKeyboardRemove());
     }
 
     async Task<Message> SendPhoto(Message msg)
     {
-        await bot.SendChatActionAsync(msg.Chat, ChatAction.UploadPhoto);
+        await bot.SendChatAction(msg.Chat, ChatAction.UploadPhoto);
         await Task.Delay(2000); // simulate a long task
         await using var fileStream = new FileStream("Files/bot.gif", FileMode.Open, FileAccess.Read);
-        return await bot.SendPhotoAsync(msg.Chat, fileStream, caption: "Read https://telegrambots.github.io/book/");
+        return await bot.SendPhoto(msg.Chat, fileStream, caption: "Read https://telegrambots.github.io/book/");
     }
 
     // Send inline keyboard. You can process responses in OnCallbackQuery handler
@@ -95,7 +95,7 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
             .AddNewRow()
                 .AddButton("WithCallbackData", "CallbackData")
                 .AddButton(InlineKeyboardButton.WithUrl("WithUrl", "https://github.com/TelegramBots/Telegram.Bot"));
-        return await bot.SendTextMessageAsync(msg.Chat, "Inline buttons:", replyMarkup: inlineMarkup);
+        return await bot.SendMessage(msg.Chat, "Inline buttons:", replyMarkup: inlineMarkup);
     }
 
     async Task<Message> SendReplyKeyboard(Message msg)
@@ -103,12 +103,12 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
         var replyMarkup = new ReplyKeyboardMarkup(true)
             .AddNewRow("1.1", "1.2", "1.3")
             .AddNewRow().AddButton("2.1").AddButton("2.2");
-        return await bot.SendTextMessageAsync(msg.Chat, "Keyboard buttons:", replyMarkup: replyMarkup);
+        return await bot.SendMessage(msg.Chat, "Keyboard buttons:", replyMarkup: replyMarkup);
     }
 
     async Task<Message> RemoveKeyboard(Message msg)
     {
-        return await bot.SendTextMessageAsync(msg.Chat, "Removing keyboard", replyMarkup: new ReplyKeyboardRemove());
+        return await bot.SendMessage(msg.Chat, "Removing keyboard", replyMarkup: new ReplyKeyboardRemove());
     }
 
     async Task<Message> RequestContactAndLocation(Message msg)
@@ -116,24 +116,24 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
         var replyMarkup = new ReplyKeyboardMarkup(true)
             .AddButton(KeyboardButton.WithRequestLocation("Location"))
             .AddButton(KeyboardButton.WithRequestContact("Contact"));
-        return await bot.SendTextMessageAsync(msg.Chat, "Who or Where are you?", replyMarkup: replyMarkup);
+        return await bot.SendMessage(msg.Chat, "Who or Where are you?", replyMarkup: replyMarkup);
     }
 
     async Task<Message> StartInlineQuery(Message msg)
     {
         var button = InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Inline Mode");
-        return await bot.SendTextMessageAsync(msg.Chat, "Press the button to start Inline Query\n\n" +
+        return await bot.SendMessage(msg.Chat, "Press the button to start Inline Query\n\n" +
             "(Make sure you enabled Inline Mode in @BotFather)", replyMarkup: new InlineKeyboardMarkup(button));
     }
 
     async Task<Message> SendPoll(Message msg)
     {
-        return await bot.SendPollAsync(msg.Chat, "Question", PollOptions, isAnonymous: false);
+        return await bot.SendPoll(msg.Chat, "Question", PollOptions, isAnonymous: false);
     }
 
     async Task<Message> SendAnonymousPoll(Message msg)
     {
-        return await bot.SendPollAsync(chatId: msg.Chat, "Question", PollOptions);
+        return await bot.SendPoll(chatId: msg.Chat, "Question", PollOptions);
     }
 
     static Task<Message> FailingHandler(Message msg)
@@ -145,8 +145,8 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
     private async Task OnCallbackQuery(CallbackQuery callbackQuery)
     {
         logger.LogInformation("Received inline keyboard callback from: {CallbackQueryId}", callbackQuery.Id);
-        await bot.AnswerCallbackQueryAsync(callbackQuery.Id, $"Received {callbackQuery.Data}");
-        await bot.SendTextMessageAsync(callbackQuery.Message!.Chat, $"Received {callbackQuery.Data}");
+        await bot.AnswerCallbackQuery(callbackQuery.Id, $"Received {callbackQuery.Data}");
+        await bot.SendMessage(callbackQuery.Message!.Chat, $"Received {callbackQuery.Data}");
     }
 
     #region Inline Mode
@@ -159,13 +159,13 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
             new InlineQueryResultArticle("1", "Telegram.Bot", new InputTextMessageContent("hello")),
             new InlineQueryResultArticle("2", "is the best", new InputTextMessageContent("world"))
         ];
-        await bot.AnswerInlineQueryAsync(inlineQuery.Id, results, cacheTime: 0, isPersonal: true);
+        await bot.AnswerInlineQuery(inlineQuery.Id, results, cacheTime: 0, isPersonal: true);
     }
 
     private async Task OnChosenInlineResult(ChosenInlineResult chosenInlineResult)
     {
         logger.LogInformation("Received inline result: {ChosenInlineResultId}", chosenInlineResult.ResultId);
-        await bot.SendTextMessageAsync(chosenInlineResult.From.Id, $"You chose result with Id: {chosenInlineResult.ResultId}");
+        await bot.SendMessage(chosenInlineResult.From.Id, $"You chose result with Id: {chosenInlineResult.ResultId}");
     }
 
     #endregion
@@ -181,7 +181,7 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
         var answer = pollAnswer.OptionIds.FirstOrDefault();
         var selectedOption = PollOptions[answer];
         if (pollAnswer.User != null)
-            await bot.SendTextMessageAsync(pollAnswer.User.Id, $"You've chosen: {selectedOption.Text} in poll");
+            await bot.SendMessage(pollAnswer.User.Id, $"You've chosen: {selectedOption.Text} in poll");
     }
 
     private Task UnknownUpdateHandlerAsync(Update update)
