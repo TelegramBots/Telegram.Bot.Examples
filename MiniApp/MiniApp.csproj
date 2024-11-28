@@ -5,10 +5,11 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>a7997d6b-e2b6-456a-a171-14fb92006b82</UserSecretsId>
+    <NoWarn>IDE0005;IDE0161;IDE0052;IDE0021;IDE0290</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Telegram.Bot" Version="22.0.0" />
+    <PackageReference Include="Telegram.Bot" Version="22.1.3" />
   </ItemGroup>
 
 </Project>

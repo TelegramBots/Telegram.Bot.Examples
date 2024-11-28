@@ -8,44 +8,26 @@ namespace LambdaBot;
 
 public class UpdateService
 {
-    private readonly TelegramBotClient botClient;
-
-    public UpdateService()
-    {
-        // replace with your bot token
-        botClient = new TelegramBotClient("<token>");
-    }
+    private readonly TelegramBotClient botClient = new("<token>"); // replace with your bot token
 
     public async Task EchoAsync(Update update)
     {
-        if (update is null)
-        {
-            return;
-        }
-
-        if (!(update.Message is { } message))
-        {
-            return;
-        }
+        if (update is not { Message: { } message }) return;
 
         LambdaLogger.Log("Received Message from " + message.Chat.Id);
-
         switch (message.Type)
         {
-            case MessageType.Text:
-                // Echo each Message
+            case MessageType.Text: // Let's echo text messages
                 await botClient.SendMessage(message.Chat.Id, message.Text!);
                 break;
 
-            case MessageType.Photo:
-                // Download Photo
-                string fileId = message.Photo![^1].FileId;
-                File file = await botClient.GetFile(fileId);
+            case MessageType.Photo: // Let's download the photo
+                File file = await botClient.GetFile(message.Photo![^1].FileId);
 
-                string filename = file.FileId + "." + file.FilePath!.Split('.').Last();
+                string filename = file.FileId + Path.GetExtension(file.FilePath);
                 await using (FileStream saveImageStream = System.IO.File.Open(filename, FileMode.Create))
                 {
-                    await botClient.DownloadFile(file.FilePath, saveImageStream);
+                    await botClient.DownloadFile(file.FilePath!, saveImageStream);
                 }
 
                 await botClient.SendMessage(message.Chat.Id, "Thx for the Pics");

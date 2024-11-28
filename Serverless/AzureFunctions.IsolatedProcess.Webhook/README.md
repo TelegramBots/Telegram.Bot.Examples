@@ -1,7 +1,7 @@
 # Azure Functions Example
 
 ## Requirements
-- [.NET SDK 6.0](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+- [.NET SDK 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 - Visual Studio 2022 with Azure development workload
 - An Azure account with an active subscription
 - [Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local)

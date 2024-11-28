@@ -6,22 +6,14 @@ using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using Telegram.Bot.Types;
 
+#pragma warning disable CA1031
+
 namespace Telegram.Bot.Examples.AzureFunctions.Webhook;
 
-public class TelegramBotFunction
+public class TelegramBotFunction(ILogger<TelegramBotFunction> logger, UpdateService updateService)
 {
-    private readonly UpdateService _updateService;
-
-    public TelegramBotFunction(UpdateService updateService)
-    {
-        _updateService = updateService;
-    }
-
     [FunctionName("TelegramBot")]
-    public async Task<IActionResult> Update(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
-        HttpRequest request,
-        ILogger logger)
+    public async Task<IActionResult> Update([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest request)
     {
         try
         {
@@ -33,15 +25,12 @@ public class TelegramBotFunction
                 return new OkResult();
             }
 
-            await _updateService.EchoAsync(update);
+            await updateService.EchoAsync(update);
         }
-#pragma warning disable CA1031
         catch (Exception e)
-#pragma warning restore CA1031
         {
             logger.LogError("Exception: " + e.Message);
         }
-
         return new OkResult();
     }
 }

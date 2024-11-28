@@ -55,6 +55,52 @@ dotnet_diagnostic.CA1062.severity = silent
 # CA1031: Do not catch general exception types
 dotnet_diagnostic.CA1031.severity = silent
 
+csharp_align_multiline_parameter = true
+csharp_align_multiline_extends_list = true
+csharp_align_linq_query = true
+csharp_place_attribute_on_same_line = false
+csharp_empty_block_style = together
+csharp_style_namespace_declarations = file_scoped
+csharp_style_var_when_type_is_apparent = true
+csharp_prefer_braces = when_multiline
+dotnet_diagnostic.IDE0011.severity = silent
+csharp_style_expression_bodied_constructors = when_on_single_line
+csharp_style_expression_bodied_methods = when_on_single_line
+csharp_style_expression_bodied_operators = when_on_single_line
+dotnet_diagnostic.IDE0046.severity = silent
+csharp_style_var_for_built_in_types = false
+dotnet_diagnostic.IDE0008.severity = silent
+
+# IDE0022: Use expression body for method
+dotnet_diagnostic.IDE0022.severity = none
+
+# IDE0040: Add accessibility modifiers
+dotnet_style_require_accessibility_modifiers = never
+
+# CA1515: Consider making public types internal
+dotnet_diagnostic.CA1515.severity = none
+
+# IDE0058: Expression value is never used
+dotnet_diagnostic.IDE0058.severity = none
+
+# IDE0010: Add missing cases
+dotnet_diagnostic.IDE0010.severity = none
+
+# CA2007: Consider calling ConfigureAwait on the awaited task
+dotnet_diagnostic.CA2007.severity = silent
+
+# IDE0055: Fix formatting
+dotnet_diagnostic.IDE0055.severity = none
+
+# IDE0021: Use expression body for constructor
+dotnet_diagnostic.IDE0021.severity = silent
+
+# CS1998: Async method lacks 'await' operators and will run synchronously
+dotnet_diagnostic.CS1998.severity = silent
+
+# SYSLIB1045: Convert to 'GeneratedRegexAttribute'.
+dotnet_diagnostic.SYSLIB1045.severity = silent
+
 [*.md]
 trim_trailing_whitespace = false
 indent_size = 2

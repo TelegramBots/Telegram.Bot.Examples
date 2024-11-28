@@ -1,8 +1,8 @@
 # Azure Functions Example
 
 ## Requirements
-- [.NET Core SDK 3.1](https://dotnet.microsoft.com/download/dotnet-core/3.1)
-- Visual Studio 2019 with Azure development workload
+- [.NET SDK 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+- Visual Studio 2022 with Azure development workload
 - An Azure account with an active subscription
 
 
