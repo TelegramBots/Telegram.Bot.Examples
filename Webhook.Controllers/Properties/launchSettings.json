@@ -24,7 +24,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "bot/setWebhook",
-      "applicationUrl": "https://localhost:7057;http://localhost:5227",
+      "applicationUrl": "https://localhost:44315;http://localhost:5227",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

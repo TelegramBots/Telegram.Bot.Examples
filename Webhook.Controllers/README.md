@@ -39,10 +39,10 @@ Install ngrok from this page: [ngrok - download](https://ngrok.com/download) or 
 brew install --cask ngrok
 ```
 
-and start ngrok on port 8443.
+and start ngrok for your localhost application url.
 
 ```shell
-ngrok http 8443 
+ngrok http --host-header=localhost https://localhost:44315
 ```
 
 Telegram API only supports the ports 443, 80, 88 or 8443. Feel free to change the port in the config of the project.
