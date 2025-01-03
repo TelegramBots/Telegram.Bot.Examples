@@ -2,7 +2,6 @@ using Amazon.Lambda.Core;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using File = Telegram.Bot.Types.File;
 
 namespace LambdaBot;
 
@@ -22,7 +21,7 @@ public class UpdateService
                 break;
 
             case MessageType.Photo: // Let's download the photo
-                File file = await botClient.GetFile(message.Photo![^1].FileId);
+                var file = await botClient.GetFile(message.Photo![^1].FileId);
 
                 string filename = file.FileId + Path.GetExtension(file.FilePath);
                 await using (FileStream saveImageStream = System.IO.File.Open(filename, FileMode.Create))

@@ -9,9 +9,11 @@ var token = Environment.GetEnvironmentVariable("TOKEN") ?? "YOUR_BOT_TOKEN";
 
 using var cts = new CancellationTokenSource();
 var bot = new TelegramBotClient(token, cancellationToken: cts.Token);
+
 var me = await bot.GetMe();
 await bot.DeleteWebhook();          // you may comment this line if you find it unnecessary
 await bot.DropPendingUpdates();     // you may comment this line if you find it unnecessary
+
 bot.OnError += OnError;
 bot.OnMessage += OnMessage;
 bot.OnUpdate += OnUpdate;
