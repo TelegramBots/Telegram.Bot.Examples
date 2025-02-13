@@ -1,4 +1,5 @@
 using Telegram.Bot;
+using Telegram.Bot.Extensions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -84,18 +85,13 @@ async Task OnCommand(string command, string args, Message msg)
             }
             break;
         case "/inline_buttons":
-            var inlineMarkup = new InlineKeyboardMarkup()
-                .AddNewRow("1.1", "1.2", "1.3")
-                .AddNewRow()
-                    .AddButton("WithCallbackData", "CallbackData")
-                    .AddButton(InlineKeyboardButton.WithUrl("WithUrl", "https://github.com/TelegramBots/Telegram.Bot"));
-            await bot.SendMessage(msg.Chat, "Inline buttons:", replyMarkup: inlineMarkup);
+            await bot.SendMessage(msg.Chat, "Inline buttons:", replyMarkup: new InlineKeyboardButton[][] {
+                ["1.1", "1.2", "1.3"],
+                [("WithCallbackData", "CallbackData"), ("WithUrl", "https://github.com/TelegramBots/Telegram.Bot")]
+            });
             break;
         case "/keyboard":
-            var replyMarkup = new ReplyKeyboardMarkup()
-                .AddNewRow("1.1", "1.2", "1.3")
-                .AddNewRow().AddButton("2.1").AddButton("2.2");
-            await bot.SendMessage(msg.Chat, "Keyboard buttons:", replyMarkup: replyMarkup);
+            await bot.SendMessage(msg.Chat, "Keyboard buttons:", replyMarkup: new string[][] { ["1.1", "1.2", "1.3"], ["2.1", "2.2"] });
             break;
         case "/remove":
             await bot.SendMessage(msg.Chat, "Removing keyboard", replyMarkup: new ReplyKeyboardRemove());

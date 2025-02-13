@@ -90,20 +90,15 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
     // Send inline keyboard. You can process responses in OnCallbackQuery handler
     async Task<Message> SendInlineKeyboard(Message msg)
     {
-        var inlineMarkup = new InlineKeyboardMarkup()
-            .AddNewRow("1.1", "1.2", "1.3")
-            .AddNewRow()
-                .AddButton("WithCallbackData", "CallbackData")
-                .AddButton(InlineKeyboardButton.WithUrl("WithUrl", "https://github.com/TelegramBots/Telegram.Bot"));
-        return await bot.SendMessage(msg.Chat, "Inline buttons:", replyMarkup: inlineMarkup);
+        return await bot.SendMessage(msg.Chat, "Inline buttons:", replyMarkup: new InlineKeyboardButton[][] {
+                ["1.1", "1.2", "1.3"],
+                [("WithCallbackData", "CallbackData"), ("WithUrl", "https://github.com/TelegramBots/Telegram.Bot")]
+            });
     }
 
     async Task<Message> SendReplyKeyboard(Message msg)
     {
-        var replyMarkup = new ReplyKeyboardMarkup(true)
-            .AddNewRow("1.1", "1.2", "1.3")
-            .AddNewRow().AddButton("2.1").AddButton("2.2");
-        return await bot.SendMessage(msg.Chat, "Keyboard buttons:", replyMarkup: replyMarkup);
+        return await bot.SendMessage(msg.Chat, "Keyboard buttons:", replyMarkup: new string[][] { ["1.1", "1.2", "1.3"], ["2.1", "2.2"] });
     }
 
     async Task<Message> RemoveKeyboard(Message msg)
