@@ -5,7 +5,6 @@ var builder = WebApplication.CreateBuilder(args);
 var token = builder.Configuration["BotToken"]!;             // set your bot token in appsettings.json
 var webhookUrl = builder.Configuration["BotWebhookUrl"]!;   // set your bot webhook public url in appsettings.json
 
-builder.Services.ConfigureTelegramBot<Microsoft.AspNetCore.Http.Json.JsonOptions>(opt => opt.SerializerOptions);
 builder.Services.AddHttpClient("tgwebhook").RemoveAllLoggers().AddTypedClient(httpClient => new TelegramBotClient(token, httpClient));
 var app = builder.Build();
 app.UseHttpsRedirection();
