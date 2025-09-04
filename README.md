@@ -13,6 +13,15 @@ This repository contains sample applications based on [Telegram.Bot](https://git
 - [Advanced console application](https://github.com/TelegramBots/Telegram.Bot.Examples/tree/master/Console.Advanced). Demonstrates bot with advanced .NET programming features.
 - [ASP.NET Core Webhook application](https://github.com/TelegramBots/Telegram.Bot.Examples/tree/master/Webhook.MinimalAPIs) with Minimal APIs.
 - [ASP.NET Core Webhook application](https://github.com/TelegramBots/Telegram.Bot.Examples/tree/master/Webhook.Controllers) with Controllers.
+- [Inline Queries](https://github.com/TelegramBots/Telegram.Bot.Examples/tree/master/InlineQueries) demo implementing [bot inline mode](https://core.telegram.org/bots/inline).
+- [Mini-App](https://github.com/TelegramBots/Telegram.Bot.Examples/tree/master/MiniApp) : ASP.NET Core Razor pages implementing a [Telegram integrated WebApp](https://core.telegram.org/bots/webapps).  
+  Includes a clone of @DurgerKingBot
+
+### Other examples projects
+- [F# Example](https://github.com/TelegramBots/Telegram.Bot.Examples/tree/master/FSharp.Example) bot
+- Serverless (Cloud scalable) examples:
+  - [AWS Lambda](https://github.com/TelegramBots/Telegram.Bot.Examples/tree/master/Serverless/AwsLambda.Webhook)
+  - [Azure Functions](https://github.com/TelegramBots/Telegram.Bot.Examples/tree/master/Serverless/AzureFunctions.Webhook) In-process, or as [Isolated Worker](https://github.com/TelegramBots/Telegram.Bot.Examples/tree/master/Serverless/AzureFunctions.IsolatedProcess.Webhook)
 
 ### Community projects
 

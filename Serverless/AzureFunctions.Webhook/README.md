@@ -43,6 +43,8 @@ Now your bot should answer with the text from every message you send to it.
 
 
 ## Deploy
+
+### Visual Studio
 Some information is taken from the [official documentation](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-your-first-function-visual-studio).
 
 1. In Solution Explorer, right-click the project and select Publish
@@ -51,6 +53,6 @@ Some information is taken from the [official documentation](https://docs.microso
 4. In Function Instance, select Create a new Azure Function and then use the values specified
 5. Select Finish, and on the Publish page, select Publish to deploy the package containing your project files to your new function app in Azure.
 6. Open your function on https://portal.azure.com/
-7. Select tab **Configuration** and **Add new application setting**, where you enter Name: token, Value: <BotToken> and save updates.
+7. Select tab **Configuration** and **Add new application setting**, where you enter Name: token, Value: `<BotToken>` and save updates.
 
 <br /> **Don't forget to update yours Webhook**
