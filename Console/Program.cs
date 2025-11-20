@@ -27,7 +27,7 @@ cts.Cancel(); // stop the bot
 async Task OnError(Exception exception, HandleErrorSource source)
 {
     Console.WriteLine(exception);
-    await Task.Delay(2000, cts.Token);
+    await Task.Delay(2000, cts.Token); // delay for 2 seconds before eventually trying again
 }
 
 async Task OnMessage(Message msg, UpdateType type)
