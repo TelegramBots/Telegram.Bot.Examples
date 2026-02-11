@@ -1,5 +1,6 @@
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
+using Telegram.Bot.Extensions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -56,6 +57,8 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
             "/inline_mode" => StartInlineQuery(msg),
             "/poll" => SendPoll(msg),
             "/poll_anonymous" => SendAnonymousPoll(msg),
+            "/reaction" => SendReaction(msg),
+            "/html" => SendViaHtml(msg),
             "/throw" => FailingHandler(msg),
             _ => Usage(msg)
         });
@@ -74,6 +77,8 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
                 /inline_mode    - send inline-mode results list
                 /poll           - send a poll
                 /poll_anonymous - send an anonymous poll
+                /reaction       - send a reaction
+                /html [html]    - send a message with SendHtml tags
                 /throw          - what happens if handler fails
             """;
         return await bot.SendMessage(msg.Chat, usage, parseMode: ParseMode.Html, replyMarkup: new ReplyKeyboardRemove());
@@ -133,7 +138,20 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
 
     async Task<Message> SendAnonymousPoll(Message msg)
     {
-        return await bot.SendPoll(chatId: msg.Chat, "Question", PollOptions);
+        return await bot.SendPoll(msg.Chat, "Question", PollOptions);
+    }
+
+    async Task<Message> SendReaction(Message msg)
+    {
+        await bot.SetMessageReaction(msg.Chat, msg.Id, ["❤"], false);
+        return msg;
+    }
+
+    async Task<Message> SendViaHtml(Message msg)
+    {
+        var space = msg.Text?.IndexOf(' ') ?? -1;
+        if (space == -1) return await bot.SendMessage(msg.Chat, "Usage: /html [html]");
+        return (await bot.SendHtml(msg.Chat, msg.Text![(space + 1)..]))[0];
     }
 
     static Task<Message> FailingHandler(Message msg)

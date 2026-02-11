@@ -6,12 +6,13 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>83ea0939-143a-4cb0-bd93-76083cc6c235</UserSecretsId>
+    <NoWarn>CA1873</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
-    <PackageReference Include="Telegram.Bot" Version="22.1.3" />
+    <PackageReference Include="Telegram.Bot" Version="22.*" />
   </ItemGroup>
 
   <ItemGroup>
