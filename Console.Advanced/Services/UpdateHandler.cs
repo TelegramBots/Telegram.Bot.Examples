@@ -99,7 +99,7 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
             .AddNewRow("1.1", "1.2", "1.3")
             .AddNewRow()
                 .AddButton("WithCallbackData", "CallbackData")
-                .AddButton(InlineKeyboardButton.WithUrl("WithUrl", "https://github.com/TelegramBots/Telegram.Bot"));
+                .AddButton(new InlineKeyboardButton("WithUrl", "https://github.com/TelegramBots/Telegram.Bot"));
         return await bot.SendMessage(msg.Chat, "Inline buttons:", replyMarkup: inlineMarkup);
     }
 
@@ -119,14 +119,14 @@ public class UpdateHandler(ITelegramBotClient bot, ILogger<UpdateHandler> logger
     async Task<Message> RequestContactAndLocation(Message msg)
     {
         var replyMarkup = new ReplyKeyboardMarkup(true)
-            .AddButton(KeyboardButton.WithRequestLocation("Location"))
-            .AddButton(KeyboardButton.WithRequestContact("Contact"));
+            .AddButton(new("Location", requestLocation: true))
+            .AddButton(new("Contact", requestContact: true));
         return await bot.SendMessage(msg.Chat, "Who or Where are you?", replyMarkup: replyMarkup);
     }
 
     async Task<Message> StartInlineQuery(Message msg)
     {
-        var button = InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Inline Mode");
+        var button = new InlineKeyboardButton("Inline Mode", InlineButtonType.SwitchInlineQueryCurrentChat);
         return await bot.SendMessage(msg.Chat, "Press the button to start Inline Query\n\n" +
             "(Make sure you enabled Inline Mode in @BotFather)", replyMarkup: new InlineKeyboardMarkup(button));
     }

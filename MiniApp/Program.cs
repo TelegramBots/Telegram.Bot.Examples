@@ -52,7 +52,7 @@ async void OnUpdate(TelegramBotClient bot, Update update, ILogger<Program> logge
         case { Message.Text: "/start" }:
             await bot.SendMessage(update.Message.Chat, "<b>Let's get started</b>\n\nTry our Razor Webapp or order your perfect lunch! 🍟",
                 parseMode: Telegram.Bot.Types.Enums.ParseMode.Html,
-                replyMarkup: (InlineKeyboardMarkup)InlineKeyboardButton.WithWebApp("Launch Mini-App", webappUrl));
+                replyMarkup: new InlineKeyboardButton("Launch Mini-App", InlineButtonType.WebApp, webappUrl));
             break;
         case { PreCheckoutQuery: { } pcq }:
             await bot.AnswerPreCheckoutQuery(pcq.Id, Cafe.OnPreCheckoutQuery(pcq));
@@ -79,7 +79,7 @@ async Task<object> OnDemoApi(TelegramBotClient bot, IConfiguration config, [From
             var user = JsonSerializer.Deserialize<User>(query["user"], JsonBotAPI.Options)!;
             await bot.SendMessage(user.Id, "Hello, World!",
                 replyMarkup: with_webview == "0" ? new ReplyKeyboardRemove() :
-                    new ReplyKeyboardMarkup(true).AddButton(KeyboardButton.WithWebApp("Open WebApp", webappUrl + "/demo")));
+                    new ReplyKeyboardMarkup(true).AddButton(new("Open WebApp", webappUrl + "/demo")));
             return new { response = new { ok = true } };
         default:
             return new { ok = false, error = "Unsupported method: " + method };

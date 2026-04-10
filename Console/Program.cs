@@ -88,11 +88,13 @@ async Task OnCommand(string command, string args, Message msg)
         case "/inline_buttons":
             await bot.SendMessage(msg.Chat, "Inline buttons:", replyMarkup: new InlineKeyboardButton[][] {
                 ["1.1", "1.2", "1.3"],
-                [("WithCallbackData", "CallbackData"), ("WithUrl", "https://github.com/TelegramBots/Telegram.Bot")]
+                [("WithCallbackData", "CallbackData", KeyboardButtonStyle.Primary),
+                    ("WithUrl", "https://github.com/TelegramBots/Telegram.Bot", KeyboardButtonStyle.Success, "5447410659077661506")]
             });
             break;
         case "/keyboard":
-            await bot.SendMessage(msg.Chat, "Keyboard buttons:", replyMarkup: new[] { "MENU", "INFO", "LANGUAGE" });
+            await bot.SendMessage(msg.Chat, "Keyboard buttons:", replyMarkup: new KeyboardButton[]
+                { "MENU", "INFO", ("LANGUAGE", KeyboardButtonStyle.Primary, "5411091492204716695") });
             break;
         case "/remove":
             await bot.SendMessage(msg.Chat, "Removing keyboard", replyMarkup: new ReplyKeyboardRemove());
