@@ -1,6 +1,6 @@
 # Telegram.Bot Examples
 
-[![Telegram chat](https://img.shields.io/badge/Support_Chat-Telegram-blue.svg?style=flat-square)](https://t.me/joinchat/B35YY0QbLfd034CFnvCtCA)
+[![Telegram chat](https://img.shields.io/badge/Support_Chat-Telegram-blue.svg?style=flat-square)](https://t.me/tgbot_chat)
 [![Nuget](https://img.shields.io/nuget/vpre/Telegram.Bot.svg?label=Telegram.Bot&style=flat-square&color=d8b541)](https://www.nuget.org/packages/Telegram.Bot)
 [![Documentations](https://img.shields.io/badge/Documentations-Book-orange.svg?style=flat-square)](https://telegrambots.github.io/book/)
 [![Build status](https://img.shields.io/github/actions/workflow/status/TelegramBots/Telegram.Bot.Examples/.github/workflows/build_examples.yml?branch=master&style=flat-square)](https://github.com/TelegramBots/Telegram.Bot.Examples/actions/workflows/build_examples.yml)
@@ -41,4 +41,4 @@ Examples in this repository use .NET 6 or 8. You might need to install required 
 
 ## Community
 
-Feel free do join our [discussion group](https://t.me/tgbots_dotnet)!
+Feel free do join our [discussion group](https://t.me/tgbot_net)!
